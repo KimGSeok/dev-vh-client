@@ -45,6 +45,7 @@ export const globalStyles = (
           'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
           'Malgun Gothic', sans-serif;
         font-size: 95%;
+        font-weight: 300;
       }
       :is(html,body){
         width: 100%;
@@ -116,5 +117,13 @@ export const color = {
   BasicBlack: '#181818',
   White: '#FFFFFF',
   Black: '#000000',
-  ThumbnailColor: '#CDCDCD'
+  ThumbnailColor: '#CDCDCD',
+  DeActiveColor: '#888888'
 }
+
+/* Button */
+export const RadiusButton = styled.div<CSS_TYPE>(
+  {
+    borderRadius: '24px'
+  }
+)

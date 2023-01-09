@@ -2,10 +2,10 @@
 
 import styled from "@emotion/styled";
 
-const Video = () =>{
-  return(
+const Avatar = () => {
+  return (
     <MainComponent>
-      비디오 페이지
+      Avatar 페이지
     </MainComponent>
   )
 }
@@ -14,4 +14,4 @@ const MainComponent = styled.div({
 
 })
 
-export default Video;
+export default Avatar;

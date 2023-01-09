@@ -2,32 +2,43 @@
 
 import React, { ReactNode } from "react";
 import styled from "@emotion/styled";
-import { globalStyles } from "@/src/styles/styles";
-import Header from "@/src/components/layout/Header";
+import { color, globalStyles } from "@/src/styles/styles";
+import SideNavigation from "@/src/components/layout/SideNavigaiton";
+import Head from "./head";
 
-type AppLayoutProps = {
-  children: ReactNode;
-}
-
-const Layout = ({ children }: AppLayoutProps) =>{
-  return(
+const Layout = ({ children }: { children: ReactNode }) => {
+  return (
     <html>
-      <head>
-
-      </head>
-      <body>
+      <Head />
+      <Body>
         {globalStyles}
-        <Header />
-        <Main>
-          {children}
-        </Main>
-      </body>
+        <AppLayout>
+          <SideNavigation />
+          <MainChildren>
+            {children}
+          </MainChildren>
+        </AppLayout>
+      </Body>
     </html>
   )
 }
 
-const Main = styled.main({
-  padding: '88px 48px 0 48px',
+const Body = styled.body({
+  backgroundColor: color.BasicBlack,
+  width: '100%',
+  height: '100vh',
+  position: 'relative'
+})
+const AppLayout = styled.div({
+  padding: '24px',
+  display: 'flex',
+})
+const MainChildren = styled.main({
+  backgroundColor: color.White,
+  width: '85%',
+  height: 'calc(100vh - 48px)',
+  borderRadius: '16px',
+  padding: '24px'
 })
 
 export default Layout;

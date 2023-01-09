@@ -2,10 +2,10 @@
 
 import styled from "@emotion/styled";
 
-const Twin = () =>{
-  return(
+const Project = () => {
+  return (
     <MainComponent>
-      트윈 페이지
+      Project 페이지
     </MainComponent>
   )
 }
@@ -14,4 +14,4 @@ const MainComponent = styled.div({
 
 })
 
-export default Twin;
+export default Project;
