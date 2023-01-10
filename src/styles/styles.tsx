@@ -20,6 +20,7 @@ export type CSS_TYPE = {
   padding?: string | number;
   margin?: string | number;
   display?: string;
+  alignItems?: string;
   backgroundColor?: string;
   border?: string;
   borderColor?: string;
@@ -118,12 +119,43 @@ export const color = {
   White: '#FFFFFF',
   Black: '#000000',
   ThumbnailColor: '#CDCDCD',
+  ModernGrey: '#e6e6e6',
   DeActiveColor: '#888888'
 }
 
 /* Button */
 export const RadiusButton = styled.div<CSS_TYPE>(
   {
-    borderRadius: '24px'
-  }
+    borderRadius: '24px',
+    cursor: 'pointer'
+  },
+  props => ({
+    backgroundColor: props.backgroundColor ? props.backgroundColor : color.White,
+    border: props.border ? props.border : `1px solid ${color.ModernGrey}`,
+    color: props.color ? props.color : color.BasicBlack,
+    padding: props.padding ? props.padding : '12px 28px',
+    display: props.display ? props.display : 'inline-block',
+    alignItems: props.alignItems,
+    fontSize: props.fontSize ? props.fontSize : '1rem',
+    fontWeight: props.fontWeight ? props.fontWeight : '500',
+    margin: props.margin,
+    position: props.position,
+    top: props.top,
+    bottom: props.bottom,
+    left: props.left,
+    right: props.right
+  })
+)
+
+/* Shape */
+export const VerticalBar = styled.div<CSS_TYPE>(
+  {
+
+  },
+  props => ({
+    width: props.width ? props.width : '4px',
+    height: props.height ? props.height : '20px',
+    backgroundColor: props.backgroundColor ? props.backgroundColor : color.BasicBlack,
+    borderRadius: props.borderRadius
+  })
 )
