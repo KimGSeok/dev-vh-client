@@ -41,8 +41,8 @@ const Home = () => {
           <VerticalBar />
           <DescriptionTitle>Cross-linual TTS</DescriptionTitle>
           <DescriptionContent>
-            <div>같은 목소리로 다양한 언어&#40;한국어, 영어, 일본어 등&#41을 합성 할 수 있음</div>
-            <div>언어에 상관없이 입모양 합성이 가능함.</div>
+            <div>같은 목소리로 다양한 언어&#40;한국어, 영어, 일본어 등&#41;을 합성 할 수 있음</div>
+            <div>언어에 상관없이 입모양 합성이 가능함</div>
           </DescriptionContent>
         </DashboardDescriptionWrap>
       </DashboardWrap>
@@ -135,7 +135,7 @@ const DescriptionContent = styled.div({
   fontWeight: '300',
   margin: '0 8px',
 
-  '& > div':{
+  '& > div': {
     margin: '0 0 4px 0'
   }
 })

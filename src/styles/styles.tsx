@@ -39,7 +39,9 @@ export type CSS_TYPE = {
 export const globalStyles = (
   <Global
     styles={css`
+
       @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
       *, *:after, *:before{
         box-sizing: border-box;
         font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
@@ -48,6 +50,7 @@ export const globalStyles = (
         font-size: 95%;
         font-weight: 300;
       }
+
       :is(html,body){
         width: 100%;
         height: auto;
@@ -61,21 +64,27 @@ export const globalStyles = (
           display: none;
         }
       }
+
       :is(ul, li){
         list-style: none;
         margin: 0;
         padding: 0;
       }
+
       select{
         outline: 0;
         appearance: none;
         background: url('/icons/arrow/arrow_drop_down.svg') no-repeat right 9px center;
       }
+
       a{
         text-decoration: none;
         color: inherit;
       }
+
       input{
+        margin: 0;
+
         :focus{
           border-color:#1D3763;
           outline: none;
@@ -120,7 +129,8 @@ export const color = {
   Black: '#000000',
   ThumbnailColor: '#CDCDCD',
   ModernGrey: '#e6e6e6',
-  DeActiveColor: '#888888'
+  DeActiveColor: '#888888',
+  BrightBlue: '#0075FF'
 }
 
 /* Button */
@@ -157,5 +167,23 @@ export const VerticalBar = styled.div<CSS_TYPE>(
     height: props.height ? props.height : '20px',
     backgroundColor: props.backgroundColor ? props.backgroundColor : color.BasicBlack,
     borderRadius: props.borderRadius
+  })
+)
+
+/* Select */
+export const SelectBox = styled.select<CSS_TYPE>(
+  {
+
+  },
+  props => ({
+    width: props.width ? props.width : '',
+    minWidth: props.minWidth ? props.minWidth : '120px',
+    height: props.height ? props.height : '',
+    padding: props.padding ? props.padding : '',
+    margin: props.margin ? props.margin : '',
+    fontSize: props.fontSize ? props.fontSize : '0.9rem',
+    border: props.border ? props.border : '',
+    borderColor: props.borderColor ? props.borderColor : '',
+    borderRadius: props.borderRadius ? props.borderRadius : '8px'
   })
 )

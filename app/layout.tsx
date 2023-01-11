@@ -2,21 +2,35 @@
 
 import React, { ReactNode } from "react";
 import styled from "@emotion/styled";
+import { usePathname } from 'next/navigation';
 import { color, globalStyles } from "@/src/styles/styles";
 import SideNavigation from "@/src/components/layout/SideNavigaiton";
 import Head from "./head";
 
 const Layout = ({ children }: { children: ReactNode }) => {
+
+  // Hooks
+  const pathName = usePathname();
+  const firstPathName = pathName?.split('/')[1];
+  const secondPathName = pathName?.split('/')[2];
+
   return (
     <html>
       <Head />
       <Body>
-        {globalStyles}
         <AppLayout>
-          <SideNavigation />
-          <MainChildren>
-            {children}
-          </MainChildren>
+          {globalStyles}
+          {
+            firstPathName === 'project' && secondPathName ?
+              <>{children}</>
+              :
+              <>
+                <SideNavigation />
+                <MainChildren>
+                  {children}
+                </MainChildren>
+              </>
+          }
         </AppLayout>
       </Body>
     </html>
