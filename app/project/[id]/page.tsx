@@ -1,15 +1,81 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { CSS_TYPE, color } from '@/src/styles/styles';
-import SlideWrapper from '@/src/components/Project/Slide';
-import AvatarWrapper from '@/src/components/Project/Avatar';
-import ScriptWrapper from '@/src/components/Project/Script';
+import { ProjectSlideInterfaceProps } from '@/src/modules/type';
+import SlideWrapper from '@/src/components/project/Slide/Slide';
+import AvatarWrapper from '@/src/components/project/Avatar/Avatar';
+import ScriptWrapper from '@/src/components/project/Script/Script';
+
+let tempSlideList = [
+  {
+    id: '1',
+    sequence: 1,
+    name: 'slide1',
+    avatar: '',
+    background: '',
+    voice: '',
+    thumbnail: null,
+    createdAt: null
+  },
+  {
+    id: '2',
+    sequence: 2,
+    name: 'slide2',
+    avatar: '',
+    background: '',
+    voice: '',
+    thumbnail: null,
+    createdAt: null
+  },
+  {
+    id: '3',
+    sequence: 3,
+    name: 'slide3',
+    avatar: '',
+    background: '',
+    voice: '',
+    thumbnail: null,
+    createdAt: null
+  },
+  {
+    id: '4',
+    sequence: 4,
+    name: 'slide4',
+    avatar: '',
+    background: '',
+    voice: '',
+    thumbnail: null,
+    createdAt: null
+  },
+  {
+    id: '5',
+    sequence: 5,
+    name: 'slide5',
+    avatar: '',
+    background: '',
+    voice: '',
+    thumbnail: null,
+    createdAt: null
+  },
+]
 
 const ProjectDetail = () => {
+
+  // Hooks
+  const [activeSlide, setActiveSlide] = useState<ProjectSlideInterfaceProps>(tempSlideList[0]);
+  const [slideList, setSlideList] = useState<object[]>(tempSlideList);
+
+  // TODO 새로고침 및 페이지 이동 시 Alert 후 페이지 이동 막기
+
   return (
     <MainComponent>
       <SlideWrapper
+        slideList={slideList}
+        setSlideList={setSlideList}
+        activeSlide={activeSlide}
+        setActiveSlide={setActiveSlide}
       />
       <AvatarWrapper
       />

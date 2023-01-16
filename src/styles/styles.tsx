@@ -21,7 +21,9 @@ export type CSS_TYPE = {
   margin?: string | number;
   display?: string;
   alignItems?: string;
+  justifyContent?: string;
   backgroundColor?: string;
+  background?: string;
   border?: string;
   borderColor?: string;
   borderTop?: string;
@@ -33,6 +35,9 @@ export type CSS_TYPE = {
   borderBottomRightRadius?: string | number;
   transition?: string;
   transform?: string;
+  opacity?: string | number;
+  hovercolor?: string;
+  hoveropacity?: string | number;
   cursor?: string;
 }
 
@@ -90,6 +95,19 @@ export const globalStyles = (
           outline: none;
         }
       }
+
+      [contenteditable] {
+        outline: 0px solid transparent;
+      }
+      [contenteditable]:hover {
+        cursor: text;
+      }
+      [contenteditable]:focus {
+        outline: 1px solid #1D3763;
+      }
+      [contenteditable="true"]:empty:before {
+        content: attr(placeholder);
+      }
     `}
   />
 )
@@ -119,18 +137,42 @@ export const ImageWrap = styled.div<CSS_TYPE>(
     cursor: props.cursor ? props.cursor : ''
   })
 )
-export const ImageElement = styled(Image)({})
+export const ImageElement = styled(Image)<CSS_TYPE>(
+  {
+    
+  },
+  props => ({
+    position: props.position,
+    top: props.top,
+    left: props.left,
+    right: props.right,
+    bottom: props.bottom,
+    opacity: props.opacity,
+    transform: props.transform,
+    cursor: props.cursor,
+
+    ':hover': {
+      color: props.hovercolor,
+      opacity: props.hoveropacity
+    }
+  })
+)
 
 /* Color */
 export const color = {
   BasicColor: '#1D3763',
   BasicBlack: '#181818',
+  BasicOrange: '#FF5029',
   White: '#FFFFFF',
   Black: '#000000',
   ThumbnailColor: '#CDCDCD',
   ModernGrey: '#e6e6e6',
+  DarkGrey: '#444444',
   DeActiveColor: '#888888',
-  BrightBlue: '#0075FF'
+  BrightBlue: '#0075FF',
+  AliceBlue: '#F2F7FF',
+  Purple: '#640EDC',
+  OverallProgressColor: '#F1E3FF'
 }
 
 /* Button */
@@ -140,12 +182,15 @@ export const RadiusButton = styled.div<CSS_TYPE>(
     cursor: 'pointer'
   },
   props => ({
+    width: props.width,
     backgroundColor: props.backgroundColor ? props.backgroundColor : color.White,
     border: props.border ? props.border : `1px solid ${color.ModernGrey}`,
+    borderColor: props.borderColor,
     color: props.color ? props.color : color.BasicBlack,
     padding: props.padding ? props.padding : '12px 28px',
     display: props.display ? props.display : 'inline-block',
     alignItems: props.alignItems,
+    justifyContent: props.justifyContent,
     fontSize: props.fontSize ? props.fontSize : '1rem',
     fontWeight: props.fontWeight ? props.fontWeight : '500',
     margin: props.margin,

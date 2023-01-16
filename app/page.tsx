@@ -69,7 +69,7 @@ const Home = () => {
           >
             아바타 생성하기
             <ImageElement
-              src="/icons/single_arrow_right.svg"
+              src="/icons/arrow/single_arrow_right.svg"
               width={20}
               height={20}
               alt="arrow_right"
@@ -94,7 +94,7 @@ const Home = () => {
           >
             프로젝트 생성하기
             <ImageElement
-              src="/icons/single_arrow_right.svg"
+              src="/icons/arrow/single_arrow_right.svg"
               width={20}
               height={20}
               alt="arrow_right"

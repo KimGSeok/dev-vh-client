@@ -1,6 +1,10 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 
-export const onClickOutSideRef = (ref: any, exceptRef: any, setState: Dispatch<SetStateAction<any>>) => {
+/**
+ * 2023.01.11
+ * 외부영역 선택 시, 해당 Ref 이외 닫기 이벤트
+*/
+export const onClickOutsideHandler = (ref: any, exceptRef: any, setState: Dispatch<SetStateAction<any>>) => {
 
   useEffect(() => {
     const handleClickOutSide = (e: MouseEvent): void => {

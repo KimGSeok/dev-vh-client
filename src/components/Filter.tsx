@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, ImageElement } from '@/src/styles/styles';
 import { useRef, useState } from 'react';
-import { onClickOutSideRef } from '@/src/modules/onClickOutSideRef';
+import { onClickOutsideHandler } from '@/src/modules/onClickOutside';
 
 const Filter = () => {
 
@@ -12,7 +12,7 @@ const Filter = () => {
   const filterAreaRef = useRef<any>(null);
   const exceptRef = useRef<any>(null);
 
-  onClickOutSideRef(filterAreaRef, exceptRef, setIsOpenFilter)
+  onClickOutsideHandler(filterAreaRef, exceptRef, setIsOpenFilter)
 
   return (
     <FilterWrapper>
@@ -107,8 +107,8 @@ const FilterValue = styled.div({
 })
 const FilterDetailWrapper = styled.div({
   position: 'absolute',
-  top: '24px',
-  left: '-1px',
+  top: '28px',
+  left: '0px',
   width: '100%',
   backgroundColor: color.White,
   border: `1px solid ${color.ThumbnailColor}`,
