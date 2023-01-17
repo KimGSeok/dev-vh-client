@@ -12,7 +12,7 @@ const Filter = () => {
   const filterAreaRef = useRef<any>(null);
   const exceptRef = useRef<any>(null);
 
-  onClickOutsideHandler(filterAreaRef, exceptRef, setIsOpenFilter)
+  onClickOutsideHandler(filterAreaRef, setIsOpenFilter, exceptRef)
 
   return (
     <FilterWrapper>
@@ -116,7 +116,8 @@ const FilterDetailWrapper = styled.div({
   padding: '16px 16px 0px 16px',
   margin: '4px 0 0 0',
   boxShadow: '1px 1px 4px 1px rgb(53 60 73 / 10%)',
-  zIndex: '2'
+  zIndex: '2',
+  cursor: 'default'
 })
 const FilterDetailArea = styled.div({
   margin: '0 0 18px 0'

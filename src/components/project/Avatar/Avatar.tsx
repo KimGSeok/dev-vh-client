@@ -13,11 +13,6 @@ const Avatar = () => {
   return (
     <AvatarWrapper>
       <ImageWrapper>
-        <ImageElement
-          src="/images/tile_background.svg"
-          fill
-          alt="tile background"
-        />
         <ImageWrap
           position={'absolute'}
           width={'100%'}
@@ -149,7 +144,12 @@ const AvatarWrapper = styled.div({
 const ImageWrapper = styled.div({
   width: '100%',
   height: '42.5%',
-  position: 'relative'
+  position: 'relative',
+  backgroundImage: `url('/images/tile_background.svg')`,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  borderTopLeftRadius: '16px',
+  borderTopRightRadius: '16px'
 })
 const AvatarDecorateWrapper = styled.div({
   height: 'calc(57.5% - 45px)',

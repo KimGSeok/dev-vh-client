@@ -32,6 +32,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
               </>
           }
         </AppLayout>
+        <Portal id="portal" />
       </Body>
     </html>
   )
@@ -53,6 +54,9 @@ const MainChildren = styled.main({
   height: 'calc(100vh - 48px)',
   borderRadius: '16px',
   padding: '24px'
+})
+const Portal = styled.div({
+
 })
 
 export default Layout;

@@ -1,18 +1,16 @@
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, RadiusButton } from '@/src/styles/styles';
-import { useRouter } from 'next/navigation';
+import { MouseEventHandler } from 'react';
 
 interface PageTitleProps {
   title: string;
-  link?: string;
   registerBtn?: boolean;
   btn?: string;
+  event?: string;
+  func?: MouseEventHandler<HTMLDivElement> | undefined;
 }
 
-const PageTitle = ({ title, link, registerBtn, btn }: PageTitleProps) => {
-
-  // Hooks
-  const router = useRouter();
+const PageTitle = ({ title, event, func, registerBtn, btn }: PageTitleProps) => {
 
   return (
     <PageTitleWrap>
@@ -24,7 +22,7 @@ const PageTitle = ({ title, link, registerBtn, btn }: PageTitleProps) => {
             backgroundColor={color.BrightBlue}
             border={`1px solid ${color.BrightBlue}`}
             color={color.White}
-            onClick={() => { link ? router.push(link) : null }}
+            onClick={event === 'onClick' ? func : undefined}
           >{btn}</RadiusButton>
           : ''
       }

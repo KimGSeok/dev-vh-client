@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useRef } from 'react';
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, ImageElement, ImageWrap } from '@/src/styles/styles';
+import { onClickOutsideHandler } from '@/src/modules/onClickOutside';
 
 interface SheetProps {
   isShowBottomSheet: boolean;
@@ -9,16 +10,28 @@ interface SheetProps {
   children?: React.ReactNode;
 }
 
-const BottomSheet = ({ isShowBottomSheet, setIsShowBottomSheet, title, children }: SheetProps) =>{
-  return(
-    <SheetWrapper top={isShowBottomSheet ? '0' : '100vh'}>
+const BottomSheet = ({ isShowBottomSheet, setIsShowBottomSheet, title, children }: SheetProps) => {
+
+  // Hooks
+  const sheetRef = useRef<any>(null);
+
+  onClickOutsideHandler(sheetRef, setIsShowBottomSheet);
+
+  return (
+    <SheetWrapper
+      top={isShowBottomSheet ? '0' : '100vh'}
+      height={isShowBottomSheet ? '100%' : '0'}
+    >
       <SheetBackground />
       <SheetArea
+        ref={sheetRef}
         height={isShowBottomSheet ? '25%' : '0'}
         minHeight={isShowBottomSheet ? '25%' : '0'}
         padding={isShowBottomSheet ? '20px' : '0'}
       >
-        <TitleWrapper>
+        <TitleWrapper
+          display={isShowBottomSheet ? 'flex' : 'none'}
+        >
           <Title>{title ? title : '제목이 없습니다.'}</Title>
           <ImageWrap
             position={'relative'}
@@ -45,9 +58,11 @@ const SheetWrapper = styled.div<CSS_TYPE>(
     position: 'absolute',
     width: '100%',
     height: '100%',
+    transition: 'all 0.3s'
   },
   props => ({
-    top: props.top
+    top: props.top,
+    height: props.height
   })
 )
 const SheetBackground = styled.div<CSS_TYPE>(
@@ -76,17 +91,21 @@ const SheetArea = styled.div<CSS_TYPE>(
     padding: props.padding
   })
 )
-const TitleWrapper = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between'
-})
+const TitleWrapper = styled.div<CSS_TYPE>(
+  {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  props => ({
+    display: props.display
+  })
+)
 const Title = styled.div({
   fontSize: '1.2rem',
   fontWeight: '800',
   color: color.BasicColor
 })
-const ChildrenWrapper= styled.div({
+const ChildrenWrapper = styled.div({
   margin: '8px 0 0 0',
 })
 

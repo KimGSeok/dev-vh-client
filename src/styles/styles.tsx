@@ -103,7 +103,7 @@ export const globalStyles = (
         cursor: text;
       }
       [contenteditable]:focus {
-        outline: 1px solid #1D3763;
+        border: 1px solid #1D3763;
       }
       [contenteditable="true"]:empty:before {
         content: attr(placeholder);
@@ -139,7 +139,7 @@ export const ImageWrap = styled.div<CSS_TYPE>(
 )
 export const ImageElement = styled(Image)<CSS_TYPE>(
   {
-    
+
   },
   props => ({
     position: props.position,

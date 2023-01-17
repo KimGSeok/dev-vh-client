@@ -3,13 +3,22 @@ import styled from '@emotion/styled';
 import { CSS_TYPE, color, RadiusButton } from '@/src/styles/styles';
 import ScriptItem from './Item';
 import ControlPanel from './ControlPanel';
-import BottomSheet from '../../layout/BottomSheet';
+import BottomSheet from '@/src/components/BottomSheet';
+import Confirm from '@/src/components/Confirm';
 
 const Script = () => {
 
   // Hooks
   const [bottomSheetTitle, setBottomSheetTitle] = useState<string>('');
   const [isShowBottomSheet, setIsShowBottomSheet] = useState<boolean>(false);
+
+  /* 슬라이드 변환하기 */
+  const onClickTransformHandler = () => {
+
+    Confirm();
+    const confirm = Confirm();
+    console.log(confirm)
+  }
 
   return (
     <ScriptWrapper>
@@ -19,6 +28,7 @@ const Script = () => {
           backgroundColor={color.BasicColor}
           color={color.White}
           padding={'8px 24px'}
+          onClick={() => onClickTransformHandler()}
         >
           변환하기
         </RadiusButton>
@@ -64,7 +74,7 @@ const ScriptItemWrapper = styled.div({
   padding: '16px 24px 0 24px',
   overflowY: 'scroll',
 
-  '::-webkit-scrollbar':{
+  '::-webkit-scrollbar': {
     scrollBehavior: 'smooth',
     display: 'none'
   }

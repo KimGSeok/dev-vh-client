@@ -1,28 +1,163 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import Filter from "@/src/components/Filter";
 import PageTitle from "@/src/components/layout/PageTitle";
 import Search from "@/src/components/Search";
+import { CSS_TYPE, color } from "@/src/styles/styles";
 import styled from "@emotion/styled";
+import { useState } from "react";
 
 const Project = () => {
+
+  // Hooks
+  const router = useRouter();
+  const [list, setList] = useState([]);
+
   return (
     <MainComponent>
       <PageTitle
         title={'프로젝트'}
         registerBtn={true}
         btn={'생성하기'}
-        link={'/project/detail'}
+        event={'onClick'}
+        func={() => { router.push('/project/detail') }}
       />
       <Filter />
       <Search />
-      Project 페이지
+      <ProjectWrapper>
+        <HeaderWrapper>
+          <ProjectLists>
+            <ProjectList
+              fontSize={'1rem'}
+              borderTop={`1px solid ${color.ModernGrey}`}
+              borderBottom={`1px solid ${color.ModernGrey}`}
+            >
+              <ListInfo
+                width={'10%'}
+              >이미지</ListInfo>
+              <ListInfo
+                width={'25%'}
+              >프로젝트명</ListInfo>
+              <ListInfo
+                width={'15%'}
+              >아바타 명</ListInfo>
+              <ListInfo
+                width={'15%'}
+              >프로젝트 길이</ListInfo>
+              <ListInfo
+                width={'15%'}
+              >최근 수정날짜</ListInfo>
+              <ListInfo
+                width={'15%'}
+              >상태</ListInfo>
+            </ProjectList>
+          </ProjectLists>
+        </HeaderWrapper>
+        <ListWrapper>
+          <ProjectLists>
+            {
+              list && list.length > 0 ?
+                list.map((item: any, index: any) => {
+                  return (
+                    <ProjectList key={index}>
+                      <ListInfo
+                        width={'10%'}
+                        color={''}
+                        fontSize={''}
+                        fontWeight={''}
+                      >이미지
+                      </ListInfo>
+                      <ListInfo
+                        width={'25%'}
+                        color={''}
+                        fontSize={''}
+                        fontWeight={''}
+                      >이미지
+                      </ListInfo>
+                      <ListInfo
+                        width={'15%'}
+                        color={''}
+                        fontSize={''}
+                        fontWeight={''}
+                      >이미지
+                      </ListInfo>
+                      <ListInfo
+                        width={'15%'}
+                        color={''}
+                        fontSize={''}
+                        fontWeight={''}
+                      >이미지
+                      </ListInfo>
+                      <ListInfo
+                        width={'15%'}
+                        color={''}
+                        fontSize={''}
+                        fontWeight={''}
+                      >이미지
+                      </ListInfo>
+                      <ListInfo
+                        width={'15%'}
+                        color={''}
+                        fontSize={''}
+                        fontWeight={''}
+                      >상태
+                      </ListInfo>
+                    </ProjectList>
+                  )
+                }) : <EmptyList>프로젝트 목록이 없습니다.</EmptyList>
+            }
+          </ProjectLists>
+        </ListWrapper>
+      </ProjectWrapper>
     </MainComponent>
   )
 }
 
 const MainComponent = styled.div({
 
+})
+const ProjectWrapper = styled.div({
+  margin: '16px 0 0 0',
+  textAlign: 'center'
+})
+const HeaderWrapper = styled.div({
+
+})
+const ListWrapper = styled.div({
+
+})
+const ProjectLists = styled.ul<CSS_TYPE>(
+  {
+
+  }
+)
+const ProjectList = styled.li<CSS_TYPE>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '12px 0'
+  },
+  props => ({
+    borderTop: props.borderTop,
+    borderBottom: props.borderBottom,
+    fontSize: props.fontSize,
+    color: props.color ? props.color : color.BasicBlack
+  })
+)
+const ListInfo = styled.div<CSS_TYPE>(
+  {
+
+  },
+  props => ({
+    width: props.width
+  })
+)
+const EmptyList = styled.div({
+  fontSize: '1rem',
+  fontWeight: '300',
+  color: color.DeActiveColor,
+  padding: '24px 0'
 })
 
 export default Project;

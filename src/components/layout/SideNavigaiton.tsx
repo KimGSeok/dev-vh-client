@@ -7,20 +7,21 @@ const SideNavigation = () => {
   // Hooks
   const router = useRouter();
   const pathName = usePathname();
+  const firstPathName = pathName?.split('/')[1];
 
   return (
     <SideNav>
       <GNBLists>
         <GNBList
-          color={pathName === '/' ? color.White : ''}
+          color={firstPathName === '' ? color.White : ''}
           onClick={() => router.push('/')}
         >Home</GNBList>
         <GNBList
-          color={pathName === '/project' ? color.White : ''}
+          color={firstPathName === 'project' ? color.White : ''}
           onClick={() => router.push('/project')}
         >Project</GNBList>
         <GNBList
-          color={pathName === '/avatar' ? color.White : ''}
+          color={firstPathName === 'avatar' ? color.White : ''}
           onClick={() => router.push('/avatar')}
         >Avatar</GNBList>
       </GNBLists>
