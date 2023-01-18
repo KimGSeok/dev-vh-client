@@ -28,6 +28,8 @@ export type CSS_TYPE = {
   borderColor?: string;
   borderTop?: string;
   borderBottom?: string;
+  borderLeft?: string;
+  borderRight?: string;
   borderRadius?: string;
   borderTopLeftRadius?: string | number;
   borderTopRightRadius?: string | number;
@@ -39,6 +41,8 @@ export type CSS_TYPE = {
   hovercolor?: string;
   hoveropacity?: string | number;
   cursor?: string;
+
+  RadioChecked?: boolean;
 }
 
 export const globalStyles = (
@@ -232,3 +236,22 @@ export const SelectBox = styled.select<CSS_TYPE>(
     borderRadius: props.borderRadius ? props.borderRadius : '8px'
   })
 )
+
+/* Animation */
+const fadeUpAnimation = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(calc(-50% + 50px));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%);
+  }
+`
+
+export const fadeUp = css`
+  animation-duration: 0.65s;
+  animation-name: ${fadeUpAnimation}};
+  animation-timing-function: ease;
+`
