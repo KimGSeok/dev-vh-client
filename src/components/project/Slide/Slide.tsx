@@ -17,7 +17,7 @@ const Slide = ({ slideList, setSlideList, activeSlide, setActiveSlide }: SlideLi
   const router = useRouter();
 
   // 새 슬라이드 추가
-  const onAddNewSlideHandler = () =>{
+  const onAddNewSlideHandler = () => {
 
     // Parameter
     const newSlideIndex = slideList.length + 1;
@@ -38,7 +38,7 @@ const Slide = ({ slideList, setSlideList, activeSlide, setActiveSlide }: SlideLi
 
   return (
     <SlideWrapper>
-      <RadiusButton
+      <RadiusBtn
         width={'fit-content'}
         display={'flex'}
         alignItems={'center'}
@@ -57,21 +57,21 @@ const Slide = ({ slideList, setSlideList, activeSlide, setActiveSlide }: SlideLi
           alt="arrow_left"
         />
         목록으로 가기
-      </RadiusButton>
+      </RadiusBtn>
       <SlideLists>
         {
           slideList && slideList.length > 0 ?
-          slideList.map((item: any, index: number) => {
-            return(
-              <SlideList key={index}>
-                <SlideBackground
-                  onClick={() => setActiveSlide(item)}
-                  background={activeSlide.id === item.id ? color.White : color.ThumbnailColor}
-                />
-                <SlideName color={activeSlide.id === item.id ? color.White : ''}>{item.name}</SlideName>
-              </SlideList>
-            )
-          }) : ''
+            slideList.map((item: any, index: number) => {
+              return (
+                <SlideList key={index}>
+                  <SlideBackground
+                    onClick={() => setActiveSlide(item)}
+                    background={activeSlide.id === item.id ? color.White : color.ThumbnailColor}
+                  />
+                  <SlideName color={activeSlide.id === item.id ? color.White : ''}>{item.name}</SlideName>
+                </SlideList>
+              )
+            }) : ''
         }
 
         {/* 새 슬라이드 추가 버튼 */}
@@ -101,11 +101,29 @@ const SlideWrapper = styled.div({
   width: 'calc(12% - 16px)',
   overflowY: 'scroll',
 
-  '::-webkit-scrollbar':{
+  '::-webkit-scrollbar': {
     scrollBehavior: 'smooth',
     display: 'none'
   }
 })
+const RadiusBtn = styled(RadiusButton)<CSS_TYPE>(
+  {
+    '@media screen and (max-width: 1440px)': {
+      fontSize: '0.9rem',
+      padding: '8px 20px'
+    },
+
+    '@media screen and (max-width: 1023px)': {
+      fontSize: '0.85rem',
+      padding: '8px 18px'
+    },
+
+    '@media screen and (max-width: 960px)': {
+      fontSize: '0.8rem',
+      padding: '8px 16px'
+    }
+  },
+)
 const SlideLists = styled.ul({
 
 })
@@ -120,7 +138,19 @@ const SlideBackground = styled.div<CSS_TYPE>(
     width: '100%',
     height: '120px',
     borderRadius: '8px',
-    cursor: 'pointer'
+    cursor: 'pointer',
+
+    '@media screen and (max-width: 1440px)': {
+      height: '100px'
+    },
+
+    '@media screen and (max-width: 1023px)': {
+      height: '85px'
+    },
+
+    '@media screen and (max-width: 960px)': {
+      height: '75px'
+    }
   },
   props => ({
     background: props.background

@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, ImageElement, ImageWrap, RadiusButton } from '@/src/styles/styles';
 
-const ControlPanel = () =>{
-  return(
+const ControlPanel = () => {
+  return (
     <PanelWrapper>
       <ImageWrap
         position={'relative'}
@@ -28,7 +28,7 @@ const ControlPanel = () =>{
       <ProjectLengthWrapper>
         <PlayTime>01:24</PlayTime>/<ProjectLength>05:36</ProjectLength>
       </ProjectLengthWrapper>
-      <RadiusButton
+      <RadiusBtn
         display={'flex'}
         alignItems={'center'}
         color={color.White}
@@ -55,8 +55,8 @@ const ControlPanel = () =>{
           />
         </ImageWrap>
         음성 다운로드
-      </RadiusButton>
-      <RadiusButton
+      </RadiusBtn>
+      <RadiusBtn
         display={'flex'}
         alignItems={'center'}
         color={color.White}
@@ -82,7 +82,7 @@ const ControlPanel = () =>{
           />
         </ImageWrap>
         영상 다운로드
-      </RadiusButton>
+      </RadiusBtn>
     </PanelWrapper>
   )
 }
@@ -98,7 +98,22 @@ const PanelWrapper = styled.div({
 const ProgressWrapper = styled.div({
   position: 'relative',
   width: '40%',
-  margin: '0 24px'
+  margin: '0 24px',
+
+  '@media screen and (max-width: 1440px)': {
+    width: '35%',
+    margin: '0 20px',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    width: '30%',
+    margin: '0 18px',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    width: '25%',
+    margin: '0 16px',
+  }
 })
 const OverAllProgress = styled.div({
   width: '100%',
@@ -107,7 +122,7 @@ const OverAllProgress = styled.div({
   borderRadius: '50px',
 })
 const ProgressStatus = styled.div({
-  
+
 })
 const ProjectLengthWrapper = styled.div({
   display: 'flex',
@@ -123,5 +138,23 @@ const ProjectLength = styled.div({
   fontWeight: '500',
   margin: '0 16px 0 4px'
 })
+const RadiusBtn = styled(RadiusButton)<CSS_TYPE>(
+  {
+    '@media screen and (max-width: 1440px)': {
+      fontSize: '0.7rem',
+      padding: '4px 16px',
+    },
+
+    '@media screen and (max-width: 1023px)': {
+      fontSize: '0.65rem',
+      padding: '4px 14px',
+    },
+
+    '@media screen and (max-width: 960px)': {
+      fontSize: '0.6rem',
+      padding: '4px 12px',
+    }
+  }
+)
 
 export default ControlPanel;

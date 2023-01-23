@@ -1,8 +1,9 @@
 'use client';
 
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, RadiusButton } from '@/src/styles/styles';
-import { Dispatch, SetStateAction } from 'react';
+import { CSS_TYPE, color, RadiusButton, Warning } from '@/src/styles/styles';
+import { Dispatch, SetStateAction, useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface ModalProps {
   avatarType: string;
@@ -13,8 +14,34 @@ interface ModalProps {
 
 const ModalContent = ({ avatarType, setAvatarType, avatarName, setAvatarName }: ModalProps) => {
 
-  // Parameter
-  const type = avatarType === 'voice' ? '음성' : '영상';
+  // Hooks
+  const nameRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+  const [type, setType] = useState<string>(avatarType);
+  const [validation, setValidation] = useState({
+    name: false
+  })
+
+  // Validation
+  const checkNameHandler = () => {
+
+    const value = nameRef.current && nameRef.current.value;
+    return value !== '' || value === null;
+  }
+
+  const onClickNextStepBtnHandler = () => {
+    if (checkNameHandler()) {
+      setValidation({
+        name: false
+      })
+      alert('아바타 생성을 시작합니다.');
+      router.push(`/avatar/generate?type=${type}`)
+    } else {
+      setValidation({
+        name: true
+      })
+    }
+  }
 
   return (
     <MainComponent>
@@ -25,45 +52,58 @@ const ModalContent = ({ avatarType, setAvatarType, avatarName, setAvatarName }: 
             type={'raido'}
             id={'voice'}
             name={'avatar'}
+            defaultValue={'voice'}
+            defaultChecked={type === 'voice'}
           />
           <RadioLabel
             htmlFor={'voice'}
-            RadioChecked={type === '음성'}
-            borderRight={type === '음성' ? '0' : ''}
+            RadioChecked={type === 'voice'}
+            borderRight={type === 'voice' ? '0' : ''}
+            onClick={() => setType('voice')}
           >음성</RadioLabel>
           <RadioButton
             type={'raido'}
             id={'video'}
             name={'avatar'}
-            borderLeft={type === '영상' ? '0' : ''}
+            borderLeft={type === 'video' ? '0' : ''}
+            defaultValue={'video'}
+            defaultChecked={type === 'video'}
           />
           <RadioLabel
             htmlFor={'video'}
-            RadioChecked={type === '영상'}
+            RadioChecked={type === 'video'}
+            onClick={() => setType('video')}
           >영상</RadioLabel>
         </ContentArea>
       </ContentWrapper>
       <ContentWrapper>
-        <ContentTitle>{type} 아바타의 이름을 입력해주세요.</ContentTitle>
-        <NameInput type={'text'} placeholder={`${type} 아바타의 이름을 입력해주세요.`} />
+        <ContentTitle>{type === 'voice' ? '음성' : '영상'} 아바타의 이름을 입력해주세요.</ContentTitle>
+        <NameInput
+          ref={nameRef}
+          type={'text'}
+          placeholder={`${type === 'voice' ? '음성' : '영상'} 아바타의 이름을 입력해주세요.`}
+        />
+        {
+          validation.name && <Warning margin={'4px 0 0 0'} fontSize={'0.85rem'}>{type === 'voice' ? '음성' : '영상'} 아바타의 이름을 입력해주세요.</Warning>
+        }
       </ContentWrapper>
       <ContentWrapper>
         <ContentTitle color={color.Purple}>이것만은 꼭 지켜주세요!</ContentTitle>
         <DescriptionLists>
           <DescriptionList>
-            {type === '음성' ?
+            {type === 'voice' ?
               '주변 소음이 없는 조용한 공간에서 녹음 해주세요.' : '녹화 시작 후, 화면 속 대사를 천천히 읽어주세요.'}
           </DescriptionList>
           <DescriptionList>
-            {type === '음성' ?
+            {type === 'voice' ?
               '첫 번째 문장부터 마지막 문장까지 일관된 목소리와 톤을 유지해주세요.' : '녹화 중 얼굴이 꼭 나와야 하며, 입을 가리지 않게 주의 해주세요.'}
           </DescriptionList>
           <DescriptionList>
-            {type === '음성' ?
+            {type === 'voice' ?
               '문장 전체를 정확하고 자연스럽게 녹음해주세요.' : '꼭 대사를 읽을 필요는 없지만 입을 많이 움직일 수록 더 자연스러운 학습이 가능합니다.'}
           </DescriptionList>
           <DescriptionList>
-            {type === '음성' ?
+            {type === 'voice' ?
               `쉼표(,) 에서는 잠시 멈추고, 물음표(?), 느낌표(!)는 최대한 느낌을 살려 읽어주세요.`
               :
               '최소 3분 이상 녹화가 필요합니다.'}
@@ -76,6 +116,7 @@ const ModalContent = ({ avatarType, setAvatarType, avatarName, setAvatarName }: 
           color={color.White}
           padding={'12px 28px'}
           margin={'12px 0 0 0'}
+          onClick={onClickNextStepBtnHandler}
         >다음으로</RadiusButton>
       </ButtonWrapper>
     </MainComponent>

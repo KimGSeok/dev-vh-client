@@ -7,25 +7,25 @@ interface ScriptProps {
   setBottomSheetTitle: Dispatch<SetStateAction<string>>;
 }
 
-const ScriptItem = ({ setIsShowBottomSheet, setBottomSheetTitle }: ScriptProps) =>{
+const ScriptItem = ({ setIsShowBottomSheet, setBottomSheetTitle }: ScriptProps) => {
 
   /* TODO */
   // 슬라이드 텍스트 MaxLength 설정
   // +,- 버튼 인덱스에 따른 구분
 
-  const onClickScriptSpeedHandler = () =>{
+  const onClickScriptSpeedHandler = () => {
 
     setIsShowBottomSheet(true);
     setBottomSheetTitle('음성 빠르기 선택');
   }
 
-  const onClickWaitTimeHandler = () =>{
+  const onClickWaitTimeHandler = () => {
 
     setIsShowBottomSheet(true);
     setBottomSheetTitle('음성 대기시간 선택');
   }
 
-  return(
+  return (
     <ItemWrapper>
       <ImageWrap
         position={'relative'}
@@ -48,7 +48,7 @@ const ScriptItem = ({ setIsShowBottomSheet, setBottomSheetTitle }: ScriptProps) 
         contentEditable={true}
         placeholder={'슬라이드 텍스트를 입력해주세요.'}
       />
-      <RadiusButton
+      <RadiusBtn
         backgroundColor={color.BasicColor}
         borderColor={color.BasicColor}
         color={color.White}
@@ -56,8 +56,8 @@ const ScriptItem = ({ setIsShowBottomSheet, setBottomSheetTitle }: ScriptProps) 
         margin={'0 12px 0 0'}
         fontSize={'0.85rem'}
         onClick={() => onClickScriptSpeedHandler()}
-      >빠르기 선택</RadiusButton>
-      <RadiusButton
+      >빠르기 선택</RadiusBtn>
+      <RadiusBtn
         backgroundColor={color.DarkGrey}
         borderColor={color.DarkGrey}
         color={color.White}
@@ -65,7 +65,7 @@ const ScriptItem = ({ setIsShowBottomSheet, setBottomSheetTitle }: ScriptProps) 
         margin={'0 12px 0 0'}
         fontSize={'0.85rem'}
         onClick={() => onClickWaitTimeHandler()}
-      >대기시간 선택</RadiusButton>
+      >대기시간 선택</RadiusBtn>
       <ImageWrap
         position={'relative'}
         height={'100%'}
@@ -118,7 +118,39 @@ const Script = styled.div(
     borderRadius: '8px',
     padding: '8px 10px',
     fontSize: '0.9rem',
-    margin: '0 12px'
+    margin: '0 12px',
+
+    '@media screen and (max-width: 1440px)': {
+      width: '50%',
+      padding: '7px 10px',
+    },
+
+    '@media screen and (max-width: 1023px)': {
+      width: '45%',
+      padding: '6px 10px',
+    },
+
+    '@media screen and (max-width: 960px)': {
+      width: '40%',
+      padding: '6px 10px',
+    }
+  }
+)
+const RadiusBtn = styled(RadiusButton)<CSS_TYPE>(
+  {
+    '@media screen and (max-width: 1440px)': {
+      fontSize: '0.7rem',
+      padding: '8px 12px'
+    },
+
+    '@media screen and (max-width: 1023px)': {
+      fontSize: '0.65rem',
+      padding: '8px 10px'
+    },
+
+    '@media screen and (max-width: 960px)': {
+      fontSize: '0.6rem',
+    }
   }
 )
 

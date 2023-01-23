@@ -187,7 +187,19 @@ const OptionLists = styled.ul({
 const OptionList = styled.li<CSS_TYPE>(
   {
     padding: '8px',
-    cursor: 'pointer'
+    cursor: 'pointer',
+
+    '@media screen and (max-width: 1440px)': {
+      padding: '7px',
+    },
+
+    '@media screen and (max-width: 1023px)': {
+      padding: '6px',
+    },
+
+    '@media screen and (max-width: 960px)': {
+      padding: '5px',
+    }
   },
   props => ({
     background: props.background
@@ -199,7 +211,22 @@ const OptionName = styled.div<CSS_TYPE>(
     height: '10%',
     textAlign: 'center',
     color: color.BasicBlack,
-    fontSize: '0.8rem'
+    fontSize: '0.8rem',
+
+    '@media screen and (max-width: 1440px)': {
+      height: '9%',
+      fontSize: '0.6rem',
+    },
+
+    '@media screen and (max-width: 1023px)': {
+      height: '8%',
+      fontSize: '0.5rem',
+    },
+
+    '@media screen and (max-width: 960px)': {
+      height: '7%',
+      fontSize: '0.4rem',
+    }
   },
   props => ({
     fontWeight: props.fontWeight

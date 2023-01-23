@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, ImageElement, ImageWrap } from '@/src/styles/styles';
 
-const AvatarOption = () =>{
-  return(
+const AvatarOption = () => {
+  return (
     <OptionWrapper>
       <ItemLists>
         <ItemList>
@@ -342,7 +342,19 @@ const ItemList = styled.li<CSS_TYPE>(
     display: 'inline-block'
   },
   props => ({
-    margin: props.margin
+    margin: props.margin,
+
+    '@media screen and (max-width: 1440px)': {
+      margin: props.margin ? '0 16px 14px 16px' : '',
+    },
+
+    '@media screen and (max-width: 1023px)': {
+      margin: props.margin ? '0 14px 12px 14px' : '',
+    },
+
+    '@media screen and (max-width: 960px)': {
+      margin: props.margin ? '0 12px 10px 12px' : '',
+    }
   })
 )
 const ItemName = styled.div<CSS_TYPE>(

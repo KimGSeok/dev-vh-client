@@ -7,6 +7,9 @@ const nextConfig = {
     styledComponents: true,
     emotion: true
   },
+  eslint: {
+    ignoreDuringBuilds: true
+  }
 }
 
 module.exports = nextConfig

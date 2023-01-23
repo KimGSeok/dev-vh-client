@@ -58,7 +58,7 @@ const Home = () => {
             아바타&#40;avatar&#41;의 궁극적인 목표는 실제 사람과 디지털 버전의 사람의 외모와 행동 모두에서 구별할 수 없을 정도의
             사실적인 아바타&#40;avatar&#41;를 만드는 것입니다.
           </ServiceDescription>
-          <RadiusButton
+          <RadiusBtn
             position={'absolute'}
             display={'flex'}
             alignItems={'center'}
@@ -74,7 +74,7 @@ const Home = () => {
               height={20}
               alt="arrow_right"
             />
-          </RadiusButton>
+          </RadiusBtn>
         </ServicePreviewEl>
         <ServicePreviewEl
           backgroundColor={'#4c4e51'}
@@ -83,7 +83,7 @@ const Home = () => {
           <ServiceDescription>
             생성된 Avatar를 이용하여, 자신만의 Virtual Human Project를 생성할 수 있습니다.
           </ServiceDescription>
-          <RadiusButton
+          <RadiusBtn
             position={'absolute'}
             display={'flex'}
             alignItems={'center'}
@@ -99,7 +99,7 @@ const Home = () => {
               height={20}
               alt="arrow_right"
             />
-          </RadiusButton>
+          </RadiusBtn>
         </ServicePreviewEl>
       </ServicePreviewWrap>
     </Page>
@@ -110,7 +110,7 @@ const Page = styled.div({
   display: 'flex',
   width: '100%',
   height: '100%',
-  position: 'relative'
+  position: 'relative',
 })
 const DashboardWrap = styled.div({
   width: '55%'
@@ -118,7 +118,19 @@ const DashboardWrap = styled.div({
 const DashboardTitle = styled.div({
   fontSize: '2.2rem',
   fontWeight: '700',
-  margin: '72px 0 32px 0'
+  margin: '72px 0 32px 0',
+
+  '@media screen and (max-width: 1440px)': {
+    fontSize: '2.1rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '1.9rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    fontSize: '1.8rem',
+  }
 })
 const DashboardDescriptionWrap = styled.div({
   display: 'flex',
@@ -128,7 +140,22 @@ const DescriptionTitle = styled.div({
   width: '20%',
   fontSize: '1.2rem',
   fontWeight: '500',
-  margin: '0 8px'
+  margin: '0 8px',
+
+  '@media screen and (max-width: 1440px)': {
+    width: '25%',
+    fontSize: '1.1rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    width: '18%',
+    fontSize: '1rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    width: '15%',
+    fontSize: '0.9rem',
+  }
 })
 const DescriptionContent = styled.div({
   fontSize: '1.3rem',
@@ -137,6 +164,18 @@ const DescriptionContent = styled.div({
 
   '& > div': {
     margin: '0 0 4px 0'
+  },
+
+  '@media screen and (max-width: 1440px)': {
+    fontSize: '1.1rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '1rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    fontSize: '0.9rem',
   }
 })
 const ServicePreviewWrap = styled.div({
@@ -158,12 +197,65 @@ const ServiceName = styled.div({
   color: color.White,
   fontSize: '2rem',
   fontWeight: '700',
-  margin: '0 0 12px 0'
+  margin: '0 0 12px 0',
+
+  '@media screen and (max-width: 1440px)': {
+    fontSize: '1.8rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '1.65rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    fontSize: '1.5rem',
+  }
 })
 const ServiceDescription = styled.div({
   fontSize: '0.95rem',
   lineHeight: '24px',
   color: color.ThumbnailColor,
+
+  '@media screen and (max-width: 1440px)': {
+    fontSize: '0.9rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '0.85rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    fontSize: '0.8rem',
+  }
 })
+
+const RadiusBtn = styled(RadiusButton)<CSS_TYPE>(
+  {
+
+  },
+  props => ({
+    alignItems: props.alignItems,
+    position: props.position,
+    display: props.display,
+    bottom: props.bottom,
+    right: props.right,
+
+    '@media screen and (max-width: 1440px)': {
+      fontSize: '0.9rem',
+      margin: '0 12px 12px 0',
+      padding: '8px 20px'
+    },
+
+    '@media screen and (max-width: 1023px)': {
+      fontSize: '0.8rem',
+    },
+
+    '@media screen and (max-width: 960px)': {
+      fontSize: '0.85rem',
+      margin: '0 8px 8px 0',
+      padding: '6px 16px'
+    }
+  })
+)
 
 export default Home;

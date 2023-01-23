@@ -4,7 +4,6 @@ import { CSS_TYPE, color, RadiusButton } from '@/src/styles/styles';
 import ScriptItem from './Item';
 import ControlPanel from './ControlPanel';
 import BottomSheet from '@/src/components/BottomSheet';
-import Confirm from '@/src/components/Confirm';
 
 const Script = () => {
 
@@ -15,9 +14,6 @@ const Script = () => {
   /* 슬라이드 변환하기 */
   const onClickTransformHandler = () => {
 
-    Confirm();
-    const confirm = Confirm();
-    console.log(confirm)
   }
 
   return (
@@ -66,7 +62,19 @@ const TitleWrapper = styled.div({
 })
 const Title = styled.div({
   fontSize: '1.25rem',
-  fontWeight: '800'
+  fontWeight: '800',
+
+  '@media screen and (max-width: 1440px)': {
+    fontSize: '1.2rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '1.15rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    fontSize: '1.05rem',
+  }
 })
 const ScriptItemWrapper = styled.div({
   position: 'relative',

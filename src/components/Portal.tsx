@@ -5,7 +5,6 @@ const Portal = ({ children }: { children: React.ReactNode }) => {
 
   const [mounted, setMounted] = useState<boolean>(false);
   const element = typeof window !== "undefined" && document.querySelector('#portal');
-
   useEffect(() => {
     setMounted(true);
 

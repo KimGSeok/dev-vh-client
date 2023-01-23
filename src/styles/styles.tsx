@@ -167,16 +167,17 @@ export const color = {
   BasicColor: '#1D3763',
   BasicBlack: '#181818',
   BasicOrange: '#FF5029',
-  White: '#FFFFFF',
-  Black: '#000000',
   ThumbnailColor: '#CDCDCD',
   ModernGrey: '#e6e6e6',
   DarkGrey: '#444444',
   DeActiveColor: '#888888',
   BrightBlue: '#0075FF',
   AliceBlue: '#F2F7FF',
+  OverallProgressColor: '#F1E3FF',
   Purple: '#640EDC',
-  OverallProgressColor: '#F1E3FF'
+  White: '#FFFFFF',
+  Black: '#000000',
+  Red: '#FF0000',
 }
 
 /* Button */
@@ -202,7 +203,7 @@ export const RadiusButton = styled.div<CSS_TYPE>(
     top: props.top,
     bottom: props.bottom,
     left: props.left,
-    right: props.right
+    right: props.right,
   })
 )
 
@@ -234,6 +235,26 @@ export const SelectBox = styled.select<CSS_TYPE>(
     border: props.border ? props.border : '',
     borderColor: props.borderColor ? props.borderColor : '',
     borderRadius: props.borderRadius ? props.borderRadius : '8px'
+  })
+)
+
+/* Validation */
+export const Warning = styled.div<CSS_TYPE>(
+  {
+    color: color.Red,
+
+    '::before': {
+      content: '"*"',
+      position: 'relative',
+      top: '1px',
+      margin: '0 4px 0 0'
+    }
+  },
+  props => ({
+    margin: props.margin,
+    padding: props.padding,
+    fontSize: props.fontSize,
+    fontWeight: props.fontWeight
   })
 )
 
