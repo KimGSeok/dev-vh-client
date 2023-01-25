@@ -277,3 +277,29 @@ export const fadeUp = css`
   animation-name: ${fadeUpAnimation};
   animation-timing-function: ease;
 `
+
+export const pulse = keyframes`
+	0% {
+		transform: scaleY(1);
+		transform-origin: 50% 50%;
+	}
+	
+	50% {
+		transform: scaleY(.7);
+		transform-origin: 50% 50%;
+	}
+	
+	100% {
+		transform: scaleY(1);
+		transform-origin: 50% 50%;
+	}
+`
+
+export const WaveForm = css`
+  @for $i from 1 through 9 {
+    #Line_#{ $i } {
+      animation: ${pulse} 1s infinite;
+      animation - delay: $i * .15s;
+    }
+  }
+`
