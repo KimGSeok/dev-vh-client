@@ -167,17 +167,18 @@ export const color = {
   BasicColor: '#1D3763',
   BasicBlack: '#181818',
   BasicOrange: '#FF5029',
-  ThumbnailColor: '#CDCDCD',
-  ModernGrey: '#e6e6e6',
-  DarkGrey: '#444444',
-  DeActiveColor: '#888888',
-  BrightBlue: '#0075FF',
-  AliceBlue: '#F2F7FF',
-  OverallProgressColor: '#F1E3FF',
   Purple: '#640EDC',
   White: '#FFFFFF',
   Black: '#000000',
   Red: '#FF0000',
+  ThumbnailColor: '#CDCDCD',
+  ModernGrey: '#e6e6e6',
+  DarkGrey: '#444444',
+  DarkWhite: '#FAFAFA',
+  DeActiveColor: '#888888',
+  BrightBlue: '#0075FF',
+  AliceBlue: '#F2F7FF',
+  OverallProgressColor: '#F1E3FF',
 }
 
 /* Button */
@@ -273,6 +274,6 @@ const fadeUpAnimation = keyframes`
 
 export const fadeUp = css`
   animation-duration: 0.65s;
-  animation-name: ${fadeUpAnimation}};
+  animation-name: ${fadeUpAnimation};
   animation-timing-function: ease;
 `
