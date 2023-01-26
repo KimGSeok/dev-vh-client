@@ -41,8 +41,8 @@ export type CSS_TYPE = {
   hovercolor?: string;
   hoveropacity?: string | number;
   cursor?: string;
-
   RadioChecked?: boolean;
+  animationDelay?: string;
 }
 
 export const globalStyles = (
@@ -293,13 +293,4 @@ export const pulse = keyframes`
 		transform: scaleY(1);
 		transform-origin: 50% 50%;
 	}
-`
-
-export const WaveForm = css`
-  @for $i from 1 through 9 {
-    #Line_#{ $i } {
-      animation: ${pulse} 1s infinite;
-      animation - delay: $i * .15s;
-    }
-  }
 `

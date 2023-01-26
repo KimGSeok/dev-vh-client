@@ -96,6 +96,39 @@ const RecordButtonWrapper = ({
           </ImageWrap>완료하기
         </RecordBtn>
       }
+      {
+        recordStatus === 'complete' &&
+        <RecordBtnWrapper>
+          <RecordBtn
+            backgroundColor={color.Red}
+            borderColor={color.Red}
+          >
+            <ImageWrap
+              position={'relative'}
+              height={'100%'}
+              cursor={'pointer'}
+            >
+              <ImageElement
+                src="/icons/mic.svg"
+                width={28}
+                height={28}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  position: 'relative',
+                  top: '2px'
+                }}
+                alt="mic"
+              />
+            </ImageWrap>다시 녹음하기
+          </RecordBtn>
+          <RecordBtn
+            backgroundColor={color.BasicColor}
+            borderColor={color.BasicColor}
+          >다음으로
+          </RecordBtn>
+        </RecordBtnWrapper>
+      }
     </ButtonWrapper>
   )
 }
@@ -117,5 +150,8 @@ const RecordBtn = styled(RadiusButton)<CSS_TYPE>(
     backgroundColor: props.backgroundColor
   })
 )
+const RecordBtnWrapper = styled.div({
+
+})
 
 export default RecordButtonWrapper;

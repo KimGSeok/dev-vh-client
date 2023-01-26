@@ -39,8 +39,31 @@ function VoiceGenerate() {
         <ScriptWrapper>
           <RecordStatus>
             {recordStatus === 'wait' && '녹음 시작 전'}
-            {recordStatus === 'recording' && <><AudioWaveForm />'녹음중'</>}
-            {recordStatus === 'complete' && '녹음완료'}
+            {recordStatus === 'recording' && <><AudioWaveForm />녹음중..</>}
+            {
+            recordStatus === 'complete' &&
+              <>
+                <ImageWrap
+                  position={'relative'}
+                  height={'100%'}
+                  cursor={'pointer'}
+                >
+                  <ImageElement
+                    src="/icons/play.svg"
+                    width={24}
+                    height={24}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      position: 'relative',
+                      top: '-1px',
+                      margin: '0 12px 0 0'
+                    }}
+                    alt="play"
+                  />
+                </ImageWrap>녹음완료
+              </>
+            }
           </RecordStatus>
           {/* TODO 전체 스크립트의 길이 및 현재 스크립트의 인덱스 */}
           <ScriptPageWrapper>1 / 100</ScriptPageWrapper>
@@ -127,13 +150,17 @@ const ScriptWrapper = styled.div({
   textAlign: 'center',
   padding: '5% 35%',
 })
-const RecordStatus = styled.div<CSS_TYPE>(
+const RecordStatus = styled.div(
   {
+    height: '24px',
     fontSize: '1.1rem',
-    margin: '0 0 12px 0'
+    margin: '0 0 12px 0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: color.BasicColor,
+    fontWeight: '600'
   },
-  props => ({
-  })
 )
 const ScriptPageWrapper = styled.div({
   color: color.Purple,

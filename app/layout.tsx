@@ -15,8 +15,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const secondPathName = pathName?.split('/')[2];
 
   return (
-    <html>
-      <Head />
+    <Html>
+      <Head title={'VH Studio'} />
       <Body>
         <AppLayout>
           {globalStyles}
@@ -36,10 +36,12 @@ const Layout = ({ children }: { children: ReactNode }) => {
         <div id="alert"></div>
         <div id="confirm"></div>
       </Body>
-    </html>
+    </Html>
   )
 }
-
+const Html = styled.html({
+  
+})
 const Body = styled.body({
   backgroundColor: color.BasicBlack,
   width: '100%',
