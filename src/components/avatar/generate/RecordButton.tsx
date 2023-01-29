@@ -9,13 +9,15 @@ interface RecordProps {
   setRecordStatus: Dispatch<SetStateAction<string>>;
   startRecording: () => void;
   stopRecording: () => void;
+  setRecordScriptLists: Dispatch<SetStateAction<object[]>>;
 }
 
 const RecordButtonWrapper = ({
   recordStatus,
   setRecordStatus,
   startRecording,
-  stopRecording
+  stopRecording,
+  setRecordScriptLists
 }: RecordProps) => {
 
   // 녹음대기
@@ -30,10 +32,11 @@ const RecordButtonWrapper = ({
     setRecordStatus('recording');
   }
 
+  // TODO
   const onClickRecordCompleteHandler = () => {
-    console.log('녹음 종료 11')
     stopRecording();
     setRecordStatus('complete');
+    setRecordScriptLists((prev) => ([{...prev, 'test': 'zz'}]))
   }
 
   // 다시녹음하기 버튼

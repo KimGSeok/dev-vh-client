@@ -13,7 +13,7 @@ const VoiceGenerate = () => {
   const [mounted, setMounted] = useState<boolean>(false);
   const [scriptList, setScriptList] = useState(); // 스크립트 목록
   const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete)
-  const [recordScriptLists, setRecordScriptLists] = useState([]); // 녹음 완료 목록
+  const [recordScriptLists, setRecordScriptLists] = useState<object[]>([]); // 녹음 완료 목록
 
   const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
     audio: true,
@@ -32,6 +32,10 @@ const VoiceGenerate = () => {
 
     return () => setMounted(false);
   }, [])
+
+  useEffect(() => {
+    console.log(recordScriptLists);
+  }, [recordScriptLists])
 
   return (
     mounted ?
@@ -74,6 +78,7 @@ const VoiceGenerate = () => {
             setRecordStatus={setRecordStatus}
             startRecording={startRecording}
             stopRecording={stopRecording}
+            setRecordScriptLists={setRecordScriptLists}
           />
         </ScriptWrapper>
         <RecordScriptWrapper>
@@ -136,7 +141,7 @@ const VoiceGenerate = () => {
                   <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
                 </RecordScriptInfo>
               </RecordScriptList>
-            </RecordScriptLists> : <></>
+            </RecordScriptLists> : <EmptyList>녹음이 완료된 음성 목록이 존재하지 않습니다.</EmptyList>
           }
         </RecordScriptWrapper>
       </VoiceGenerateWrapper> : <></>
@@ -233,6 +238,14 @@ const RecordingTime = styled.div({
 })
 const RecordingBtnWrapper = styled.div({
   width: '10%'
+})
+const EmptyList = styled.div({
+  fontSize: '1rem',
+  fontWeight: '300',
+  textAlign: 'center',
+  color: color.DeActiveColor,
+  backgroundColor: color.DarkWhite,
+  padding: '24px 0'
 })
 
 export default VoiceGenerate;
