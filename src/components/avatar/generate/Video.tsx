@@ -1,13 +1,53 @@
 'use client'
 
 import styled from "@emotion/styled";
-import { CSS_TYPE, color } from "@/src/styles/styles";
+import RecordRTC from 'recordrtc';
+import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@/src/styles/styles";
+import { useState } from "react";
+import RecordButtonWrapper from "./RecordButton";
 
-const VideoGenerate = () => {
+const VideoGenerate = ({ type }: { type: string }) => {
+
+  // Hooks
+  const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete)
+  const [videoMedia, setVideoMedia] = useState<object>({
+    recorder: null,
+    video: null
+  })
 
   const onClickRecordHandler = () => {
+    navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true
+    }).then((camera) => {
+      onReadyVideo(camera);
+    }).catch((error) => {
+      console.error(error);
+    })
+  }
 
-    // TODO 카메라 위치
+  const onReadyVideo = (camera: MediaStream) => {
+
+    // Parameter
+    const video: any = document.getElementById('video');
+    video.muted = false;
+    video.volume = 0;
+    video.srcObject = camera;
+
+    const recorder: any = new RecordRTC(camera, {
+      type: 'video',
+    })
+
+    console.log(video);
+
+    recorder.startRecording();
+    recorder.camera = camera;
+
+    setVideoMedia({ recorder: recorder })
+  }
+
+  const onStopVideo = () => {
+    console.log(videoMedia);
   }
 
   return (
@@ -42,9 +82,40 @@ const VideoGenerate = () => {
         </Script>
       </ScriptWrapper>
       <VideoCameraWrapper>
-        얼굴 쁘이
+        <VideoArea>
+          <Video
+            id="video"
+            recordStatus={recordStatus}
+            autoPlay
+          />
+          {
+            recordStatus === 'wait' &&
+            <ImageWrap
+              position={'absolute'}
+              width={'50%'}
+              height={'95%'}
+              top={'5%'}
+            >
+              <ImageElement
+                src="/images/human_figure.svg"
+                fill
+                style={{
+                  inset: 'auto',
+                  objectFit: 'contain'
+                }}
+                alt="human figure"
+              />
+            </ImageWrap>
+          }
+        </VideoArea>
+        <RecordButtonWrapper
+          type={type}
+          recordStatus={recordStatus}
+          setRecordStatus={setRecordStatus}
+          onRecordHandler={onClickRecordHandler}
+        />
       </VideoCameraWrapper>
-    </VideoGenerateWrapper>
+    </VideoGenerateWrapper >
   )
 }
 
@@ -75,6 +146,25 @@ const Script = styled.div({
 })
 const VideoCameraWrapper = styled.div({
   height: '60%',
+  textAlign: 'center'
 })
+const VideoArea = styled.div({
+  position: 'relative',
+  height: '80%',
+  margin: '24px 0'
+})
+const Video = styled.video<CSS_TYPE>(
+  {
+    position: 'relative',
+    height: '100%',
+    display: 'block',
+    margin: '0 auto',
+  },
+  props => ({
+    backgroundImage: props.recordStatus === 'wait' ? `url('/images/tile_background_no-stroke.svg')` : '',
+    backgroundRepeat: props.recordStatus === 'wait' ? 'no-repeat' : '',
+    backgroundSize: props.recordStatus === 'wait' ? 'cover' : '',
+  })
+)
 
 export default VideoGenerate;

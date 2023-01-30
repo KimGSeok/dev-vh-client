@@ -41,8 +41,11 @@ export type CSS_TYPE = {
   hovercolor?: string;
   hoveropacity?: string | number;
   cursor?: string;
-  RadioChecked?: boolean;
   animationDelay?: string;
+
+  /* Etc */
+  RadioChecked?: boolean;
+  recordStatus?: string;
 }
 
 export const globalStyles = (

@@ -5,43 +5,36 @@ import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@/src/st
 import { Dispatch, SetStateAction } from "react";
 
 interface RecordProps {
+  type: string;
   recordStatus: string;
-  setRecordStatus: Dispatch<SetStateAction<string>>;
-  startRecording: () => void;
-  stopRecording: () => void;
-  setRecordScriptLists: Dispatch<SetStateAction<object[]>>;
+  setRecordStatus?: Dispatch<SetStateAction<string>>;
+  setRecordScriptLists?: Dispatch<SetStateAction<object[]>>;
+  onRecordHandler?: () => void;
+  onCompleteHandler?: () => void;
+  onReRecordHandler?: () => void;
+  onNextStepHandler?: () => void;
 }
 
 const RecordButtonWrapper = ({
+  type,
   recordStatus,
   setRecordStatus,
-  startRecording,
-  stopRecording,
-  setRecordScriptLists
+  setRecordScriptLists,
+  onRecordHandler,
+  onCompleteHandler,
+  onReRecordHandler,
+  onNextStepHandler
 }: RecordProps) => {
 
-  // 녹음대기
-
-  // 녹음중
-
-  // 녹음완료
-
-  // 녹음하기 버튼
   const onClickRecordHandler = () => {
-    startRecording();
-    setRecordStatus('recording');
+    setRecordStatus && setRecordStatus('recording');
+    onRecordHandler && onRecordHandler();
   }
 
-  // TODO
   const onClickRecordCompleteHandler = () => {
-    stopRecording();
-    setRecordStatus('complete');
-    setRecordScriptLists((prev) => ([{...prev, 'test': 'zz'}]))
+    setRecordStatus && setRecordStatus('complete');
+    setRecordScriptLists && setRecordScriptLists((prev) => ([{ ...prev, 'test': 'zz' }]))
   }
-
-  // 다시녹음하기 버튼
-
-  // 다음으로 버튼
 
   return (
     <ButtonWrapper>
@@ -58,18 +51,18 @@ const RecordButtonWrapper = ({
             cursor={'pointer'}
           >
             <ImageElement
-              src="/icons/mic.svg"
-              width={28}
-              height={28}
+              src={type === 'voice' ? '/icons/mic.svg' : '/icons/videocam.svg'}
+              width={24}
+              height={24}
               style={{
-                width: '100%',
-                height: '100%',
+                width: '75%',
+                height: '75%',
                 position: 'relative',
                 top: '2px'
               }}
               alt="mic"
             />
-          </ImageWrap>녹음하기
+          </ImageWrap>{type === 'voice' ? '녹음하기' : '녹화하기'}
         </RecordBtn>
       }
       {

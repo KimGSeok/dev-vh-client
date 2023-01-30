@@ -7,144 +7,123 @@ import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@/src/st
 import RecordButtonWrapper from "./RecordButton";
 import AudioWaveForm from "@/src/modules/AudioWaveForm";
 
-const VoiceGenerate = () => {
+const VoiceGenerate = ({ type }: { type: string }) => {
 
   // Hooks
-  const [mounted, setMounted] = useState<boolean>(false);
   const [scriptList, setScriptList] = useState(); // 스크립트 목록
   const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete)
   const [recordScriptLists, setRecordScriptLists] = useState<object[]>([]); // 녹음 완료 목록
-
-  const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
-    audio: true,
-    onStart: (() => {
-      console.log("녹음 시작");
-    }),
-    onStop: ((blobUrl: string, blob: Blob) => {
-      console.log(blobUrl);
-      console.log(blob);
-      console.log("녹음 종료");
-    })
-  })
-
-  useEffect(() => {
-    setMounted(true);
-
-    return () => setMounted(false);
-  }, [])
 
   useEffect(() => {
     console.log(recordScriptLists);
   }, [recordScriptLists])
 
   return (
-    mounted ?
-      <VoiceGenerateWrapper>
-        <ScriptWrapper>
-          <RecordStatus>
-            {recordStatus === 'wait' && '녹음 시작 전'}
-            {recordStatus === 'recording' && <><AudioWaveForm />녹음중..</>}
-            {
-              recordStatus === 'complete' &&
-              <>
-                <ImageWrap
-                  position={'relative'}
-                  height={'100%'}
-                  cursor={'pointer'}
-                >
-                  <ImageElement
-                    src="/icons/play.svg"
-                    width={24}
-                    height={24}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      position: 'relative',
-                      top: '-1px',
-                      margin: '0 12px 0 0'
-                    }}
-                    alt="play"
-                  />
-                </ImageWrap>녹음완료
-              </>
-            }
-          </RecordStatus>
-          {/* TODO 전체 스크립트의 길이 및 현재 스크립트의 인덱스 */}
-          <ScriptPageWrapper>1 / 100</ScriptPageWrapper>
-          <Desciprtion>다음 문장을 정확하게 읽어주세요.</Desciprtion>
-          <Script>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</Script>
-          <RecordButtonWrapper
-            recordStatus={recordStatus}
-            setRecordStatus={setRecordStatus}
-            startRecording={startRecording}
-            stopRecording={stopRecording}
-            setRecordScriptLists={setRecordScriptLists}
-          />
-        </ScriptWrapper>
-        <RecordScriptWrapper>
-          <Title>녹음 완료 음성 목록</Title>
+    <VoiceGenerateWrapper>
+      <ScriptWrapper>
+        <RecordStatus>
+          {recordStatus === 'wait' && '녹음 시작 전'}
+          {recordStatus === 'recording' && <><AudioWaveForm />녹음중..</>}
           {
-            recordScriptLists && recordScriptLists.length > 0 ? <RecordScriptLists>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-            </RecordScriptLists> : <EmptyList>녹음이 완료된 음성 목록이 존재하지 않습니다.</EmptyList>
+            recordStatus === 'complete' &&
+            <>
+              <ImageWrap
+                position={'relative'}
+                height={'100%'}
+                cursor={'pointer'}
+              >
+                <ImageElement
+                  src="/icons/play.svg"
+                  width={24}
+                  height={24}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    position: 'relative',
+                    top: '-1px',
+                    margin: '0 12px 0 0'
+                  }}
+                  alt="play"
+                />
+              </ImageWrap>녹음완료
+            </>
           }
-        </RecordScriptWrapper>
-      </VoiceGenerateWrapper> : <></>
+        </RecordStatus>
+        {/* TODO 전체 스크립트의 길이 및 현재 스크립트의 인덱스 */}
+        <ScriptPageWrapper>1 / 100</ScriptPageWrapper>
+        <Desciprtion>다음 문장을 정확하게 읽어주세요.</Desciprtion>
+        <Script>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</Script>
+        <RecordButtonWrapper
+          type={type}
+          recordStatus={recordStatus}
+          setRecordStatus={setRecordStatus}
+          setRecordScriptLists={setRecordScriptLists}
+        />
+      </ScriptWrapper>
+      <RecordScriptWrapper>
+        <Title>녹음 완료 음성 목록</Title>
+        {
+          recordScriptLists && recordScriptLists.length > 0 ? <RecordScriptLists>
+            <RecordScriptList>
+              <RecordScriptInfo>
+                <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
+                <RecordingTime>00:00:12</RecordingTime>
+                <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
+              </RecordScriptInfo>
+            </RecordScriptList>
+            <RecordScriptList>
+              <RecordScriptInfo>
+                <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
+                <RecordingTime>00:00:12</RecordingTime>
+                <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
+              </RecordScriptInfo>
+            </RecordScriptList>
+            <RecordScriptList>
+              <RecordScriptInfo>
+                <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
+                <RecordingTime>00:00:12</RecordingTime>
+                <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
+              </RecordScriptInfo>
+            </RecordScriptList>
+            <RecordScriptList>
+              <RecordScriptInfo>
+                <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
+                <RecordingTime>00:00:12</RecordingTime>
+                <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
+              </RecordScriptInfo>
+            </RecordScriptList>
+            <RecordScriptList>
+              <RecordScriptInfo>
+                <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
+                <RecordingTime>00:00:12</RecordingTime>
+                <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
+              </RecordScriptInfo>
+            </RecordScriptList>
+            <RecordScriptList>
+              <RecordScriptInfo>
+                <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
+                <RecordingTime>00:00:12</RecordingTime>
+                <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
+              </RecordScriptInfo>
+            </RecordScriptList>
+            <RecordScriptList>
+              <RecordScriptInfo>
+                <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
+                <RecordingTime>00:00:12</RecordingTime>
+                <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
+              </RecordScriptInfo>
+            </RecordScriptList>
+            <RecordScriptList>
+              <RecordScriptInfo>
+                <RecordScript>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</RecordScript>
+                <RecordingTime>00:00:12</RecordingTime>
+                <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
+              </RecordScriptInfo>
+            </RecordScriptList>
+          </RecordScriptLists> : <EmptyList>녹음이 완료된 음성 목록이 존재하지 않습니다.</EmptyList>
+        }
+      </RecordScriptWrapper>
+    </VoiceGenerateWrapper>
   )
 }
 
