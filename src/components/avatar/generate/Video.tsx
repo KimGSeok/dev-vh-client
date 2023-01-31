@@ -5,11 +5,12 @@ import RecordRTC from 'recordrtc';
 import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@/src/styles/styles";
 import { useState } from "react";
 import RecordButtonWrapper from "./RecordButton";
+import { onChangeVideoCssProps } from "@/src/modules/avatar/onChangeVideoCssProps";
 
 const VideoGenerate = ({ type }: { type: string }) => {
 
   // Hooks
-  const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete)
+  const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete), 녹음실패(fail)
   const [videoMedia, setVideoMedia] = useState<object>({
     recorder: null,
     video: null
@@ -18,11 +19,21 @@ const VideoGenerate = ({ type }: { type: string }) => {
   const onClickRecordHandler = () => {
     navigator.mediaDevices.getUserMedia({
       audio: true,
-      video: true
+      video: {
+        width: { min: 1280 },
+        height: { min: 720 }
+      }
     }).then((camera) => {
+      
       onReadyVideo(camera);
+      setRecordStatus('recording');
+
     }).catch((error) => {
       console.error(error);
+      setRecordStatus('fail');
+      if(error.message === 'Requested device not found'){
+        alert('카메라를 찾을 수 없습니다.\n장비를 다시 한 번 확인해주세요.');
+      }
     })
   }
 
@@ -83,11 +94,18 @@ const VideoGenerate = ({ type }: { type: string }) => {
       </ScriptWrapper>
       <VideoCameraWrapper>
         <VideoArea>
-          <Video
-            id="video"
-            recordStatus={recordStatus}
-            autoPlay
-          />
+          {
+            recordStatus === 'fail' ?
+            <DeviceNotFoundWrapper><DeviceNotFound>Device not found</DeviceNotFound></DeviceNotFoundWrapper>
+            :
+            <Video
+              id="video"
+              autoPlay
+              backgroundImage={onChangeVideoCssProps(recordStatus, 'image')}
+              backgroundRepeat={onChangeVideoCssProps(recordStatus, 'repeat')}
+              backgroundSize={onChangeVideoCssProps(recordStatus, 'size')}
+            />
+          }
           {
             recordStatus === 'wait' &&
             <ImageWrap
@@ -161,10 +179,26 @@ const Video = styled.video<CSS_TYPE>(
     margin: '0 auto',
   },
   props => ({
-    backgroundImage: props.recordStatus === 'wait' ? `url('/images/tile_background_no-stroke.svg')` : '',
-    backgroundRepeat: props.recordStatus === 'wait' ? 'no-repeat' : '',
-    backgroundSize: props.recordStatus === 'wait' ? 'cover' : '',
+    backgroundImage: props.backgroundImage,
+    backgroundRepeat: props.backgroundRepeat,
+    backgroundSize: props.backgroundSize
   })
 )
+const DeviceNotFoundWrapper = styled.div({
+  width: '50%',
+  height: '100%',
+  border: `1px solid ${color.DarkWhite}`,
+  color: color.DeActiveColor,
+  borderRadius: '16px',
+  backgroundColor: color.AliceBlue,
+  margin: '0 auto'
+})
+const DeviceNotFound = styled.div({
+  position: 'relative',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  fontSize: '1.3rem',
+})
 
 export default VideoGenerate;

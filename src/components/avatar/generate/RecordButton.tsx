@@ -27,7 +27,6 @@ const RecordButtonWrapper = ({
 }: RecordProps) => {
 
   const onClickRecordHandler = () => {
-    setRecordStatus && setRecordStatus('recording');
     onRecordHandler && onRecordHandler();
   }
 
@@ -39,7 +38,7 @@ const RecordButtonWrapper = ({
   return (
     <ButtonWrapper>
       {
-        recordStatus === 'wait' &&
+        (recordStatus === 'wait' || recordStatus === 'fail')&&
         <RecordBtn
           backgroundColor={color.Red}
           borderColor={color.Red}

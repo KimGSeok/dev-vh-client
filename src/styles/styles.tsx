@@ -24,6 +24,9 @@ export type CSS_TYPE = {
   justifyContent?: string;
   backgroundColor?: string;
   background?: string;
+  backgroundImage?: string;
+  backgroundRepeat?: string;
+  backgroundSize?: string;
   border?: string;
   borderColor?: string;
   borderTop?: string;
@@ -45,7 +48,6 @@ export type CSS_TYPE = {
 
   /* Etc */
   RadioChecked?: boolean;
-  recordStatus?: string;
 }
 
 export const globalStyles = (
