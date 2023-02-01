@@ -9,7 +9,7 @@ const AvatarOption = () => {
           <ImageWrap
             position={'relative'}
             width={'100%'}
-            height={'100%'}
+            height={'auto'}
             textAlign={'center'}
           >
             <ImageElement
@@ -18,36 +18,7 @@ const AvatarOption = () => {
               height={24}
               style={{
                 width: '100%',
-                height: '100%',
-                margin: '4px auto',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList
-          margin={'0 26px 24px 26px'}
-        >
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'100%'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: '100%',
-                margin: '4px auto'
+                height: 'fit-content',
               }}
               opacity={0.35}
               hoveropacity={1}
@@ -63,7 +34,7 @@ const AvatarOption = () => {
           <ImageWrap
             position={'relative'}
             width={'100%'}
-            height={'100%'}
+            height={'auto'}
             textAlign={'center'}
           >
             <ImageElement
@@ -72,8 +43,7 @@ const AvatarOption = () => {
               height={24}
               style={{
                 width: '100%',
-                height: '100%',
-                margin: '4px auto'
+                height: 'fit-content',
               }}
               opacity={0.35}
               hoveropacity={1}
@@ -89,7 +59,7 @@ const AvatarOption = () => {
           <ImageWrap
             position={'relative'}
             width={'100%'}
-            height={'100%'}
+            height={'auto'}
             textAlign={'center'}
           >
             <ImageElement
@@ -98,36 +68,7 @@ const AvatarOption = () => {
               height={24}
               style={{
                 width: '100%',
-                height: '100%',
-                margin: '4px auto'
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList
-          margin={'0 26px 24px 26px'}
-        >
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'100%'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: '100%',
-                margin: '4px auto'
+                height: 'fit-content',
               }}
               opacity={0.35}
               hoveropacity={1}
@@ -143,7 +84,7 @@ const AvatarOption = () => {
           <ImageWrap
             position={'relative'}
             width={'100%'}
-            height={'100%'}
+            height={'auto'}
             textAlign={'center'}
           >
             <ImageElement
@@ -152,8 +93,7 @@ const AvatarOption = () => {
               height={24}
               style={{
                 width: '100%',
-                height: '100%',
-                margin: '4px auto'
+                height: 'fit-content',
               }}
               opacity={0.35}
               hoveropacity={1}
@@ -169,7 +109,7 @@ const AvatarOption = () => {
           <ImageWrap
             position={'relative'}
             width={'100%'}
-            height={'100%'}
+            height={'auto'}
             textAlign={'center'}
           >
             <ImageElement
@@ -178,36 +118,7 @@ const AvatarOption = () => {
               height={24}
               style={{
                 width: '100%',
-                height: '100%',
-                margin: '4px auto'
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList
-          margin={'0 26px 24px 26px'}
-        >
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'100%'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: '100%',
-                margin: '4px auto'
+                height: 'fit-content',
               }}
               opacity={0.35}
               hoveropacity={1}
@@ -223,7 +134,7 @@ const AvatarOption = () => {
           <ImageWrap
             position={'relative'}
             width={'100%'}
-            height={'100%'}
+            height={'auto'}
             textAlign={'center'}
           >
             <ImageElement
@@ -232,8 +143,7 @@ const AvatarOption = () => {
               height={24}
               style={{
                 width: '100%',
-                height: '100%',
-                margin: '4px auto'
+                height: 'fit-content',
               }}
               opacity={0.35}
               hoveropacity={1}
@@ -249,7 +159,7 @@ const AvatarOption = () => {
           <ImageWrap
             position={'relative'}
             width={'100%'}
-            height={'100%'}
+            height={'auto'}
             textAlign={'center'}
           >
             <ImageElement
@@ -258,36 +168,7 @@ const AvatarOption = () => {
               height={24}
               style={{
                 width: '100%',
-                height: '100%',
-                margin: '4px auto'
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList
-          margin={'0 26px 24px 26px'}
-        >
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'100%'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: '100%',
-                margin: '4px auto'
+                height: 'fit-content',
               }}
               opacity={0.35}
               hoveropacity={1}
@@ -303,7 +184,7 @@ const AvatarOption = () => {
           <ImageWrap
             position={'relative'}
             width={'100%'}
-            height={'100%'}
+            height={'auto'}
             textAlign={'center'}
           >
             <ImageElement
@@ -312,8 +193,107 @@ const AvatarOption = () => {
               height={24}
               style={{
                 width: '100%',
-                height: '100%',
-                margin: '4px auto'
+                height: 'fit-content',
+              }}
+              opacity={0.35}
+              hoveropacity={1}
+              cursor={'pointer'}
+              alt="avatar"
+            />
+          </ImageWrap>
+          <ItemName>
+            데프트
+          </ItemName>
+        </ItemList>
+        <ItemList>
+          <ImageWrap
+            position={'relative'}
+            width={'100%'}
+            height={'auto'}
+            textAlign={'center'}
+          >
+            <ImageElement
+              src="/images/example_deft.svg"
+              width={24}
+              height={24}
+              style={{
+                width: '100%',
+                height: 'fit-content',
+              }}
+              opacity={0.35}
+              hoveropacity={1}
+              cursor={'pointer'}
+              alt="avatar"
+            />
+          </ImageWrap>
+          <ItemName>
+            데프트
+          </ItemName>
+        </ItemList>
+        <ItemList>
+          <ImageWrap
+            position={'relative'}
+            width={'100%'}
+            height={'auto'}
+            textAlign={'center'}
+          >
+            <ImageElement
+              src="/images/example_deft.svg"
+              width={24}
+              height={24}
+              style={{
+                width: '100%',
+                height: 'fit-content',
+              }}
+              opacity={0.35}
+              hoveropacity={1}
+              cursor={'pointer'}
+              alt="avatar"
+            />
+          </ImageWrap>
+          <ItemName>
+            데프트
+          </ItemName>
+        </ItemList>
+        <ItemList>
+          <ImageWrap
+            position={'relative'}
+            width={'100%'}
+            height={'auto'}
+            textAlign={'center'}
+          >
+            <ImageElement
+              src="/images/example_deft.svg"
+              width={24}
+              height={24}
+              style={{
+                width: '100%',
+                height: 'fit-content',
+              }}
+              opacity={0.35}
+              hoveropacity={1}
+              cursor={'pointer'}
+              alt="avatar"
+            />
+          </ImageWrap>
+          <ItemName>
+            데프트
+          </ItemName>
+        </ItemList>
+        <ItemList>
+          <ImageWrap
+            position={'relative'}
+            width={'100%'}
+            height={'auto'}
+            textAlign={'center'}
+          >
+            <ImageElement
+              src="/images/example_deft.svg"
+              width={24}
+              height={24}
+              style={{
+                width: '100%',
+                height: 'fit-content',
               }}
               opacity={0.35}
               hoveropacity={1}
@@ -334,33 +314,24 @@ const OptionWrapper = styled.div({
 
 })
 const ItemLists = styled.ul({
-
+  display: 'flex',
+  flexWrap: 'wrap',
+  justifyContent: 'space-around'
 })
 const ItemList = styled.li<CSS_TYPE>(
   {
     width: '30%',
-    display: 'inline-block'
+    display: 'inline-block',
+    margin: '0 0 12px 0'
   },
   props => ({
-    margin: props.margin,
-
-    '@media screen and (max-width: 1440px)': {
-      margin: props.margin ? '0 16px 14px 16px' : '',
-    },
-
-    '@media screen and (max-width: 1023px)': {
-      margin: props.margin ? '0 14px 12px 14px' : '',
-    },
-
-    '@media screen and (max-width: 960px)': {
-      margin: props.margin ? '0 12px 10px 12px' : '',
-    }
   })
 )
 const ItemName = styled.div<CSS_TYPE>(
   {
     textAlign: 'center',
     fontSize: '0.85rem',
+    margin: '2px 0'
   },
   props => ({
     color: props.color ? props.color : color.DeActiveColor,

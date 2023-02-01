@@ -15,50 +15,52 @@ const VoiceGenerate = ({ type }: { type: string }) => {
   const [recordScriptLists, setRecordScriptLists] = useState<object[]>([]); // 녹음 완료 목록
 
   useEffect(() => {
-    console.log(recordScriptLists);
+
   }, [recordScriptLists])
 
   return (
     <VoiceGenerateWrapper>
       <ScriptWrapper>
-        <RecordStatus>
-          {recordStatus === 'wait' && '녹음 시작 전'}
-          {recordStatus === 'recording' && <><AudioWaveForm />녹음중..</>}
-          {
-            recordStatus === 'complete' &&
-            <>
-              <ImageWrap
-                position={'relative'}
-                height={'100%'}
-                cursor={'pointer'}
-              >
-                <ImageElement
-                  src="/icons/play.svg"
-                  width={24}
-                  height={24}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    position: 'relative',
-                    top: '-1px',
-                    margin: '0 12px 0 0'
-                  }}
-                  alt="play"
-                />
-              </ImageWrap>녹음완료
-            </>
-          }
-        </RecordStatus>
-        {/* TODO 전체 스크립트의 길이 및 현재 스크립트의 인덱스 */}
-        <ScriptPageWrapper>1 / 100</ScriptPageWrapper>
-        <Desciprtion>다음 문장을 정확하게 읽어주세요.</Desciprtion>
-        <Script>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</Script>
-        <RecordButtonWrapper
-          type={type}
-          recordStatus={recordStatus}
-          setRecordStatus={setRecordStatus}
-          setRecordScriptLists={setRecordScriptLists}
-        />
+        <ScriptArea>
+          <RecordStatus>
+            {recordStatus === 'wait' && '녹음 시작 전'}
+            {recordStatus === 'recording' && <><AudioWaveForm />녹음중..</>}
+            {
+              recordStatus === 'complete' &&
+              <>
+                <ImageWrap
+                  position={'relative'}
+                  height={'100%'}
+                  cursor={'pointer'}
+                >
+                  <ImageElement
+                    src="/icons/play.svg"
+                    width={24}
+                    height={24}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      position: 'relative',
+                      top: '-1px',
+                      margin: '0 12px 0 0'
+                    }}
+                    alt="play"
+                  />
+                </ImageWrap>녹음완료
+              </>
+            }
+          </RecordStatus>
+          {/* TODO 전체 스크립트의 길이 및 현재 스크립트의 인덱스 */}
+          <ScriptPageWrapper>1 / 100</ScriptPageWrapper>
+          <Desciprtion>다음 문장을 정확하게 읽어주세요.</Desciprtion>
+          <Script>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</Script>
+          <RecordButtonWrapper
+            type={type}
+            recordStatus={recordStatus}
+            setRecordStatus={setRecordStatus}
+            setRecordScriptLists={setRecordScriptLists}
+          />
+        </ScriptArea>
       </ScriptWrapper>
       <RecordScriptWrapper>
         <Title>녹음 완료 음성 목록</Title>
@@ -123,7 +125,7 @@ const VoiceGenerate = ({ type }: { type: string }) => {
           </RecordScriptLists> : <EmptyList>녹음이 완료된 음성 목록이 존재하지 않습니다.</EmptyList>
         }
       </RecordScriptWrapper>
-    </VoiceGenerateWrapper>
+    </VoiceGenerateWrapper >
   )
 }
 
@@ -133,8 +135,14 @@ const VoiceGenerateWrapper = styled.div({
 })
 const ScriptWrapper = styled.div({
   height: '60%',
+  position: 'relative',
   textAlign: 'center',
-  padding: '5% 35%',
+})
+const ScriptArea = styled.div({
+  position: 'relative',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)'
 })
 const RecordStatus = styled.div(
   {

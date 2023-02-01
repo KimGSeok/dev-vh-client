@@ -47,9 +47,7 @@ const MainComponent = styled.div({
 const ModalWrapper = styled.div<CSS_TYPE>(
   {
     position: 'absolute',
-    maxWidth: '960px',
     minWidth: '640px',
-    maxHeight: '70vh',
     minHeight: '280px',
     top: '45%',
     left: '50%',

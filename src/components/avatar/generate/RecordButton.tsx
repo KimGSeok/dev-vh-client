@@ -33,12 +33,13 @@ const RecordButtonWrapper = ({
   const onClickRecordCompleteHandler = () => {
     setRecordStatus && setRecordStatus('complete');
     setRecordScriptLists && setRecordScriptLists((prev) => ([{ ...prev, 'test': 'zz' }]))
+    onCompleteHandler && onCompleteHandler();
   }
 
   return (
     <ButtonWrapper>
       {
-        (recordStatus === 'wait' || recordStatus === 'fail')&&
+        (recordStatus === 'wait' || recordStatus === 'fail') &&
         <RecordBtn
           backgroundColor={color.Red}
           borderColor={color.Red}

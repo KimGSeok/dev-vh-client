@@ -32,7 +32,6 @@ const Avatar = () => {
       </ImageWrapper>
       <AvatarDataWrapper>
         <AvatarData>아바타 선택</AvatarData>
-        <AvatarData>배경 미선택</AvatarData>
         <AvatarData>목소리 미선택</AvatarData>
       </AvatarDataWrapper>
       <AvatarDecorateWrapper>
@@ -62,32 +61,6 @@ const Avatar = () => {
               </ImageWrap>
               <OptionName fontWeight={showOption === 'avatar' ? '700' : ''}>
                 아바타 선택
-              </OptionName>
-            </OptionList>
-            <OptionList
-              background={showOption === 'background' ? color.AliceBlue : ''}
-              onClick={() => setShowOption('background')}
-            >
-              <ImageWrap
-                position={'relative'}
-                width={'100%'}
-                height={'100%'}
-                textAlign={'center'}
-              >
-                <ImageElement
-                  src="/images/default_human.svg"
-                  width={24}
-                  height={24}
-                  style={{
-                    width: '70%',
-                    height: '70%',
-                    margin: '4px auto'
-                  }}
-                  alt="default human"
-                />
-              </ImageWrap>
-              <OptionName fontWeight={showOption === 'background' ? '700' : ''}>
-                배경 선택
               </OptionName>
             </OptionList>
             <OptionList
@@ -121,9 +94,6 @@ const Avatar = () => {
 
             {/* 아바타 선택 */}
             {showOption === 'avatar' ? <AvatarOption /> : ''}
-
-            {/* 배경 선택 */}
-            {showOption === 'background' ? <BackgroundOption /> : ''}
 
             {/* 목소리 선택 */}
             {showOption === 'voice' ? <VoiceOption /> : ''}
@@ -243,6 +213,18 @@ const OptionItemWrapper = styled.div({
   '::-webkit-scrollbar': {
     scrollBehavior: 'smooth',
     display: 'none'
+  },
+
+  '@media screen and (max-width: 1440px)': {
+    padding: '16px 24px',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    padding: '14px 22px',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    padding: '12px 20px',
   }
 })
 

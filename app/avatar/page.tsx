@@ -41,7 +41,7 @@ const Avatar = () => {
       <Filter />
       <Search />
       <AvatarWrapper>
-      <HeaderWrapper>
+        <HeaderWrapper>
           <ProjectLists>
             <ProjectList
               fontSize={'1rem'}
@@ -126,16 +126,16 @@ const Avatar = () => {
         </ListWrapper>
       </AvatarWrapper>
       {
-          showModal &&
-          <Portal>
-            <Modal
-              title={'아바타 생성하기'}
-              modal={showModal}
-              setModal={setShowModal}
-              children={AvatarChildren}
-            />
-          </Portal>
-        }
+        showModal &&
+        <Portal>
+          <Modal
+            title={'아바타 생성하기'}
+            modal={showModal}
+            setModal={setShowModal}
+            children={AvatarChildren}
+          />
+        </Portal>
+      }
     </MainComponent>
   )
 }

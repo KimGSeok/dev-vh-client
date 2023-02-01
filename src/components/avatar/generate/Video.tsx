@@ -3,7 +3,7 @@
 import styled from "@emotion/styled";
 import RecordRTC from 'recordrtc';
 import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@/src/styles/styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RecordButtonWrapper from "./RecordButton";
 import { onChangeVideoCssProps } from "@/src/modules/avatar/onChangeVideoCssProps";
 
@@ -13,53 +13,79 @@ const VideoGenerate = ({ type }: { type: string }) => {
   const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete), 녹음실패(fail)
   const [videoMedia, setVideoMedia] = useState<object>({
     recorder: null,
-    video: null
+    video: null,
+    src: null
   })
 
-  const onClickRecordHandler = () => {
-    navigator.mediaDevices.getUserMedia({
+  const onClickRecordHandler = async () => {
+    await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: {
         width: { min: 1280 },
         height: { min: 720 }
       }
-    }).then((camera) => {
-      
-      onReadyVideo(camera);
-      setRecordStatus('recording');
+    }).then(async (stream) => {
 
+      setRecordStatus('recording');
+      await onStartRecordingHandler(stream);
     }).catch((error) => {
       console.error(error);
       setRecordStatus('fail');
-      if(error.message === 'Requested device not found'){
+      if (error.message === 'Requested device not found') {
         alert('카메라를 찾을 수 없습니다.\n장비를 다시 한 번 확인해주세요.');
       }
     })
   }
 
-  const onReadyVideo = (camera: MediaStream) => {
+  const onStartRecordingHandler = async (stream: MediaStream) => {
 
     // Parameter
     const video: any = document.getElementById('video');
     video.muted = false;
     video.volume = 0;
-    video.srcObject = camera;
+    video.srcObject = stream;
 
-    const recorder: any = new RecordRTC(camera, {
+    const recorder: any = new RecordRTC(stream, {
       type: 'video',
-    })
-
-    console.log(video);
+      checkForInactiveTracks: false,
+      disableLogs: true,
+    });
 
     recorder.startRecording();
-    recorder.camera = camera;
+    recorder.camera = stream;
 
-    setVideoMedia({ recorder: recorder })
+    setVideoMedia({
+      recorder: recorder,
+      video: video
+    })
   }
 
-  const onStopVideo = () => {
-    console.log(videoMedia);
+  const onStopRecordingHandler = () => {
+
+    const { recorder }: any = videoMedia;
+    if (recorder) {
+      recorder.camera.stop();
+
+      const stopRecordingHandler = async () => {
+        await recorder.stopRecording(() => {
+          const blob = recorder.getBlob();
+
+          setVideoMedia({
+            recorder: null,
+            video: blob,
+            src: URL.createObjectURL(blob)
+          })
+          recorder.reset();
+        });
+      }
+      stopRecordingHandler();
+    }
   }
+
+  useEffect(() => {
+
+    return () => { onStopRecordingHandler() };
+  }, [videoMedia])
 
   return (
     <VideoGenerateWrapper>
@@ -96,15 +122,15 @@ const VideoGenerate = ({ type }: { type: string }) => {
         <VideoArea>
           {
             recordStatus === 'fail' ?
-            <DeviceNotFoundWrapper><DeviceNotFound>Device not found</DeviceNotFound></DeviceNotFoundWrapper>
-            :
-            <Video
-              id="video"
-              autoPlay
-              backgroundImage={onChangeVideoCssProps(recordStatus, 'image')}
-              backgroundRepeat={onChangeVideoCssProps(recordStatus, 'repeat')}
-              backgroundSize={onChangeVideoCssProps(recordStatus, 'size')}
-            />
+              <DeviceNotFoundWrapper><DeviceNotFound>Device not found</DeviceNotFound></DeviceNotFoundWrapper>
+              :
+              <Video
+                id="video"
+                autoPlay
+                backgroundImage={onChangeVideoCssProps(recordStatus, 'image')}
+                backgroundRepeat={onChangeVideoCssProps(recordStatus, 'repeat')}
+                backgroundSize={onChangeVideoCssProps(recordStatus, 'size')}
+              />
           }
           {
             recordStatus === 'wait' &&
@@ -131,6 +157,7 @@ const VideoGenerate = ({ type }: { type: string }) => {
           recordStatus={recordStatus}
           setRecordStatus={setRecordStatus}
           onRecordHandler={onClickRecordHandler}
+          onCompleteHandler={onStopRecordingHandler}
         />
       </VideoCameraWrapper>
     </VideoGenerateWrapper >
