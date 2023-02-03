@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import styled from "@emotion/styled";
 import { useState } from 'react';
 import Filter from "@/src/components/Filter";
@@ -14,14 +13,13 @@ import ModalContent from '@/src/components/avatar/ModalContent';
 const Avatar = () => {
 
   // Hooks
-  const router = useRouter();
   const [list, setList] = useState([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [avatarType, setAvatarType] = useState<string>('voice');
   const [avatarName, setAvatarName] = useState<string>('');
 
   // Modal에 전달할 Avatar Generate Modal Content
-  const AvatarChildren =
+  const avatarChildren =
     <ModalContent
       avatarType={avatarType}
       setAvatarType={setAvatarType}
@@ -132,7 +130,7 @@ const Avatar = () => {
             title={'아바타 생성하기'}
             modal={showModal}
             setModal={setShowModal}
-            children={AvatarChildren}
+            children={avatarChildren}
           />
         </Portal>
       }

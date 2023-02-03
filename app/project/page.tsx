@@ -1,18 +1,26 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
 import Filter from "@/src/components/Filter";
 import PageTitle from "@/src/components/layout/PageTitle";
 import Search from "@/src/components/Search";
 import { CSS_TYPE, color } from "@/src/styles/styles";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import Portal from '@/src/components/Portal';
+import Modal from '@/src/components/Modal';
+import ModalContent from '@/src/components/project/ModalContent';
 
 const Project = () => {
 
   // Hooks
-  const router = useRouter();
   const [list, setList] = useState([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  // Modal에 전달할 Avatar Generate Modal Content
+  const projectChildren =
+    <ModalContent
+
+    />;
 
   return (
     <MainComponent>
@@ -21,7 +29,7 @@ const Project = () => {
         registerBtn={true}
         btn={'생성하기'}
         event={'onClick'}
-        func={() => { router.push('/project/detail') }}
+        func={() => { setShowModal(true) }}
       />
       <Filter />
       <Search />
@@ -110,6 +118,17 @@ const Project = () => {
           </ProjectLists>
         </ListWrapper>
       </ProjectWrapper>
+      {
+        showModal &&
+        <Portal>
+          <Modal
+            title={'프로젝트 생성하기'}
+            modal={showModal}
+            setModal={setShowModal}
+            children={projectChildren}
+          />
+        </Portal>
+      }
     </MainComponent>
   )
 }
