@@ -34,6 +34,22 @@ const Script = () => {
           setIsShowBottomSheet={setIsShowBottomSheet}
           setBottomSheetTitle={setBottomSheetTitle}
         />
+        <ScriptItem
+          setIsShowBottomSheet={setIsShowBottomSheet}
+          setBottomSheetTitle={setBottomSheetTitle}
+        />
+        <ScriptItem
+          setIsShowBottomSheet={setIsShowBottomSheet}
+          setBottomSheetTitle={setBottomSheetTitle}
+        />
+        <ScriptItem
+          setIsShowBottomSheet={setIsShowBottomSheet}
+          setBottomSheetTitle={setBottomSheetTitle}
+        />
+        <ScriptItem
+          setIsShowBottomSheet={setIsShowBottomSheet}
+          setBottomSheetTitle={setBottomSheetTitle}
+        />
       </ScriptItemWrapper>
       <ControlPanel />
 

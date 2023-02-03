@@ -16,15 +16,17 @@ const Avatar = () => {
         <ImageWrap
           position={'absolute'}
           width={'100%'}
-          height={'90%'}
+          height={'100%'} // 90%
           bottom={'0'}
         >
           <ImageElement
-            src="/images/human_figure.svg"
+            src="/images/avatar/son.svg"
             fill
             style={{
               inset: 'auto',
-              objectFit: 'contain'
+              objectFit: 'cover', // contain
+              borderTopRightRadius: '16px',
+              borderTopLeftRadius: '16px',
             }}
             alt="human figure"
           />

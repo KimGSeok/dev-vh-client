@@ -6,303 +6,44 @@ const AvatarOption = () => {
     <OptionWrapper>
       <ItemLists>
         <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
+          <ImageWrapper
+            backgroundImage={"url('/images/example_deft.svg')"}
+            backgroundRepeat={'no-repeat'}
+            backgroundSize={'cover'}
+          />
           <ItemName>
             데프트
           </ItemName>
         </ItemList>
         <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
+          <ImageWrapper
+            backgroundImage={"url('/images/avatar/lee_seung_gi.svg')"}
+            backgroundRepeat={'no-repeat'}
+            backgroundSize={'cover'}
+          />
           <ItemName>
-            데프트
+            이승기
           </ItemName>
         </ItemList>
         <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
+          <ImageWrapper
+            opacity={1}
+            backgroundImage={"url('/images/avatar/son.svg')"}
+            backgroundRepeat={'no-repeat'}
+            backgroundSize={'cover'}
+          />
           <ItemName>
-            데프트
+            손흥민
           </ItemName>
         </ItemList>
         <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
+          <ImageWrapper
+            backgroundImage={"url('/images/avatar/v.svg')"}
+            backgroundRepeat={'no-repeat'}
+            backgroundSize={'cover'}
+          />
           <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList>
-          <ImageWrap
-            position={'relative'}
-            width={'100%'}
-            height={'auto'}
-            textAlign={'center'}
-          >
-            <ImageElement
-              src="/images/example_deft.svg"
-              width={24}
-              height={24}
-              style={{
-                width: '100%',
-                height: 'fit-content',
-              }}
-              opacity={0.35}
-              hoveropacity={1}
-              cursor={'pointer'}
-              alt="avatar"
-            />
-          </ImageWrap>
-          <ItemName>
-            데프트
+            뷔
           </ItemName>
         </ItemList>
       </ItemLists>
@@ -311,20 +52,42 @@ const AvatarOption = () => {
 }
 
 const OptionWrapper = styled.div({
-
+  position: 'relative',
+  height: '100%'
 })
 const ItemLists = styled.ul({
+  position: 'relative',
+  height: '100%',
   display: 'flex',
   flexWrap: 'wrap',
-  justifyContent: 'space-around'
+  justifyContent: 'flex-start',
+  alignContent: 'baseline',
+  columnGap: '5%'
 })
 const ItemList = styled.li<CSS_TYPE>(
   {
     width: '30%',
+    height: '30%',
     display: 'inline-block',
     margin: '0 0 12px 0'
   },
   props => ({
+  })
+)
+const ImageWrapper = styled.div<CSS_TYPE>(
+  {
+    width: '100%',
+    height: '80%',
+    position: 'relative',
+    display: 'block',
+    margin: '0 0 8px 0',
+    borderRadius: '8px'
+  },
+  props => ({
+    opacity: props.opacity ? props.opacity : '0.35',
+    backgroundImage: props.backgroundImage,
+    backgroundRepeat: props.backgroundRepeat,
+    backgroundSize: props.backgroundSize
   })
 )
 const ItemName = styled.div<CSS_TYPE>(
