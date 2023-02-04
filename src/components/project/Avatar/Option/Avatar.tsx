@@ -7,43 +7,43 @@ const AvatarOption = () => {
       <ItemLists>
         <ItemList>
           <ImageWrapper
-            backgroundImage={"url('/images/example_deft.svg')"}
-            backgroundRepeat={'no-repeat'}
-            backgroundSize={'cover'}
-          />
-          <ItemName>
-            데프트
-          </ItemName>
-        </ItemList>
-        <ItemList>
-          <ImageWrapper
-            backgroundImage={"url('/images/avatar/lee_seung_gi.svg')"}
-            backgroundRepeat={'no-repeat'}
-            backgroundSize={'cover'}
-          />
-          <ItemName>
-            이승기
-          </ItemName>
-        </ItemList>
-        <ItemList>
-          <ImageWrapper
             opacity={1}
-            backgroundImage={"url('/images/avatar/son.svg')"}
+            backgroundImage={"url('/images/avatar/unsplash_1.jpg')"}
             backgroundRepeat={'no-repeat'}
             backgroundSize={'cover'}
           />
           <ItemName>
-            손흥민
+            example
           </ItemName>
         </ItemList>
         <ItemList>
           <ImageWrapper
-            backgroundImage={"url('/images/avatar/v.svg')"}
+            backgroundImage={"url('/images/avatar/unsplash_2.jpg')"}
             backgroundRepeat={'no-repeat'}
             backgroundSize={'cover'}
           />
           <ItemName>
-            뷔
+            example
+          </ItemName>
+        </ItemList>
+        <ItemList>
+          <ImageWrapper
+            backgroundImage={"url('/images/avatar/unsplash_3.jpg')"}
+            backgroundRepeat={'no-repeat'}
+            backgroundSize={'cover'}
+          />
+          <ItemName>
+            example
+          </ItemName>
+        </ItemList>
+        <ItemList>
+          <ImageWrapper
+            backgroundImage={"url('/images/avatar/unsplash_4.jpg')"}
+            backgroundRepeat={'no-repeat'}
+            backgroundSize={'cover'}
+          />
+          <ItemName>
+            example
           </ItemName>
         </ItemList>
       </ItemLists>

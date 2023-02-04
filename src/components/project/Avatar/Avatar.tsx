@@ -20,7 +20,7 @@ const Avatar = () => {
           bottom={'0'}
         >
           <ImageElement
-            src="/images/avatar/son.svg"
+            src="/images/avatar/unsplash_1.jpg"
             fill
             style={{
               inset: 'auto',

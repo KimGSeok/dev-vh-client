@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useReactMediaRecorder } from "react-media-recorder";
 import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@/src/styles/styles";
 import RecordButtonWrapper from "./RecordButton";
 import AudioWaveForm from "@/src/modules/AudioWaveForm";
+import getFetchData from "src/hooks/getFetchData";
 
 const VoiceGenerate = ({ type }: { type: string }) => {
 
@@ -32,14 +33,22 @@ const VoiceGenerate = ({ type }: { type: string }) => {
   // TODO onRecord Blob Url 
   useEffect(() => {
 
-    console.log(mediaBlobUrl)
+    // console.log(mediaBlobUrl)
 
   }, [mediaBlobUrl])
 
 
   useEffect(() => {
 
-  }, [recordScriptLists])
+    const getData = async () => {
+
+      console.log(44);
+      const script = await getFetchData('http://localhost:30001/avatar/getScripts','no-cache');
+      console.log(script);
+    }
+
+    getData();
+  }, [])
 
   return (
     <VoiceGenerateWrapper>
