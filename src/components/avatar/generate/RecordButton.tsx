@@ -7,6 +7,9 @@ import { Dispatch, SetStateAction } from "react";
 interface RecordProps {
   type: string;
   recordStatus: string;
+  scriptList: object[];
+  scriptSequence?: number;
+  setScriptSequence?: Dispatch<SetStateAction<number>>; 
   setRecordStatus?: Dispatch<SetStateAction<string>>;
   setRecordScriptLists?: Dispatch<SetStateAction<object[]>>;
   onRecordHandler?: () => void;
@@ -18,6 +21,9 @@ interface RecordProps {
 const RecordButtonWrapper = ({
   type,
   recordStatus,
+  scriptList,
+  scriptSequence,
+  setScriptSequence,
   setRecordStatus,
   setRecordScriptLists,
   onRecordHandler,
@@ -26,14 +32,30 @@ const RecordButtonWrapper = ({
   onNextStepHandler
 }: RecordProps) => {
 
+  console.log(scriptSequence);
+
   const onClickRecordHandler = () => {
     onRecordHandler && onRecordHandler();
   }
 
   const onClickRecordCompleteHandler = () => {
     setRecordStatus && setRecordStatus('complete');
-    setRecordScriptLists && setRecordScriptLists((prev) => ([{ ...prev, 'test': 'zz' }]))
     onCompleteHandler && onCompleteHandler();
+  }
+
+  const onClickReRecordHandler = () =>{
+
+    // 현재 녹음본 삭제
+
+    // 녹음상태 변경
+  }
+
+  const onClickNextScriptHandler = () =>{
+    if(scriptSequence !== undefined && scriptSequence !== null){
+      setRecordScriptLists && setRecordScriptLists((prev) => ([...prev, { ...scriptList }]))
+      setScriptSequence && setScriptSequence(scriptSequence + 1);
+      setRecordStatus && setRecordStatus('wait');
+    }
   }
 
   return (
@@ -121,6 +143,7 @@ const RecordButtonWrapper = ({
           <RecordBtn
             backgroundColor={color.BasicColor}
             borderColor={color.BasicColor}
+            onClick={onClickNextScriptHandler}
           >다음으로
           </RecordBtn>
         </RecordBtnWrapper>

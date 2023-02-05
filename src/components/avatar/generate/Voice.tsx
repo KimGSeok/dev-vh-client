@@ -11,7 +11,9 @@ import getFetchData from "src/hooks/getFetchData";
 const VoiceGenerate = ({ type }: { type: string }) => {
 
   // Hooks
-  const [scriptList, setScriptList] = useState(); // 스크립트 목록
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [scriptList, setScriptList] = useState<any>([]); // 스크립트 목록
+  const [scriptSequence, setScriptSequence] = useState<number>(0); // 현재 녹음 스크립트 순서
   const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete)
   const [recordScriptLists, setRecordScriptLists] = useState<object[]>([]); // 녹음 완료 목록
 
@@ -37,20 +39,26 @@ const VoiceGenerate = ({ type }: { type: string }) => {
 
   }, [mediaBlobUrl])
 
+  useEffect(() => {
+
+    console.log(scriptSequence);
+
+  }, [scriptSequence])
 
   useEffect(() => {
 
     const getData = async () => {
 
-      console.log(44);
       const script = await getFetchData('http://localhost:30001/avatar/getScripts','no-cache');
       console.log(script);
+      setScriptList(script);
+      setMounted(true);
     }
-
     getData();
   }, [])
 
   return (
+    mounted ?
     <VoiceGenerateWrapper>
       <ScriptWrapper>
         <ScriptArea>
@@ -83,12 +91,15 @@ const VoiceGenerate = ({ type }: { type: string }) => {
             }
           </RecordStatus>
           {/* TODO 전체 스크립트의 길이 및 현재 스크립트의 인덱스 */}
-          <ScriptPageWrapper>1 / 100</ScriptPageWrapper>
+          <ScriptPageWrapper>{scriptSequence + 1} / {scriptList && scriptList.length}</ScriptPageWrapper>
           <Desciprtion>다음 문장을 정확하게 읽어주세요.</Desciprtion>
-          <Script>그렇기 때문에 오히려 아동발달에 있어서도 우리가 더 많은 생각을 할 수 있습니다.</Script>
+          <Script>{scriptList && scriptList[scriptSequence].script}</Script>
           <RecordButtonWrapper
             type={type}
             recordStatus={recordStatus}
+            scriptList={scriptList[scriptSequence]}
+            scriptSequence={scriptSequence}
+            setScriptSequence={setScriptSequence}
             setRecordStatus={setRecordStatus}
             setRecordScriptLists={setRecordScriptLists}
             onRecordHandler={onStartRecordingHandler}
@@ -101,66 +112,21 @@ const VoiceGenerate = ({ type }: { type: string }) => {
         {
           recordScriptLists && recordScriptLists.length > 0 ?
             <RecordScriptLists>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>디아블로 시리즈의 신작 '디아블로 이모탈'이 전격 출시했다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>이 과목을 한 번 깊이 공부해 보시면 대단히 좋을 것 같다는 생각이 듭니다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>결국에는 관객들이 스토리를 재구성하는 것이거든요.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>대형마트가 월 2회 의무적으로 휴업해야 하는 영업 규제가 2012년 첫 시행된지 올해로 10년째를 맞는다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>정부는 국정과제에 포함된 공공기관 효율화를 위한 작업에 본격적으로 착수했다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>일각에선 누리호를 '국내 기술'로 보기 어렵지 않냐는 지적들이 나온다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>카카오는 30일 오는 7월부터 메타버스 근무제 시행에 나선다고 밝혔다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
-              <RecordScriptList>
-                <RecordScriptInfo>
-                  <RecordScript>대통령과 총리는 각 부처 장관에게 충분한 권한과 자율성을 부여하기로 뜻을 모았다.</RecordScript>
-                  <RecordingTime>00:00:12</RecordingTime>
-                  <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                </RecordScriptInfo>
-              </RecordScriptList>
+              {recordScriptLists.map((item: any, index) => {
+                return(
+                  <RecordScriptList key={index}>
+                    <RecordScriptInfo>
+                      <RecordScript>{item.script}</RecordScript>
+                      <RecordingTime>00:00:12</RecordingTime>
+                      <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
+                    </RecordScriptInfo>
+                  </RecordScriptList>
+                ) 
+              })}
             </RecordScriptLists> : <EmptyList>녹음이 완료된 음성 목록이 존재하지 않습니다.</EmptyList>
         }
       </RecordScriptWrapper>
-    </VoiceGenerateWrapper >
+    </VoiceGenerateWrapper > : <></>
   )
 }
 
