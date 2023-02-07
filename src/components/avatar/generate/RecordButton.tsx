@@ -9,11 +9,11 @@ interface RecordProps {
   recordStatus: string;
   scriptList: object[];
   scriptSequence?: number;
-  setScriptSequence?: Dispatch<SetStateAction<number>>; 
+  setScriptSequence?: Dispatch<SetStateAction<number>>;
   setRecordStatus?: Dispatch<SetStateAction<string>>;
   setRecordScriptLists?: Dispatch<SetStateAction<object[]>>;
   onRecordHandler?: () => void;
-  onCompleteHandler?: () => void;
+  onCompleteHandler: () => void;
   onReRecordHandler?: () => void;
   onNextStepHandler?: () => void;
 }
@@ -32,32 +32,6 @@ const RecordButtonWrapper = ({
   onNextStepHandler
 }: RecordProps) => {
 
-  console.log(scriptSequence);
-
-  const onClickRecordHandler = () => {
-    onRecordHandler && onRecordHandler();
-  }
-
-  const onClickRecordCompleteHandler = () => {
-    setRecordStatus && setRecordStatus('complete');
-    onCompleteHandler && onCompleteHandler();
-  }
-
-  const onClickReRecordHandler = () =>{
-
-    // 현재 녹음본 삭제
-
-    // 녹음상태 변경
-  }
-
-  const onClickNextScriptHandler = () =>{
-    if(scriptSequence !== undefined && scriptSequence !== null){
-      setRecordScriptLists && setRecordScriptLists((prev) => ([...prev, { ...scriptList }]))
-      setScriptSequence && setScriptSequence(scriptSequence + 1);
-      setRecordStatus && setRecordStatus('wait');
-    }
-  }
-
   return (
     <ButtonWrapper>
       {
@@ -65,7 +39,7 @@ const RecordButtonWrapper = ({
         <RecordBtn
           backgroundColor={color.Red}
           borderColor={color.Red}
-          onClick={() => onClickRecordHandler()}
+          onClick={onRecordHandler}
         >
           <ImageWrap
             position={'relative'}
@@ -92,7 +66,7 @@ const RecordButtonWrapper = ({
         <RecordBtn
           backgroundColor={color.Purple}
           borderColor={color.Purple}
-          onClick={() => onClickRecordCompleteHandler()}
+          onClick={onCompleteHandler}
         >
           <ImageWrap
             position={'relative'}
@@ -143,7 +117,7 @@ const RecordButtonWrapper = ({
           <RecordBtn
             backgroundColor={color.BasicColor}
             borderColor={color.BasicColor}
-            onClick={onClickNextScriptHandler}
+            onClick={onNextStepHandler}
           >다음으로
           </RecordBtn>
         </RecordBtnWrapper>

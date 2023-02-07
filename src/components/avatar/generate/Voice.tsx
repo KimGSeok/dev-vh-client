@@ -1,17 +1,25 @@
 'use client';
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useReactMediaRecorder } from "react-media-recorder";
-import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@/src/styles/styles";
+import { v4 as uuidV4 } from 'uuid';
+import { color, ImageWrap, ImageElement, RadiusButton } from "@/src/styles/styles";
 import RecordButtonWrapper from "./RecordButton";
 import AudioWaveForm from "@/src/modules/AudioWaveForm";
-import getFetchData from "src/hooks/getFetchData";
+import { get, post } from "src/hooks/asyncHooks";
+import Portal from '@/src/components/Portal';
+import Modal from '@/src/components/Modal';
+import VoiceModalContent from '@/src/components/avatar/generate/VoiceModalContent';
 
 const VoiceGenerate = ({ type }: { type: string }) => {
 
+  // Parameter
+  const audio: any = document.getElementById("audio") // Audio객체 취득
+
   // Hooks
   const [mounted, setMounted] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [scriptList, setScriptList] = useState<any>([]); // 스크립트 목록
   const [scriptSequence, setScriptSequence] = useState<number>(0); // 현재 녹음 스크립트 순서
   const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete)
@@ -32,25 +40,83 @@ const VoiceGenerate = ({ type }: { type: string }) => {
     setRecordStatus('complete');
   };
 
-  // TODO onRecord Blob Url 
+  const onNextStepHandler = async () => {
+    if (mediaBlobUrl) {
+
+      // Parameter
+      const blobUrl = mediaBlobUrl;
+
+      const audioBlob = await fetch(blobUrl).then((res) => res.blob());
+      const audioFile = new File([audioBlob], `${scriptList[scriptSequence].script}_audio.wav`, {
+        type: 'audio/wav'
+      });
+
+      setRecordScriptLists((prev) => ([...prev, {
+        ...scriptList[scriptSequence],
+        blobUrl: mediaBlobUrl,
+        blob: audioBlob,
+        file: audioFile,
+      }]))
+      setScriptSequence(scriptSequence + 1);
+      setRecordStatus('wait');
+    } else {
+      alert('녹음이 제대로 진행되지 않았습니다.\n녹음을 다시 진행해주세요.');
+    }
+  }
+
+  const onClickGenerateVoiceModelHandler = async () => {
+
+    // Parameter
+    const avatarId = uuidV4();
+    const formData = new FormData();
+    const scriptArr = Array();
+
+    recordScriptLists.forEach((item: any) => {
+
+      // Preparing to send to the server
+      // formData.append('blobs', item.blob);
+      formData.append('files', item.file);
+      scriptArr.push({
+        id: item.id,
+        type: item.type,
+        script: item.script
+      })
+    })
+    formData.append('data', JSON.stringify(scriptArr));
+    formData.append('avatarType', type);
+    formData.append('avatarId', avatarId);
+
+    const url = 'http://221.151.178.171:30001/avatar/upload';
+    const option = {
+      headers: {
+        "Contest-Type": "multipart/form-data",
+        "uuid": avatarId
+      }
+    };
+    const response = await post(url, formData, option);
+    console.log(response);
+  }
+
+  const VoiceModalChildren =
+    <VoiceModalContent
+      totalLength={parseInt(scriptList.length)}
+      recordScriptLists={recordScriptLists}
+      onClickGenerateVoiceModelHandler={onClickGenerateVoiceModelHandler}
+    />
+
   useEffect(() => {
 
-    // console.log(mediaBlobUrl)
-
+    const onSaveBlobUrl = async (blobUrl: string) => {
+      audio.src = blobUrl;
+    }
+    mediaBlobUrl && onSaveBlobUrl(mediaBlobUrl)
   }, [mediaBlobUrl])
-
-  useEffect(() => {
-
-    console.log(scriptSequence);
-
-  }, [scriptSequence])
 
   useEffect(() => {
 
     const getData = async () => {
 
-      const script = await getFetchData('http://localhost:30001/avatar/getScripts','no-cache');
-      console.log(script);
+      const script = await get('http://221.151.178.171:30001/avatar/getScripts', 'no-cache');
       setScriptList(script);
       setMounted(true);
     }
@@ -59,74 +125,100 @@ const VoiceGenerate = ({ type }: { type: string }) => {
 
   return (
     mounted ?
-    <VoiceGenerateWrapper>
-      <ScriptWrapper>
-        <ScriptArea>
-          <RecordStatus>
-            {recordStatus === 'wait' && '녹음 시작 전'}
-            {recordStatus === 'recording' && <><AudioWaveForm />녹음중..</>}
-            {
-              recordStatus === 'complete' &&
-              <>
-                <ImageWrap
-                  position={'relative'}
-                  height={'100%'}
-                  cursor={'pointer'}
-                >
-                  <ImageElement
-                    src="/icons/play.svg"
-                    width={24}
-                    height={24}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      position: 'relative',
-                      top: '-1px',
-                      margin: '0 12px 0 0'
-                    }}
-                    alt="play"
-                  />
-                </ImageWrap>녹음완료
-              </>
-            }
-          </RecordStatus>
-          {/* TODO 전체 스크립트의 길이 및 현재 스크립트의 인덱스 */}
-          <ScriptPageWrapper>{scriptSequence + 1} / {scriptList && scriptList.length}</ScriptPageWrapper>
-          <Desciprtion>다음 문장을 정확하게 읽어주세요.</Desciprtion>
-          <Script>{scriptList && scriptList[scriptSequence].script}</Script>
-          <RecordButtonWrapper
-            type={type}
-            recordStatus={recordStatus}
-            scriptList={scriptList[scriptSequence]}
-            scriptSequence={scriptSequence}
-            setScriptSequence={setScriptSequence}
-            setRecordStatus={setRecordStatus}
-            setRecordScriptLists={setRecordScriptLists}
-            onRecordHandler={onStartRecordingHandler}
-            onCompleteHandler={onStopRecordingHandler}
-          />
-        </ScriptArea>
-      </ScriptWrapper>
-      <RecordScriptWrapper>
-        <Title>녹음 완료 음성 목록</Title>
+      <VoiceGenerateWrapper>
         {
-          recordScriptLists && recordScriptLists.length > 0 ?
-            <RecordScriptLists>
-              {recordScriptLists.map((item: any, index) => {
-                return(
-                  <RecordScriptList key={index}>
-                    <RecordScriptInfo>
-                      <RecordScript>{item.script}</RecordScript>
-                      <RecordingTime>00:00:12</RecordingTime>
-                      <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
-                    </RecordScriptInfo>
-                  </RecordScriptList>
-                ) 
-              })}
-            </RecordScriptLists> : <EmptyList>녹음이 완료된 음성 목록이 존재하지 않습니다.</EmptyList>
+          recordScriptLists.length >= 20 &&
+          <RadiusButton
+            position={'absolute'}
+            right={'0'}
+            backgroundColor={color.BrightBlue}
+            borderColor={color.BrightBlue}
+            color={color.White}
+            zIndex={2}
+            onClick={() => setShowModal(true)}
+          >녹음 종료하기</RadiusButton>
         }
-      </RecordScriptWrapper>
-    </VoiceGenerateWrapper > : <></>
+        <ScriptWrapper>
+          <ScriptArea>
+            <RecordStatus>
+              <audio id="audio" />
+              {recordStatus === 'wait' && '녹음 시작 전'}
+              {recordStatus === 'recording' && <><AudioWaveForm />녹음중..</>}
+              {
+                recordStatus === 'complete' &&
+                <>
+                  <ImageWrap
+                    position={'relative'}
+                    height={'100%'}
+                    cursor={'pointer'}
+                    onClick={() => audio.play()}
+                  >
+                    <ImageElement
+                      src="/icons/play.svg"
+                      width={24}
+                      height={24}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        position: 'relative',
+                        top: '-1px',
+                        margin: '0 12px 0 0'
+                      }}
+                      alt="play"
+                    />
+                  </ImageWrap>녹음완료
+                </>
+              }
+            </RecordStatus>
+            {/* TODO 전체 스크립트의 길이 및 현재 스크립트의 인덱스 */}
+            <ScriptPageWrapper>{scriptSequence + 1} / {scriptList && scriptList.length}</ScriptPageWrapper>
+            <Desciprtion>다음 문장을 정확하게 읽어주세요.</Desciprtion>
+            <Script>{scriptList && scriptList[scriptSequence].script}</Script>
+            <RecordButtonWrapper
+              type={type}
+              recordStatus={recordStatus}
+              scriptList={scriptList[scriptSequence]}
+              scriptSequence={scriptSequence}
+              setScriptSequence={setScriptSequence}
+              setRecordStatus={setRecordStatus}
+              setRecordScriptLists={setRecordScriptLists}
+              onRecordHandler={onStartRecordingHandler}
+              onCompleteHandler={onStopRecordingHandler}
+              onNextStepHandler={onNextStepHandler}
+            />
+          </ScriptArea>
+        </ScriptWrapper>
+        <RecordScriptWrapper>
+          <Title>녹음 완료 음성 목록</Title>
+          {
+            recordScriptLists && recordScriptLists.length > 0 ?
+              <RecordScriptLists>
+                {recordScriptLists.map((item: any, index) => {
+                  return (
+                    <RecordScriptList key={index}>
+                      <RecordScriptInfo>
+                        <RecordScript>{item.script}</RecordScript>
+                        <RecordingTime>음성 길이</RecordingTime>
+                        <RecordingBtnWrapper>버튼 영역</RecordingBtnWrapper>
+                      </RecordScriptInfo>
+                    </RecordScriptList>
+                  )
+                })}
+              </RecordScriptLists> : <EmptyList>녹음이 완료된 음성 목록이 존재하지 않습니다.</EmptyList>
+          }
+        </RecordScriptWrapper>
+        {
+          showModal &&
+          <Portal>
+            <Modal
+              title={'음성 아바타 생성'}
+              modal={showModal}
+              setModal={setShowModal}
+              children={VoiceModalChildren}
+            />
+          </Portal>
+        }
+      </VoiceGenerateWrapper > : <></>
   )
 }
 
@@ -205,14 +297,11 @@ const RecordScriptList = styled.li({
     backgroundColor: color.AliceBlue,
   },
 })
-const RecordScriptInfo = styled.div<CSS_TYPE>(
+const RecordScriptInfo = styled.div(
   {
     fontSize: '1rem',
     display: 'flex'
-  },
-  props => ({
-
-  })
+  }
 )
 const RecordScript = styled.div({
   width: '80%',

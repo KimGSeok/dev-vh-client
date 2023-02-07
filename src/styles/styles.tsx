@@ -44,6 +44,7 @@ export type CSS_TYPE = {
   hovercolor?: string;
   hoveropacity?: string | number;
   cursor?: string;
+  zIndex?: string | number;
   animationDelay?: string;
 
   /* Etc */
@@ -210,6 +211,7 @@ export const RadiusButton = styled.div<CSS_TYPE>(
     bottom: props.bottom,
     left: props.left,
     right: props.right,
+    zIndex: props.zIndex ? props.zIndex : 1
   })
 )
 

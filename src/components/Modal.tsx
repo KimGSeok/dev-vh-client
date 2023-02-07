@@ -42,7 +42,8 @@ const MainComponent = styled.div({
   width: '100vw',
   height: '100vh',
   top: '0',
-  backgroundColor: 'rgb(18, 18, 18, 0.7)'
+  backgroundColor: 'rgb(18, 18, 18, 0.7)',
+  zIndex: 99
 })
 const ModalWrapper = styled.div<CSS_TYPE>(
   {
