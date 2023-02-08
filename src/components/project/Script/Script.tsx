@@ -63,14 +63,14 @@ const Script = ({ name }: { name: string }) => {
           />
         </ScriptItemWrapper>
         <ControlPanel />
-
-        {/* Web Bottom Sheet */}
-        <BottomSheet
-          isShowBottomSheet={isShowBottomSheet}
-          setIsShowBottomSheet={setIsShowBottomSheet}
-          title={bottomSheetTitle}
-        /> : ''
       </ScriptArea>
+
+      {/* Web Bottom Sheet */}
+      <BottomSheet
+        isShowBottomSheet={isShowBottomSheet}
+        setIsShowBottomSheet={setIsShowBottomSheet}
+        title={bottomSheetTitle}
+      /> : ''
     </ScriptWrapper>
   )
 }
@@ -89,7 +89,8 @@ const HeaderWrapper = styled.div({
   borderRadius: '16px',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  zIndex: '1'
 })
 const ProjectName = styled.div({
   color: color.BasicColor,
