@@ -58,7 +58,8 @@ const SheetWrapper = styled.div<CSS_TYPE>(
     position: 'absolute',
     width: '100%',
     height: '100%',
-    transition: 'all 0.3s'
+    transition: 'all 0.3s',
+    zIndex: 2
   },
   props => ({
     top: props.top,

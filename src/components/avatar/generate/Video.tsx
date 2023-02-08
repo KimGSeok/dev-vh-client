@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import RecordButtonWrapper from "./RecordButton";
 import { onChangeVideoCssProps } from "@/src/modules/avatar/onChangeVideoCssProps";
 
-const VideoGenerate = ({ type }: { type: string }) => {
+const VideoGenerate = ({ type, avatarName }: { type: string, avatarName: string }) => {
 
   // Hooks
   const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete), 녹음실패(fail)

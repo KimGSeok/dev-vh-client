@@ -69,7 +69,8 @@ const ItemList = styled.li<CSS_TYPE>(
     width: '30%',
     height: '30%',
     display: 'inline-block',
-    margin: '0 0 12px 0'
+    margin: '0 0 12px 0',
+    cursor: 'pointer'
   },
   props => ({
   })

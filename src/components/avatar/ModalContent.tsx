@@ -8,38 +8,33 @@ import { useRouter } from 'next/navigation';
 interface ModalProps {
   avatarType: string;
   setAvatarType: Dispatch<SetStateAction<string>>;
-  avatarName: string;
-  setAvatarName: Dispatch<SetStateAction<string>>;
 }
 
-const ModalContent = ({ avatarType, setAvatarType, avatarName, setAvatarName }: ModalProps) => {
+const ModalContent = ({ avatarType, setAvatarType }: ModalProps) => {
 
   // Hooks
   const nameRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [type, setType] = useState<string>(avatarType);
-  const [validation, setValidation] = useState({
-    name: false
-  })
+  const [validation, setValidation] = useState({ name: false })
 
   // Validation
-  const checkNameHandler = () => {
-
-    const value = nameRef.current && nameRef.current.value;
-    return value !== '' || value === null;
+  const checkNameHandler = (name: string | null) => {
+    return name !== '' || name === null;
   }
 
   const onClickNextStepBtnHandler = () => {
-    if (checkNameHandler()) {
-      setValidation({
-        name: false
-      })
+
+    // Parameter
+    const name: string | null = nameRef.current && nameRef.current.value;
+    if (checkNameHandler(name)) {
+
+      setValidation({ name: false })
       alert('아바타 생성을 시작합니다.');
-      router.push(`/avatar/generate?type=${type}`)
+      router.push(`/avatar/generate?type=${type}&name=${name}`)
     } else {
-      setValidation({
-        name: true
-      })
+
+      setValidation({ name: true })
     }
   }
 

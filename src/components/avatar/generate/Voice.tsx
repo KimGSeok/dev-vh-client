@@ -12,7 +12,7 @@ import Portal from '@/src/components/Portal';
 import Modal from '@/src/components/Modal';
 import VoiceModalContent from '@/src/components/avatar/generate/VoiceModalContent';
 
-const VoiceGenerate = ({ type }: { type: string }) => {
+const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string }) => {
 
   // Parameter
   const audio: any = document.getElementById("audio") // Audio객체 취득
@@ -94,7 +94,9 @@ const VoiceGenerate = ({ type }: { type: string }) => {
       }
     };
     const response = await post(url, formData, option);
+
     console.log(response);
+
   }
 
   const VoiceModalChildren =
@@ -116,7 +118,9 @@ const VoiceGenerate = ({ type }: { type: string }) => {
 
     const getData = async () => {
 
-      const script = await get('http://221.151.178.171:30001/avatar/getScripts', 'no-cache');
+      const script = await get('https://api.cidev.kr/avatar/getScripts', 'no-cache');
+      // const script = await get('http://221.151.178.171:30001/avatar/getScripts', 'no-cache');
+      // const script = await get('http://localhost:30001/avatar/getScripts', 'no-cache');
       setScriptList(script);
       setMounted(true);
     }

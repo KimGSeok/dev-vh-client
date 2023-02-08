@@ -5,7 +5,7 @@ import ScriptItem from './Item';
 import ControlPanel from './ControlPanel';
 import BottomSheet from '@/src/components/BottomSheet';
 
-const Script = () => {
+const Script = ({ name }: { name: string }) => {
 
   // Hooks
   const [bottomSheetTitle, setBottomSheetTitle] = useState<string>('');
@@ -18,52 +18,90 @@ const Script = () => {
 
   return (
     <ScriptWrapper>
-      <TitleWrapper>
-        <Title>스크립트 영역</Title>
-        <RadiusButton
-          backgroundColor={color.BasicColor}
-          color={color.White}
+      <HeaderWrapper>
+        <ProjectName>{name}</ProjectName>
+        <AllTransBtn
           padding={'8px 24px'}
-          onClick={() => onClickTransformHandler()}
-        >
-          변환하기
-        </RadiusButton>
-      </TitleWrapper>
-      <ScriptItemWrapper>
-        <ScriptItem
-          setIsShowBottomSheet={setIsShowBottomSheet}
-          setBottomSheetTitle={setBottomSheetTitle}
-        />
-        <ScriptItem
-          setIsShowBottomSheet={setIsShowBottomSheet}
-          setBottomSheetTitle={setBottomSheetTitle}
-        />
-        <ScriptItem
-          setIsShowBottomSheet={setIsShowBottomSheet}
-          setBottomSheetTitle={setBottomSheetTitle}
-        />
-        <ScriptItem
-          setIsShowBottomSheet={setIsShowBottomSheet}
-          setBottomSheetTitle={setBottomSheetTitle}
-        />
-        <ScriptItem
-          setIsShowBottomSheet={setIsShowBottomSheet}
-          setBottomSheetTitle={setBottomSheetTitle}
-        />
-      </ScriptItemWrapper>
-      <ControlPanel />
+          color={color.BasicColor}
+          borderColor={color.BasicColor}
+          fontWeight={'500'}
+        >프로젝트 변환하기</AllTransBtn>
+      </HeaderWrapper>
+      <ScriptArea>
+        <TitleWrapper>
+          <Title>스크립트 영역</Title>
+          <RadiusButton
+            backgroundColor={color.BasicColor}
+            borderColor={color.BasicColor}
+            color={color.White}
+            padding={'8px 24px'}
+            onClick={() => onClickTransformHandler()}
+          >
+            슬라이드 변환하기
+          </RadiusButton>
+        </TitleWrapper>
+        <ScriptItemWrapper>
+          <ScriptItem
+            setIsShowBottomSheet={setIsShowBottomSheet}
+            setBottomSheetTitle={setBottomSheetTitle}
+          />
+          <ScriptItem
+            setIsShowBottomSheet={setIsShowBottomSheet}
+            setBottomSheetTitle={setBottomSheetTitle}
+          />
+          <ScriptItem
+            setIsShowBottomSheet={setIsShowBottomSheet}
+            setBottomSheetTitle={setBottomSheetTitle}
+          />
+          <ScriptItem
+            setIsShowBottomSheet={setIsShowBottomSheet}
+            setBottomSheetTitle={setBottomSheetTitle}
+          />
+          <ScriptItem
+            setIsShowBottomSheet={setIsShowBottomSheet}
+            setBottomSheetTitle={setBottomSheetTitle}
+          />
+        </ScriptItemWrapper>
+        <ControlPanel />
 
-      {/* Web Bottom Sheet */}
-      <BottomSheet
-        isShowBottomSheet={isShowBottomSheet}
-        setIsShowBottomSheet={setIsShowBottomSheet}
-        title={bottomSheetTitle}
-      /> : ''
+        {/* Web Bottom Sheet */}
+        <BottomSheet
+          isShowBottomSheet={isShowBottomSheet}
+          setIsShowBottomSheet={setIsShowBottomSheet}
+          title={bottomSheetTitle}
+        /> : ''
+      </ScriptArea>
     </ScriptWrapper>
   )
 }
 const ScriptWrapper = styled.div({
   width: 'calc(50% - 16px)',
+  height: '100%',
+  position: 'relative',
+})
+const HeaderWrapper = styled.div({
+  width: '100%',
+  height: 'calc(7% - 12px)',
+  margin: '0 0 12px 0',
+  padding: '8px 24px',
+  position: 'relative',
+  backgroundColor: color.White,
+  borderRadius: '16px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between'
+})
+const ProjectName = styled.div({
+  color: color.BasicColor,
+  fontSize: '1.1rem',
+  fontWeight: '700'
+})
+const AllTransBtn = styled(RadiusButton)({
+
+})
+const ScriptArea = styled.div({
+  width: '100%',
+  height: '93%',
   position: 'relative',
   backgroundColor: color.White,
   borderRadius: '16px',

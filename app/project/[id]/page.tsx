@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { CSS_TYPE, color } from '@/src/styles/styles';
+import { useSearchParams } from 'next/navigation';
 import { ProjectSlideInterfaceProps } from '@/src/modules/type';
 import SlideWrapper from '@/src/components/project/Slide/Slide';
 import AvatarWrapper from '@/src/components/project/Avatar/Avatar';
@@ -67,6 +68,9 @@ const ProjectDetail = () => {
   const [activeSlide, setActiveSlide] = useState<ProjectSlideInterfaceProps>(tempSlideList[0]);
   const [slideList, setSlideList] = useState<object[]>(tempSlideList);
 
+  // Parameter
+  const name: string = useSearchParams().get('name')!; // non-null assertion
+
   // TODO 새로고침 및 페이지 이동 시 Alert 후 페이지 이동 막기
 
   return (
@@ -80,6 +84,7 @@ const ProjectDetail = () => {
       <AvatarWrapper
       />
       <ScriptWrapper
+        name={name}
       />
     </MainComponent>
   )

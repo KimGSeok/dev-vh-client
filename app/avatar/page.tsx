@@ -16,15 +16,12 @@ const Avatar = () => {
   const [list, setList] = useState([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [avatarType, setAvatarType] = useState<string>('voice');
-  const [avatarName, setAvatarName] = useState<string>('');
 
   // Modal에 전달할 Avatar Generate Modal Content
   const avatarChildren =
     <ModalContent
       avatarType={avatarType}
       setAvatarType={setAvatarType}
-      avatarName={avatarName}
-      setAvatarName={setAvatarName}
     />;
 
   return (

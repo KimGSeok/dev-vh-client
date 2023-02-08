@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction } from "react";
 interface RecordProps {
   type: string;
   recordStatus: string;
-  scriptList: object[];
+  scriptList?: object[];
   scriptSequence?: number;
   setScriptSequence?: Dispatch<SetStateAction<number>>;
   setRecordStatus?: Dispatch<SetStateAction<string>>;
