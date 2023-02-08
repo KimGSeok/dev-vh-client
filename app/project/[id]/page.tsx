@@ -5,9 +5,9 @@ import styled from '@emotion/styled';
 import { CSS_TYPE, color } from '@/src/styles/styles';
 import { useSearchParams } from 'next/navigation';
 import { ProjectSlideInterfaceProps } from '@/src/modules/type';
-import SlideWrapper from '@/src/components/project/Slide/Slide';
-import AvatarWrapper from '@/src/components/project/Avatar/Avatar';
-import ScriptWrapper from '@/src/components/project/Script/Script';
+import SlideWrapper from '@/src/components/project/slide/Slide';
+import AvatarWrapper from '@/src/components/project/avatar/Avatar';
+import ScriptWrapper from '@/src/components/project/script/Script';
 
 let tempSlideList = [
   {

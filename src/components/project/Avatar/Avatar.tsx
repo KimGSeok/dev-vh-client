@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, ImageElement, ImageWrap } from '@/src/styles/styles';
 import { useState } from 'react';
-import AvatarOption from './Option/Avatar';
-import BackgroundOption from './Option/Background';
-import VoiceOption from './Option/Voice';
+import AvatarOption from './option/Avatar';
+import BackgroundOption from './option/Background';
+import VoiceOption from './option/Voice';
 
 const Avatar = () => {
 
