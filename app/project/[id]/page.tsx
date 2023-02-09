@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { CSS_TYPE, color } from '@/src/styles/styles';
 import { useSearchParams } from 'next/navigation';
 import { ProjectSlideInterfaceProps } from '@/src/modules/type';
 import SlideWrapper from '@/src/components/project/slide/Slide';
