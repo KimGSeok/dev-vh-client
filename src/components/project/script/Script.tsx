@@ -1,25 +1,103 @@
-import { useState } from 'react';
+'use client';
+
+import { Dispatch, SetStateAction, useState, useEffect, use } from 'react';
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, RadiusButton } from '@/src/styles/styles';
 import ScriptItem from './Item';
 import ControlPanel from './ControlPanel';
 import BottomSheet from '@/src/components/BottomSheet';
+import Speed from './bottomSheet/Speed';
+import PauseSecond from './bottomSheet/PauseSecond';
+import { post } from 'src/hooks/asyncHooks';
+import { checkEmptyObject } from '@/src/modules/validation';
 
-const Script = ({ name }: { name: string }) => {
+interface SlideProps {
+  name: string
+  slideList: any;
+  setSlideList: Dispatch<SetStateAction<object[]>>;
+  currentSlide: any;
+}
 
-  // Hooks
+const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => {
+
+  // Hookslea
   const [bottomSheetTitle, setBottomSheetTitle] = useState<string>('');
+  const [bottomSheetType, setBottomSheetType] = useState<string>(''); // 음성 빠르기, 대기시간
   const [isShowBottomSheet, setIsShowBottomSheet] = useState<boolean>(false);
-
+  const [scriptList, setScriptList] = useState(currentSlide.scriptList);
+  const [scriptUUID, setScriptUUID] = useState<string>('');
+  const [transfer, setTransfer] = useState<boolean>(false); // 슬라이드 변환여부
+  const [speedChildren, setSpeedChildren] = useState(<></>); // React Node
+  const [pauseSecondChildren, setPauseSecondChildren] = useState(<></>); // React Node
+  const [avatarType, setAvatarType] = useState(''); // TTS, Lipsync
+  const [transferResult, setTransferResult] = useState({});
+  
   /* 슬라이드 변환하기 */
   const onClickTransformHandler = () => {
 
+    let prevList = [...slideList];
+    prevList.forEach((el: any, index: number) => {
+      if(el.uuid === currentSlide.uuid){
+        prevList[index].scriptList = scriptList;
+        setSlideList(prevList);
+        setTransfer(true);
+      }
+    });
   }
+
+  useEffect(() => {
+    setSpeedChildren(
+      <Speed
+        scriptUUID={scriptUUID}
+        scriptList={scriptList}
+        setScriptList={setScriptList}
+        setIsShowBottomSheet={setIsShowBottomSheet}
+      />
+    )
+    setPauseSecondChildren(
+      <PauseSecond
+        scriptUUID={scriptUUID}
+        scriptList={scriptList}
+        setScriptList={setScriptList}
+        setIsShowBottomSheet={setIsShowBottomSheet}
+      />
+    )
+  }, [scriptUUID])
+
+  useEffect(() => {
+    if(transfer){
+
+      const onCreateProject = async() =>{
+        const url = 'project/avatar';
+        const option = {};
+        const { status, data } = await post(url, slideList, option);
+
+        if(status === 201 && data.result !== 'failed'){
+          alert('아바타가 생성되었어요.\n아래 활성화된 다운로드 버튼을 통해 확인해보세요!');
+
+          // TTS
+          if(checkEmptyObject(currentSlide.avatar)){
+            setAvatarType('audio');
+          }
+          // Lipsync
+          else{
+            setAvatarType('video');
+          }
+          setTransferResult(data);
+        }
+        else{
+          alert('아바타 생성중에 에러가 발생했어요.\n관리자에게 문의해주세요.');
+        }
+      }
+      onCreateProject();
+      return () => setTransfer(false);
+    }
+  }, [slideList, transfer])
 
   return (
     <ScriptWrapper>
       <HeaderWrapper>
-        <ProjectName>{name}</ProjectName>
+        <ProjectName>프로젝트 명: {name}</ProjectName>
         <AllTransBtn
           padding={'8px 24px'}
           color={color.BasicColor}
@@ -41,28 +119,28 @@ const Script = ({ name }: { name: string }) => {
           </RadiusButton>
         </TitleWrapper>
         <ScriptItemWrapper>
-          <ScriptItem
-            setIsShowBottomSheet={setIsShowBottomSheet}
-            setBottomSheetTitle={setBottomSheetTitle}
-          />
-          <ScriptItem
-            setIsShowBottomSheet={setIsShowBottomSheet}
-            setBottomSheetTitle={setBottomSheetTitle}
-          />
-          <ScriptItem
-            setIsShowBottomSheet={setIsShowBottomSheet}
-            setBottomSheetTitle={setBottomSheetTitle}
-          />
-          <ScriptItem
-            setIsShowBottomSheet={setIsShowBottomSheet}
-            setBottomSheetTitle={setBottomSheetTitle}
-          />
-          <ScriptItem
-            setIsShowBottomSheet={setIsShowBottomSheet}
-            setBottomSheetTitle={setBottomSheetTitle}
-          />
+          {
+            scriptList && scriptList.map((item: any, index: number) => {
+              return(
+                <ScriptItem
+                  key={item.uuid}
+                  scriptInfo={item}
+                  setScriptUUID={setScriptUUID}
+                  scriptList={scriptList}
+                  setScriptList={setScriptList}
+                  setIsShowBottomSheet={setIsShowBottomSheet}
+                  setBottomSheetTitle={setBottomSheetTitle}
+                  setBottomSheetType={setBottomSheetType}
+                />
+              )
+            })
+          }
         </ScriptItemWrapper>
-        <ControlPanel />
+        <ControlPanel
+          name={name}
+          avatarType={avatarType}
+          transferResult={transferResult}
+        />
       </ScriptArea>
 
       {/* Web Bottom Sheet */}
@@ -70,6 +148,7 @@ const Script = ({ name }: { name: string }) => {
         isShowBottomSheet={isShowBottomSheet}
         setIsShowBottomSheet={setIsShowBottomSheet}
         title={bottomSheetTitle}
+        children={bottomSheetType === 'speed' ? speedChildren : pauseSecondChildren}
       /> : ''
     </ScriptWrapper>
   )

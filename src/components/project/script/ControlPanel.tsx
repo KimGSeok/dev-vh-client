@@ -1,7 +1,33 @@
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, ImageElement, ImageWrap, RadiusButton } from '@/src/styles/styles';
+import { onClickBlobDownload } from '@/src/modules/onClickBlobDownload';
+import { getToday, getTodayTime } from '@/src/modules/date';
+import { useState, useEffect } from 'react';
 
-const ControlPanel = () => {
+interface ControlProps{
+  name: string;
+  avatarType: string;
+  transferResult: any;
+}
+
+const ControlPanel = ({ name, avatarType, transferResult }: ControlProps) => {
+
+  // Hooks
+  const [type, setType] = useState(avatarType);
+
+  const onClickDownloadFile = () =>{
+
+    // Parameter
+    const fileName = `${getToday()}_${getTodayTime()}_${name}`;
+    const extension = avatarType === 'audio' ? 'wav' : 'mp4';
+    onClickBlobDownload(transferResult.arrayBuffer, fileName, extension, transferResult.type);
+  }
+
+  useEffect(() => {
+
+    setType(avatarType);
+  }, [avatarType])
+
   return (
     <PanelWrapper>
       <ImageWrap
@@ -16,7 +42,8 @@ const ControlPanel = () => {
           height={28}
           style={{
             width: '100%',
-            height: '100%'
+            height: '100%',
+            opacity: 0.4
           }}
           alt="play button"
         />
@@ -26,7 +53,7 @@ const ControlPanel = () => {
         <ProgressStatus />
       </ProgressWrapper>
       <ProjectLengthWrapper>
-        <PlayTime>01:24</PlayTime>/<ProjectLength>05:36</ProjectLength>
+        <PlayTime>00:00</PlayTime>/<ProjectLength>00:00</ProjectLength>
       </ProjectLengthWrapper>
       <RadiusBtn
         display={'flex'}
@@ -36,6 +63,9 @@ const ControlPanel = () => {
         borderColor={color.Purple}
         padding={'4px 20px'}
         margin={'0 16px 0 0'}
+        opacity={type === 'audio' ? 1 : 0.4}
+        cursor={type === 'audio' ? 'pointer' : 'auto'}
+        onClick={onClickDownloadFile}
       >
         <ImageWrap
           position={'relative'}
@@ -63,6 +93,9 @@ const ControlPanel = () => {
         backgroundColor={color.BasicOrange}
         borderColor={color.BasicOrange}
         padding={'4px 20px'}
+        opacity={type === 'video' ? 1 : 0.4}
+        cursor={type === 'video' ? 'pointer' : 'auto'}
+        onClick={onClickDownloadFile}
       >
         <ImageWrap
           position={'relative'}
@@ -154,7 +187,11 @@ const RadiusBtn = styled(RadiusButton)<CSS_TYPE>(
       fontSize: '0.6rem',
       padding: '4px 12px',
     }
-  }
+  },
+  props => ({
+    opacity: props.opacity,
+    cursor: props.cursor
+  })
 )
 
 export default ControlPanel;

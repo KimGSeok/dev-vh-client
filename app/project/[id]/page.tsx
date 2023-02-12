@@ -8,64 +8,33 @@ import SlideWrapper from '@/src/components/project/slide/Slide';
 import AvatarWrapper from '@/src/components/project/avatar/Avatar';
 import ScriptWrapper from '@/src/components/project/script/Script';
 
-let tempSlideList = [
-  {
-    id: '1',
-    sequence: 1,
-    name: 'slide1',
-    avatar: '',
-    background: '',
-    voice: '',
-    thumbnail: null,
-    createdAt: null
-  },
-  {
-    id: '2',
-    sequence: 2,
-    name: 'slide2',
-    avatar: '',
-    background: '',
-    voice: '',
-    thumbnail: null,
-    createdAt: null
-  },
-  {
-    id: '3',
-    sequence: 3,
-    name: 'slide3',
-    avatar: '',
-    background: '',
-    voice: '',
-    thumbnail: null,
-    createdAt: null
-  },
-  {
-    id: '4',
-    sequence: 4,
-    name: 'slide4',
-    avatar: '',
-    background: '',
-    voice: '',
-    thumbnail: null,
-    createdAt: null
-  },
-  {
-    id: '5',
-    sequence: 5,
-    name: 'slide5',
-    avatar: '',
-    background: '',
-    voice: '',
-    thumbnail: null,
-    createdAt: null
-  },
-]
-
 const ProjectDetail = () => {
 
   // Hooks
-  const [activeSlide, setActiveSlide] = useState<ProjectSlideInterfaceProps>(tempSlideList[0]);
-  const [slideList, setSlideList] = useState<object[]>(tempSlideList);
+  const [activeSlide, setActiveSlide] = useState<ProjectSlideInterfaceProps>({
+    id: '1',
+    sequence: 1,
+    name: '슬라이드1',
+    avatar: '',
+    background: '',
+    voice: '',
+    thumbnail: null,
+    createdAt: null
+  });
+  const [slideList, setSlideList] = useState<object[]>([
+    {
+      id: '1',
+      sequence: 1,
+      name: '슬라이드1',
+      avatar: '',
+      background: '',
+      voice: '',
+      thumbnail: null,
+      createdAt: null
+    }
+  ]);
+  const [avatar, setAvatar] = useState<object>({});
+  const [voice, setVoice] = useState<object>({});
 
   // Parameter
   const name: string = useSearchParams().get('name')!; // non-null assertion
@@ -81,6 +50,10 @@ const ProjectDetail = () => {
         setActiveSlide={setActiveSlide}
       />
       <AvatarWrapper
+        avatar={avatar}
+        setAvatar={setAvatar}
+        voice={voice}
+        setVoice={setVoice}
       />
       <ScriptWrapper
         name={name}

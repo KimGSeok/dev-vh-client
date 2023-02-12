@@ -1,17 +1,17 @@
 import styled from '@emotion/styled';
+import { v4 as uuidV4 } from 'uuid';
 import { CSS_TYPE, color, RadiusButton, ImageElement } from '@/src/styles/styles';
 import { Dispatch, SetStateAction } from 'react';
-import { ProjectSlideInterfaceProps } from '@/src/modules/type';
 import { useRouter } from 'next/navigation';
 
-interface SlideListProps {
-  slideList: object[];
+interface SlideListProps{
+  slideList: any;
   setSlideList: Dispatch<SetStateAction<object[]>>;
-  activeSlide: ProjectSlideInterfaceProps;
-  setActiveSlide: Dispatch<SetStateAction<ProjectSlideInterfaceProps>>;
+  activeSlideIndex: number;
+  setActiveSlideIndex: Dispatch<SetStateAction<number>>;
 }
 
-const Slide = ({ slideList, setSlideList, activeSlide, setActiveSlide }: SlideListProps) => {
+const Slide = ({ slideList, setSlideList, activeSlideIndex, setActiveSlideIndex}: SlideListProps) => {
 
   // Hooks
   const router = useRouter();
@@ -22,17 +22,17 @@ const Slide = ({ slideList, setSlideList, activeSlide, setActiveSlide }: SlideLi
     // Parameter
     const newSlideIndex = slideList.length + 1;
 
-    // TODO 최대 슬라이드 갯수 제한
-
     setSlideList(prev => [...prev, {
       id: newSlideIndex.toString(),
+      uuid: uuidV4(),
       sequence: newSlideIndex,
-      name: `slide${newSlideIndex}`,
-      avatar: '',
-      background: '',
-      voice: '',
+      name: `슬라이드${newSlideIndex}`,
+      avatar: {},
+      voice: {},
+      scriptList : [
+        { uuid: uuidV4(), text: '', speed: 1.0, pauseSecond: 0.5 }
+      ],
       thumbnail: null,
-      createdAt: null
     }])
   }
 
@@ -65,10 +65,10 @@ const Slide = ({ slideList, setSlideList, activeSlide, setActiveSlide }: SlideLi
               return (
                 <SlideList key={index}>
                   <SlideBackground
-                    onClick={() => setActiveSlide(item)}
-                    background={activeSlide.id === item.id ? color.White : color.ThumbnailColor}
+                    onClick={() => setActiveSlideIndex(index)}
+                    background={slideList[activeSlideIndex].id === item.id ? color.White : color.ThumbnailColor}
                   />
-                  <SlideName color={activeSlide.id === item.id ? color.White : ''}>{item.name}</SlideName>
+                  <SlideName color={slideList[activeSlideIndex].id === item.id ? color.White : ''}>{item.name}</SlideName>
                 </SlideList>
               )
             }) : ''

@@ -19,14 +19,13 @@ const BottomSheet = ({ isShowBottomSheet, setIsShowBottomSheet, title, children 
 
   return (
     <SheetWrapper
-      top={isShowBottomSheet ? '0' : '100vh'}
-      height={isShowBottomSheet ? '100%' : '0'}
+      display={isShowBottomSheet ? 'block' : 'none'}
     >
       <SheetBackground />
       <SheetArea
         ref={sheetRef}
-        height={isShowBottomSheet ? '25%' : '0'}
-        minHeight={isShowBottomSheet ? '25%' : '0'}
+        height={isShowBottomSheet ? '30%' : '0%'}
+        minHeight={isShowBottomSheet ? '30%' : '0%'}
         padding={isShowBottomSheet ? '20px' : '0'}
       >
         <TitleWrapper
@@ -58,12 +57,11 @@ const SheetWrapper = styled.div<CSS_TYPE>(
     position: 'absolute',
     width: '100%',
     height: '100%',
-    transition: 'all 0.3s',
+    top: 0,
     zIndex: 2
   },
   props => ({
-    top: props.top,
-    height: props.height
+    display: props.display
   })
 )
 const SheetBackground = styled.div<CSS_TYPE>(
@@ -84,7 +82,7 @@ const SheetArea = styled.div<CSS_TYPE>(
     backgroundColor: color.White,
     opacity: '1',
     borderRadius: '16px',
-    transition: 'all 0.45s'
+    transition: 'all 0.3s ease 0s'
   },
   props => ({
     height: props.height,
@@ -94,6 +92,8 @@ const SheetArea = styled.div<CSS_TYPE>(
 )
 const TitleWrapper = styled.div<CSS_TYPE>(
   {
+    position: 'relative',
+    height: '20%',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -107,6 +107,8 @@ const Title = styled.div({
   color: color.BasicColor
 })
 const ChildrenWrapper = styled.div({
+  position: 'relative',
+  height: 'calc(80% - 12px)',
   margin: '8px 0 0 0',
 })
 

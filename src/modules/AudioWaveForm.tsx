@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { color, CSS_TYPE, pulse } from "@/src/styles/styles";
+import { color, CSS_TYPE, pulseKeyFrames } from "@/src/styles/styles";
 
 const AudioWaveForm = () => {
 
@@ -34,7 +34,7 @@ const Wave = styled.svg({
 const Path = styled.path<CSS_TYPE>(
   {},
   props => ({
-    animation: `${pulse} 1s infinite`,
+    animation: `${pulseKeyFrames} 1s infinite`,
     animationDelay: `${props.animationDelay && parseInt(props.animationDelay) * 0.15}s`
   })
 )

@@ -1,40 +1,55 @@
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, ImageElement, ImageWrap } from '@/src/styles/styles';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import AvatarOption from './option/Avatar';
-import BackgroundOption from './option/Background';
 import VoiceOption from './option/Voice';
+import { checkEmptyObject } from '@/src/modules/validation';
 
-const Avatar = () => {
+interface AvatarProps {
+  slideList: any;
+  setSlideList: Dispatch<SetStateAction<any>>;
+  activeSlideIndex: number;
+}
+
+const Avatar = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps) => {
 
   // Hooks
-  const [showOption, setShowOption] = useState('avatar'); // 현재 선택 된 아바타 옵션
+  const [showOption, setShowOption] = useState('avatar'); // 현재 가상인간의 옵션
+
+  // Parameter
+  const avatar = slideList[activeSlideIndex].avatar;
+  const voice = slideList[activeSlideIndex].voice;
 
   return (
     <AvatarWrapper>
       <ImageWrapper>
         <ImageWrap
           position={'absolute'}
-          width={'100%'}
-          height={'100%'} // 90%
-          bottom={'0'}
+          width={checkEmptyObject(avatar) ? '100%' : '70%'}
+          height={checkEmptyObject(avatar) ? '90%' : '100%'}
+          margin={checkEmptyObject(avatar) ? '0' : '0 15%'}
+          bottom={checkEmptyObject(avatar) ? '0' : '1px'}
         >
           <ImageElement
-            src="/images/avatar/unsplash_1.jpg"
+            src={checkEmptyObject(avatar) ? '/images/avatar/human_figure.svg' : avatar.imageFileUrl}
             fill
             style={{
               inset: 'auto',
-              objectFit: 'cover', // contain
+              objectFit: `${checkEmptyObject(avatar) ? 'contain' : 'cover'}`, // contain
               borderTopRightRadius: '16px',
               borderTopLeftRadius: '16px',
             }}
-            alt="human figure"
+            alt={checkEmptyObject(avatar) ? 'human figure' : avatar.name}
           />
         </ImageWrap>
       </ImageWrapper>
       <AvatarDataWrapper>
-        <AvatarData>아바타 선택</AvatarData>
-        <AvatarData>목소리 미선택</AvatarData>
+        <AvatarData
+          isActive={checkEmptyObject(avatar)}
+        >{checkEmptyObject(avatar) ? '아바타 미선택' : '아바타: ' + avatar.name}</AvatarData>
+        <AvatarData
+          isActive={checkEmptyObject(voice)}
+        >{checkEmptyObject(voice) ? '목소리 미선택' : '목소리: ' + voice.name}</AvatarData>
       </AvatarDataWrapper>
       <AvatarDecorateWrapper>
         <OptionWrapper>
@@ -50,7 +65,7 @@ const Avatar = () => {
                 textAlign={'center'}
               >
                 <ImageElement
-                  src="/images/default_human.svg"
+                  src="/images/avatar/default_human.svg"
                   width={24}
                   height={24}
                   style={{
@@ -76,7 +91,7 @@ const Avatar = () => {
                 textAlign={'center'}
               >
                 <ImageElement
-                  src="/images/default_human.svg"
+                  src="/images/avatar/default_human.svg"
                   width={24}
                   height={24}
                   style={{
@@ -95,10 +110,10 @@ const Avatar = () => {
           <OptionItemWrapper>
 
             {/* 아바타 선택 */}
-            {showOption === 'avatar' ? <AvatarOption /> : ''}
+            {showOption === 'avatar' ? <AvatarOption slideList={slideList} setSlideList={setSlideList} activeSlideIndex={activeSlideIndex} /> : ''}
 
             {/* 목소리 선택 */}
-            {showOption === 'voice' ? <VoiceOption /> : ''}
+            {showOption === 'voice' ? <VoiceOption slideList={slideList} setSlideList={setSlideList} activeSlideIndex={activeSlideIndex} /> : ''}
 
           </OptionItemWrapper>
         </OptionWrapper>
@@ -117,7 +132,7 @@ const ImageWrapper = styled.div({
   width: '100%',
   height: '42.5%',
   position: 'relative',
-  backgroundImage: `url('/images/tile_background.svg')`,
+  backgroundImage: `url('/images/avatar/tile_background.svg')`,
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
   borderTopLeftRadius: '16px',
@@ -143,8 +158,8 @@ const AvatarData = styled.div<CSS_TYPE>(
     fontSize: '0.95rem'
   },
   props => ({
-    color: props.color ? props.color : color.ThumbnailColor,
-    border: props.border ? props.border : `1px solid ${color.ModernGrey}`
+    color: props.isActive ? color.ThumbnailColor : color.BasicColor,
+    border: props.isActive ? `1px solid ${color.ModernGrey}` : `1px solid ${color.BasicColor}`
   })
 )
 const OptionWrapper = styled.div({

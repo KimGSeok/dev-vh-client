@@ -1,7 +1,7 @@
 'use client'; // Temporary
 
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, RadiusButton, ImageElement, VerticalBar } from '@/src/styles/styles';
+import { CSS_TYPE, color, RadiusButton, ImageElement, VerticalBar, shaking } from '@/src/styles/styles';
 import { useRouter } from 'next/navigation';
 
 const Home = () => {
@@ -11,52 +11,38 @@ const Home = () => {
 
   return (
     <Page>
-      <DashboardWrap>
-        <DashboardTitle>Virtual Human Studio</DashboardTitle>
-        <DashboardDescriptionWrap>
-          <VerticalBar />
-          <DescriptionTitle>높은 생산성과 편의성</DescriptionTitle>
-          <DescriptionContent>
-            <div>Virtual twin 제작에 필요한 자원과 비용을 월등히 줄임</div>
-            <div>약 3시간의 스튜디오 작업을 통해 virtual twin 제작 가능</div>
-            <div>&#8594; 말하는 영상 5분, 음성 녹음 100 문장</div>
-          </DescriptionContent>
-        </DashboardDescriptionWrap>
-        <DashboardDescriptionWrap>
-          <VerticalBar />
-          <DescriptionTitle>낮은 가격</DescriptionTitle>
-          <DescriptionContent>
-            경쟁사 대비 virtual twin 제작 비용이 낮음
-          </DescriptionContent>
-        </DashboardDescriptionWrap>
-        <DashboardDescriptionWrap>
-          <VerticalBar />
-          <DescriptionTitle>뛰어난 퀄리티</DescriptionTitle>
-          <DescriptionContent>
-            <div>VFX 못지않은 고화질의 자연스러운 합성 퀄리티</div>
-            <div>하지만, 제작 비용은 월등히 낮음</div>
-          </DescriptionContent>
-        </DashboardDescriptionWrap>
-        <DashboardDescriptionWrap>
-          <VerticalBar />
-          <DescriptionTitle>Cross-linual TTS</DescriptionTitle>
-          <DescriptionContent>
-            <div>같은 목소리로 다양한 언어&#40;한국어, 영어, 일본어 등&#41;을 합성 할 수 있음</div>
-            <div>언어에 상관없이 입모양 합성이 가능함</div>
-          </DescriptionContent>
-        </DashboardDescriptionWrap>
-      </DashboardWrap>
+      <DashboardWrapper>
+        <TitleWraaper>
+          <DashboardTitle>
+            회원님 스튜디오에 오신 걸 환영해요!
+            <ImageElement
+              src={'/icons/waving_hand.svg'}
+              css={shaking}
+              width={28}
+              height={28}
+              alt={'waving_hand'}
+              style={{
+                margin: '0 0 0 8px',
+              }}
+            />
+          </DashboardTitle>
+          <DashboardSubTitle>음성녹음과 영상 촬영을 통해서 나만의 아바타를 만들어 볼 수 있어요.</DashboardSubTitle>
+        </TitleWraaper>
+        {/* <DashboardArea>
+        준비중이에요.
+        </DashboardArea> */}
+      </DashboardWrapper>
       <ServicePreviewWrap>
         <ServicePreviewEl
           backgroundColor={'#524946'}
           margin={'0 0 24px 0'}
         >
-          <ServiceName>아바타&#40;Avatar&#41;</ServiceName>
+          <ServiceName>가상 인간&#40;Virtual Human&#41;</ServiceName>
           <ServiceDescription>
-            실제 사람의 얼굴과 음성을 가지고 디지털 버전의 사람을 만드는 것, 그렇게 만들어 진 결과물을 아바타&#40;avatar&#41;라고 합니다.<br />
-            이러한 아바타는 엔터테인먼트, 교육 및 연구와 같은 다양한 목적으로 사용할 수 있습니다.<br />
-            아바타&#40;avatar&#41;의 궁극적인 목표는 실제 사람과 디지털 버전의 사람의 외모와 행동 모두에서 구별할 수 없을 정도의
-            사실적인 아바타&#40;avatar&#41;를 만드는 것입니다.
+            실제 사람의 얼굴과 음성을 가지고 디지털 버전의 사람을 만드는 것, 그렇게 만들어 진 결과물을 가상 인간&#40;Virtual Human&#41;이라고 합니다.<br />
+            이러한 가상 인간은 엔터테인먼트, 교육 및 연구와 같은 다양한 목적으로 사용할 수 있습니다.<br />
+            가상 인간&#40;Virtual Human&#41;의 궁극적인 목표는 실제 사람과 디지털 버전의 사람의 외모와 행동 모두에서 구별할 수 없을 정도의
+            사실적인 가상 인간&#40;Virtual Human&#41;를 만드는 것입니다.
           </ServiceDescription>
           <RadiusBtn
             position={'absolute'}
@@ -112,70 +98,71 @@ const Page = styled.div({
   height: '100%',
   position: 'relative',
 })
-const DashboardWrap = styled.div({
-  width: '55%'
+const DashboardWrapper = styled.div({
+  width: '55%',
+  height: '100%',
+  position: 'relative'
+})
+const TitleWraaper = styled.div({
+  height: '10%',
 })
 const DashboardTitle = styled.div({
-  fontSize: '2.2rem',
+  fontSize: '2rem',
   fontWeight: '700',
-  margin: '72px 0 32px 0',
+  padding: '16px 0 4px 0',
+  color: color.BasicColor,
 
   '@media screen and (max-width: 1440px)': {
-    fontSize: '2.1rem',
-  },
-
-  '@media screen and (max-width: 1023px)': {
     fontSize: '1.9rem',
   },
 
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '1.75rem',
+  },
+
   '@media screen and (max-width: 960px)': {
-    fontSize: '1.8rem',
+    fontSize: '1.6rem',
   }
 })
-const DashboardDescriptionWrap = styled.div({
-  display: 'flex',
-  margin: '0 0 24px 0'
+const DashboardSubTitle = styled.div({
+  fontSize: '1.05rem',
+  fontWeight: '400',
+  padding: '4px 0',
+  color: color.DeActiveColor,
+
+  '@media screen and (max-width: 1440px)': {
+    fontSize: '0.9rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '0.8rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    fontSize: '0.7rem',
+  }
 })
-const DescriptionTitle = styled.div({
-  width: '20%',
-  fontSize: '1.2rem',
+const DashboardArea = styled.div({
+  height: 'calc(90% - 16px)',
+  fontSize: '1.1rem',
   fontWeight: '500',
-  margin: '0 8px',
+  color: color.BasicBlack,
+  margin: '16px 24px 0 0',
+  padding: '16px',
+  border: `1px solid ${color.ThumbnailColor}`,
+  borderRadius: '16px',
+
 
   '@media screen and (max-width: 1440px)': {
-    width: '25%',
-    fontSize: '1.1rem',
+    fontSize: '0.9rem',
   },
 
   '@media screen and (max-width: 1023px)': {
-    width: '18%',
-    fontSize: '1rem',
+    fontSize: '0.8rem',
   },
 
   '@media screen and (max-width: 960px)': {
-    width: '15%',
-    fontSize: '0.9rem',
-  }
-})
-const DescriptionContent = styled.div({
-  fontSize: '1.3rem',
-  fontWeight: '300',
-  margin: '0 8px',
-
-  '& > div': {
-    margin: '0 0 4px 0'
-  },
-
-  '@media screen and (max-width: 1440px)': {
-    fontSize: '1.1rem',
-  },
-
-  '@media screen and (max-width: 1023px)': {
-    fontSize: '1rem',
-  },
-
-  '@media screen and (max-width: 960px)': {
-    fontSize: '0.9rem',
+    fontSize: '0.7rem',
   }
 })
 const ServicePreviewWrap = styled.div({

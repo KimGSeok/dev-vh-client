@@ -86,7 +86,7 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
     formData.append('avatarType', type);
     formData.append('avatarId', avatarId);
 
-    const url = 'http://221.151.178.171:30001/avatar/upload';
+    const url = 'avatar/upload';
     const option = {
       headers: {
         "Contest-Type": "multipart/form-data",
@@ -118,9 +118,7 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
 
     const getData = async () => {
 
-      const script = await get('https://api.cidev.kr/avatar/getScripts', 'no-cache');
-      // const script = await get('http://221.151.178.171:30001/avatar/getScripts', 'no-cache');
-      // const script = await get('http://localhost:30001/avatar/getScripts', 'no-cache');
+      const script = await get('avatar/getScripts', 'no-cache');
       setScriptList(script);
       setMounted(true);
     }

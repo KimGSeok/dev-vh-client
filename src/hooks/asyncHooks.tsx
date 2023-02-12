@@ -1,12 +1,14 @@
 import axios from 'axios';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 /**
  * Get
  * Author: Kim Gyeong Seok
  */
 export const get = async (url: string, cache: RequestCache) => {
   try {
-    const response = await fetch(url, { cache: cache })
+    const response = await fetch(`${API_URL}/${url}`, { cache: cache })
     return response.json();
   } catch (error) {
     return error;
@@ -20,21 +22,21 @@ export const get = async (url: string, cache: RequestCache) => {
 export const post = async (url: string, data: any, option: object) => {
   try {
 
-    axios.post(
-      url,
+    const result = axios.post(
+      `${API_URL}/${url}`,
       data,
       option
     ).then((response: any) => {
 
-      console.log(response);
-
+      // Service Logic
       return response;
     }).catch((error: any) => {
-
-      console.log(error);
-
+      
+      // Error Handle
+      console.error(error);
       return error;
     })
+    return result;
   } catch (error) {
     return error;
   }

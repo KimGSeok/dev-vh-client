@@ -45,9 +45,11 @@ export type CSS_TYPE = {
   hoveropacity?: string | number;
   cursor?: string;
   zIndex?: string | number;
+  animation?: string;
   animationDelay?: string;
 
   /* Etc */
+  isActive?: boolean;
   RadioChecked?: boolean;
 }
 
@@ -158,6 +160,7 @@ export const ImageElement = styled(Image)<CSS_TYPE>(
     right: props.right,
     bottom: props.bottom,
     opacity: props.opacity,
+    animation: props.animation,
     transform: props.transform,
     cursor: props.cursor,
 
@@ -267,7 +270,7 @@ export const Warning = styled.div<CSS_TYPE>(
 )
 
 /* Animation */
-const fadeUpAnimation = keyframes`
+const fadeUpkeyframes = keyframes`
   from {
     opacity: 0;
     transform: translateX(-50%) translateY(calc(-50% + 50px));
@@ -281,11 +284,11 @@ const fadeUpAnimation = keyframes`
 
 export const fadeUp = css`
   animation-duration: 0.65s;
-  animation-name: ${fadeUpAnimation};
+  animation-name: ${fadeUpkeyframes};
   animation-timing-function: ease;
 `
 
-export const pulse = keyframes`
+export const pulseKeyFrames = keyframes`
 	0% {
 		transform: scaleY(1);
 		transform-origin: 50% 50%;
@@ -300,4 +303,25 @@ export const pulse = keyframes`
 		transform: scaleY(1);
 		transform-origin: 50% 50%;
 	}
+`
+
+const shakingKeyframes = keyframes`
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(10deg); }
+  20% { transform: rotate(15deg); }
+  30% { transform: rotate(20deg); }
+  40% { transform: rotate(12deg); }
+  50% { transform: rotate(0deg); }
+  60% { transform: rotate(-10deg); }
+  70% { transform: rotate(-15deg); }
+  80% { transform: rotate(-20deg); }
+  90% { transform: rotate(-12deg); }
+  100% { transform: rotate(0deg); }
+`
+
+export const shaking = css`
+  animation-duration: 1s;
+  animation-name: ${shakingKeyframes};
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
 `
