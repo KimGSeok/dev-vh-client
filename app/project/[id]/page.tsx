@@ -43,21 +43,6 @@ const ProjectDetail = () => {
 
   return (
     <MainComponent>
-      <SlideWrapper
-        slideList={slideList}
-        setSlideList={setSlideList}
-        activeSlide={activeSlide}
-        setActiveSlide={setActiveSlide}
-      />
-      <AvatarWrapper
-        avatar={avatar}
-        setAvatar={setAvatar}
-        voice={voice}
-        setVoice={setVoice}
-      />
-      <ScriptWrapper
-        name={name}
-      />
     </MainComponent>
   )
 }
