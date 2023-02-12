@@ -124,9 +124,10 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
               return(
                 <ScriptItem
                   key={item.uuid}
+                  indexKey={index}
                   scriptInfo={item}
-                  setScriptUUID={setScriptUUID}
                   scriptList={scriptList}
+                  setScriptUUID={setScriptUUID}
                   setScriptList={setScriptList}
                   setIsShowBottomSheet={setIsShowBottomSheet}
                   setBottomSheetTitle={setBottomSheetTitle}

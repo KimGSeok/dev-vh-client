@@ -4,7 +4,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { Dispatch, ChangeEvent, SetStateAction, useState, useEffect, useRef } from 'react';
 
 interface ScriptProps {
-  index: number;
+  indexKey: number;
   scriptInfo: any;
   scriptList: any;
   setScriptUUID: Dispatch<SetStateAction<string>>;
@@ -14,7 +14,7 @@ interface ScriptProps {
   setBottomSheetType: Dispatch<SetStateAction<string>>;
 }
 
-const ScriptItem = ({ index, scriptInfo, setScriptUUID, scriptList, setScriptList, setIsShowBottomSheet, setBottomSheetTitle, setBottomSheetType }: ScriptProps) => {
+const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScriptList, setIsShowBottomSheet, setBottomSheetTitle, setBottomSheetType }: ScriptProps) => {
   
   // Hooks
   const scriptRef = useRef<any>(null);
@@ -132,7 +132,7 @@ const ScriptItem = ({ index, scriptInfo, setScriptUUID, scriptList, setScriptLis
         />
       </ImageWrap>
       {
-        index !== 0 && scriptList.length > 1 ?
+        indexKey !== 0 && scriptList.length > 1 ?
         <ImageWrap
           position={'relative'}
           height={'100%'}
