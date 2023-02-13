@@ -10,6 +10,8 @@ import Speed from './bottomSheet/Speed';
 import PauseSecond from './bottomSheet/PauseSecond';
 import { post } from 'src/hooks/asyncHooks';
 import { checkEmptyObject } from '@/src/modules/validation';
+import { useSetRecoilState } from 'recoil';
+import { PageLoadingAtom } from 'src/recoil/atom';
 
 interface SlideProps {
   name: string
@@ -20,7 +22,7 @@ interface SlideProps {
 
 const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => {
 
-  // Hookslea
+  // Hooks
   const [bottomSheetTitle, setBottomSheetTitle] = useState<string>('');
   const [bottomSheetType, setBottomSheetType] = useState<string>(''); // 음성 빠르기, 대기시간
   const [isShowBottomSheet, setIsShowBottomSheet] = useState<boolean>(false);
@@ -31,6 +33,9 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
   const [pauseSecondChildren, setPauseSecondChildren] = useState(<></>); // React Node
   const [avatarType, setAvatarType] = useState(''); // TTS, Lipsync
   const [transferResult, setTransferResult] = useState({});
+
+  // Recoil
+  const setLoading = useSetRecoilState(PageLoadingAtom);
   
   /* 슬라이드 변환하기 */
   const onClickTransformHandler = () => {
@@ -68,6 +73,9 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
     if(transfer){
 
       const onCreateProject = async() =>{
+
+        setLoading(true);
+
         const url = 'project/avatar';
         const option = {};
         const { status, data } = await post(url, slideList, option);
@@ -84,6 +92,8 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
             setAvatarType('video');
           }
           setTransferResult(data);
+
+          setLoading(false);
         }
         else{
           alert('아바타 생성중에 에러가 발생했어요.\n관리자에게 문의해주세요.');

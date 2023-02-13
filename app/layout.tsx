@@ -1,27 +1,36 @@
 'use client'; // Temporary
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
+import Head from "./head";
 import styled from "@emotion/styled";
 import { usePathname } from 'next/navigation';
+import { RecoilRoot } from 'recoil';
 import { color, globalStyles } from "@/src/styles/styles";
 import SideNavigation from "@/src/components/layout/SideNavigaiton";
-import Head from "./head";
+import PageLoading from "@/src/components/loading/PageLoading";
 
 const Layout = ({ children }: { children: ReactNode }) => {
 
   // Hooks
+  const [mount, setMount] = useState<boolean>(false);
   const pathName = usePathname();
   const firstPathName = pathName?.split('/')[1];
   const secondPathName = pathName?.split('/')[2];
+
+  useEffect(() => {
+    setMount(true);
+    return () => setMount(false);
+  }, [])
 
   return (
     <Html>
       <Head title={'VH Studio'} />
       <Body>
-        <AppLayout>
-          {globalStyles}
-          {
-            firstPathName === 'project' && secondPathName ?
+        <RecoilRoot>
+          <AppLayout>
+            {globalStyles}
+            {
+              firstPathName === 'project' && secondPathName ?
               <>{children}</>
               :
               <>
@@ -30,11 +39,13 @@ const Layout = ({ children }: { children: ReactNode }) => {
                   {children}
                 </MainChildren>
               </>
-          }
-        </AppLayout>
-        <Portal id="portal" />
-        <div id="alert"></div>
-        <div id="confirm"></div>
+            }
+          </AppLayout>
+          { mount && <PageLoading /> }
+          <Portal id="portal" />
+          <div id="alert"></div>
+          <div id="confirm"></div>
+        </RecoilRoot>
       </Body>
     </Html>
   )

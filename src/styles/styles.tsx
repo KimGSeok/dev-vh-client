@@ -186,6 +186,7 @@ export const color = {
   DarkWhite: '#FAFAFA',
   DeActiveColor: '#888888',
   BrightBlue: '#0075FF',
+  SkyBlue: '#3498db',
   AliceBlue: '#F2F7FF',
   OverallProgressColor: '#F1E3FF',
 }
@@ -323,5 +324,22 @@ export const shaking = css`
   animation-duration: 1s;
   animation-name: ${shakingKeyframes};
   animation-timing-function: ease;
+  animation-iteration-count: infinite;
+`
+
+const spinKeyframes = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`
+
+export const spin = css`
+  /* animation: spin 1s linear infinite; */
+  animation-name: ${spinKeyframes};
+  animation-duration: 1s;
+  animation-timing-function: linear;
   animation-iteration-count: infinite;
 `

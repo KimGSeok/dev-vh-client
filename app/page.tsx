@@ -1,7 +1,7 @@
 'use client'; // Temporary
 
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, RadiusButton, ImageElement, VerticalBar, shaking } from '@/src/styles/styles';
+import { CSS_TYPE, color, RadiusButton, ImageElement, shaking } from '@/src/styles/styles';
 import { useRouter } from 'next/navigation';
 
 const Home = () => {

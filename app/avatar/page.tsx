@@ -1,7 +1,9 @@
 'use client';
 
 import styled from "@emotion/styled";
-import { useState } from 'react';
+import { useState,} from 'react';
+import { useRecoilState } from 'recoil';
+import { PageLoadingAtom } from "src/recoil/atom";
 import Filter from "@/src/components/Filter";
 import PageTitle from "@/src/components/layout/PageTitle";
 import Search from "@/src/components/Search";
@@ -9,7 +11,6 @@ import { CSS_TYPE, color } from "@/src/styles/styles";
 import Portal from '@/src/components/Portal';
 import Modal from '@/src/components/Modal';
 import ModalContent from '@/src/components/avatar/ModalContent';
-
 const Avatar = () => {
 
   // Hooks
@@ -25,113 +26,115 @@ const Avatar = () => {
     />;
 
   return (
-    <MainComponent>
-      <PageTitle
-        title={'아바타'}
-        registerBtn={true}
-        btn={'생성하기'}
-        event={'onClick'}
-        func={() => { setShowModal(true) }}
-      />
-      <Filter />
-      <Search />
-      <AvatarWrapper>
-        <HeaderWrapper>
-          <ProjectLists>
-            <ProjectList
-              fontSize={'1rem'}
-              borderTop={`1px solid ${color.ModernGrey}`}
-              borderBottom={`1px solid ${color.ModernGrey}`}
-            >
-              <ListInfo
-                width={'10%'}
-              >이미지</ListInfo>
-              <ListInfo
-                width={'25%'}
-              >프로젝트명</ListInfo>
-              <ListInfo
-                width={'15%'}
-              >아바타 명</ListInfo>
-              <ListInfo
-                width={'15%'}
-              >프로젝트 길이</ListInfo>
-              <ListInfo
-                width={'15%'}
-              >최근 수정날짜</ListInfo>
-              <ListInfo
-                width={'15%'}
-              >상태</ListInfo>
-            </ProjectList>
-          </ProjectLists>
-        </HeaderWrapper>
-        <ListWrapper>
-          <ProjectLists>
-            {
-              list && list.length > 0 ?
-                list.map((item: any, index: any) => {
-                  return (
-                    <ProjectList key={index}>
-                      <ListInfo
-                        width={'10%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >이미지
-                      </ListInfo>
-                      <ListInfo
-                        width={'25%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >이미지
-                      </ListInfo>
-                      <ListInfo
-                        width={'15%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >이미지
-                      </ListInfo>
-                      <ListInfo
-                        width={'15%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >이미지
-                      </ListInfo>
-                      <ListInfo
-                        width={'15%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >이미지
-                      </ListInfo>
-                      <ListInfo
-                        width={'15%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >상태
-                      </ListInfo>
-                    </ProjectList>
-                  )
-                }) : <EmptyList>생성된 아바타가 존재하지 않습니다.</EmptyList>
-            }
-          </ProjectLists>
-        </ListWrapper>
-      </AvatarWrapper>
-      {
-        showModal &&
-        <Portal>
-          <Modal
-            title={'아바타 생성하기'}
-            modal={showModal}
-            setModal={setShowModal}
-            children={avatarChildren}
-          />
-        </Portal>
-      }
-    </MainComponent>
+    <>
+      <MainComponent>
+        <PageTitle
+          title={'아바타'}
+          registerBtn={true}
+          btn={'생성하기'}
+          event={'onClick'}
+          func={() => { setShowModal(true) }}
+        />
+        <Filter />
+        <Search />
+        <AvatarWrapper>
+          <HeaderWrapper>
+            <ProjectLists>
+              <ProjectList
+                fontSize={'1rem'}
+                borderTop={`1px solid ${color.ModernGrey}`}
+                borderBottom={`1px solid ${color.ModernGrey}`}
+              >
+                <ListInfo
+                  width={'10%'}
+                >이미지</ListInfo>
+                <ListInfo
+                  width={'25%'}
+                >프로젝트명</ListInfo>
+                <ListInfo
+                  width={'15%'}
+                >아바타 명</ListInfo>
+                <ListInfo
+                  width={'15%'}
+                >프로젝트 길이</ListInfo>
+                <ListInfo
+                  width={'15%'}
+                >최근 수정날짜</ListInfo>
+                <ListInfo
+                  width={'15%'}
+                >상태</ListInfo>
+              </ProjectList>
+            </ProjectLists>
+          </HeaderWrapper>
+          <ListWrapper>
+            <ProjectLists>
+              {
+                list && list.length > 0 ?
+                  list.map((item: any, index: any) => {
+                    return (
+                      <ProjectList key={index}>
+                        <ListInfo
+                          width={'10%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >이미지
+                        </ListInfo>
+                        <ListInfo
+                          width={'25%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >이미지
+                        </ListInfo>
+                        <ListInfo
+                          width={'15%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >이미지
+                        </ListInfo>
+                        <ListInfo
+                          width={'15%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >이미지
+                        </ListInfo>
+                        <ListInfo
+                          width={'15%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >이미지
+                        </ListInfo>
+                        <ListInfo
+                          width={'15%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >상태
+                        </ListInfo>
+                      </ProjectList>
+                    )
+                  }) : <EmptyList>생성된 아바타가 존재하지 않습니다.</EmptyList>
+              }
+            </ProjectLists>
+          </ListWrapper>
+        </AvatarWrapper>
+        {
+          showModal &&
+          <Portal>
+            <Modal
+              title={'아바타 생성하기'}
+              modal={showModal}
+              setModal={setShowModal}
+              children={avatarChildren}
+            />
+          </Portal>
+        }
+      </MainComponent>
+    </>
   )
 }
 
