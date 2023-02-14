@@ -36,13 +36,13 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
 
   // Recoil
   const setLoading = useSetRecoilState(PageLoadingAtom);
-  
+
   /* 슬라이드 변환하기 */
   const onClickTransformHandler = () => {
 
     let prevList = [...slideList];
     prevList.forEach((el: any, index: number) => {
-      if(el.uuid === currentSlide.uuid){
+      if (el.uuid === currentSlide.uuid) {
         prevList[index].scriptList = scriptList;
         setSlideList(prevList);
         setTransfer(true);
@@ -70,9 +70,9 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
   }, [scriptUUID])
 
   useEffect(() => {
-    if(transfer){
 
-      const onCreateProject = async() =>{
+    if (transfer) {
+      const onCreateProject = async () => {
 
         setLoading(true);
 
@@ -80,27 +80,30 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
         const option = {};
         const { status, data } = await post(url, slideList, option);
 
-        if(status === 201 && data.result !== 'failed'){
+        if (status === 201 && data.result !== 'failed') {
           alert('아바타가 생성되었어요.\n아래 활성화된 다운로드 버튼을 통해 확인해보세요!');
 
           // TTS
-          if(checkEmptyObject(currentSlide.avatar)){
+          if (checkEmptyObject(currentSlide.avatar)) {
             setAvatarType('audio');
           }
           // Lipsync
-          else{
+          else {
             setAvatarType('video');
           }
-          setTransferResult(data);
 
+          setTransferResult(data);
           setLoading(false);
+          setTransfer(false);
         }
-        else{
+        else {
           alert('아바타 생성중에 에러가 발생했어요.\n관리자에게 문의해주세요.');
+          setLoading(false);
+          setTransfer(false);
         }
       }
+
       onCreateProject();
-      return () => setTransfer(false);
     }
   }, [slideList, transfer])
 
@@ -131,7 +134,7 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
         <ScriptItemWrapper>
           {
             scriptList && scriptList.map((item: any, index: number) => {
-              return(
+              return (
                 <ScriptItem
                   key={item.uuid}
                   indexKey={index}

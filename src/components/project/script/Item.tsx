@@ -1,7 +1,7 @@
+import { Dispatch, ChangeEvent, FormEvent, SetStateAction, useState, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from '@/src/styles/styles';
 import { v4 as uuidV4 } from 'uuid';
-import { Dispatch, ChangeEvent, SetStateAction, useState, useEffect, useRef } from 'react';
 
 interface ScriptProps {
   indexKey: number;
@@ -15,7 +15,7 @@ interface ScriptProps {
 }
 
 const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScriptList, setIsShowBottomSheet, setBottomSheetTitle, setBottomSheetType }: ScriptProps) => {
-  
+
   // Hooks
   const scriptRef = useRef<any>(null);
   const [mount, setMount] = useState<boolean>(false);
@@ -38,28 +38,49 @@ const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScript
     // setScriptUUID(scriptInfo.uuid);
   }
 
-  const onClickAppendScriptHandler = () =>{
+  const onClickAppendScriptHandler = () => {
     setScriptList((prev: any) => [...prev, { uuid: uuidV4(), text: '', speed: 1.0, pauseSecond: 0.5 }]);
   }
 
-  const onClickRemoveScriptHandler = (args: any) =>{
-    if(scriptList.length > 1)
+  const onClickRemoveScriptHandler = (args: any) => {
+    if (scriptList.length > 1)
       setScriptList(scriptList.filter((el: any) => (el.uuid !== args.uuid)));
   }
 
-  const onInputScriptHandler = (e: ChangeEvent<HTMLInputElement>) =>{
+  const onChangeInputScriptHandler = (e: ChangeEvent<HTMLInputElement>) => {
 
     let prevList = [...scriptList];
     const script = e.target.value;
 
     scriptList.forEach((el: any, index: number) => {
-      if(el.uuid === scriptInfo.uuid){
+      if (el.uuid === scriptInfo.uuid) {
         prevList[index].text = script;
         setScriptList(prevList);
       }
     });
 
     setValue(e.target.value);
+  }
+
+  const onInputScriptHandler = (e: FormEvent<HTMLDivElement>) => {
+
+    console.log(scriptRef);
+    console.log(scriptRef.current);
+    console.log(scriptRef.current.client);
+    console.log(scriptRef.current.offsetHeight);
+    console.log(scriptRef.current.clientHeight);
+
+    // let prevList = [...scriptList];
+    // const script = e.target.value;
+
+    // scriptList.forEach((el: any, index: number) => {
+    //   if (el.uuid === scriptInfo.uuid) {
+    //     prevList[index].text = script;
+    //     setScriptList(prevList);
+    //   }
+    // });
+
+    // setValue(e.target.value);
   }
 
   useEffect(() => {
@@ -89,11 +110,17 @@ const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScript
       </ImageWrap>
       <Script
         ref={scriptRef}
+        placeholder={'슬라이드 텍스트를 입력해주세요.'}
+        onInput={(e) => onInputScriptHandler(e)}
+        contentEditable={true}
+      />
+      {/* <Script
+        ref={scriptRef}
         type={'text'}
         placeholder={'슬라이드 텍스트를 입력해주세요.'}
-        onChange={(e) => onInputScriptHandler(e)}
+        onChange={(e) => onChangeInputScriptHandler(e)}
         defaultValue={value}
-      />
+      /> */}
       <RadiusBtn
         backgroundColor={color.BasicColor}
         borderColor={color.BasicColor}
@@ -133,25 +160,25 @@ const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScript
       </ImageWrap>
       {
         indexKey !== 0 && scriptList.length > 1 ?
-        <ImageWrap
-          position={'relative'}
-          height={'100%'}
-          padding={'2px 0'}
-          margin={'0 6px'}
-          cursor={'pointer'}
-          onClick={() => onClickRemoveScriptHandler(scriptInfo)}
-        >
-          <ImageElement
-            src="/icons/remove_black.svg"
-            width={28}
-            height={28}
-            style={{
-              width: '100%',
-              height: '100%'
-            }}
-            alt="remove button"
-          />
-      </ImageWrap> : ''
+          <ImageWrap
+            position={'relative'}
+            height={'100%'}
+            padding={'2px 0'}
+            margin={'0 6px'}
+            cursor={'pointer'}
+            onClick={() => onClickRemoveScriptHandler(scriptInfo)}
+          >
+            <ImageElement
+              src="/icons/remove_black.svg"
+              width={28}
+              height={28}
+              style={{
+                width: '100%',
+                height: '100%'
+              }}
+              alt="remove button"
+            />
+          </ImageWrap> : ''
       }
     </ItemWrapper> : <></>
   )
@@ -162,9 +189,10 @@ const ItemWrapper = styled.div({
   margin: '0 0 8px 0',
   alignItems: 'start'
 })
-const Script = styled.input(
+const Script = styled.div(
   {
     width: '60%',
+    height: 'auto',
     border: `1px solid ${color.ThumbnailColor}`,
     borderRadius: '8px',
     padding: '8px 10px',
