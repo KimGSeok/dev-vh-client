@@ -30,18 +30,18 @@ const Layout = ({ children }: { children: ReactNode }) => {
           <AppLayout>
             {globalStyles}
             {
-              firstPathName === 'project' && secondPathName ?
-              <>{children}</>
-              :
-              <>
-                <SideNavigation />
-                <MainChildren>
-                  {children}
-                </MainChildren>
-              </>
+              (firstPathName === 'project' && secondPathName) || (firstPathName === 'login') ?
+                <>{children}</>
+                :
+                <>
+                  <SideNavigation />
+                  <MainChildren>
+                    {children}
+                  </MainChildren>
+                </>
             }
           </AppLayout>
-          { mount && <PageLoading /> }
+          {mount && <PageLoading />}
           <Portal id="portal" />
           <div id="alert"></div>
           <div id="confirm"></div>
@@ -51,7 +51,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   )
 }
 const Html = styled.html({
-  
+
 })
 const Body = styled.body({
   backgroundColor: color.BasicBlack,
