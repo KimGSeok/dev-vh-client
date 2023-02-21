@@ -59,7 +59,7 @@ const VoiceOption = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps)
             onClickChangeVoiceInfoHandler({
               name: 'Beryl',
               type: 'voice',
-              voiceModel: '01831c53-3a8b-7a50-bd97-v16ch5f8d45s',
+              voiceModel: '01831c53-3a8b-7a50-bd97-g63fxhc34sgy',
               imageFileUrl: '/images/avatar/beryl.svg'
             })}
         >

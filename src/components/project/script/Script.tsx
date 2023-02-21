@@ -1,7 +1,8 @@
 'use client';
 
-import { Dispatch, SetStateAction, useState, useEffect, use } from 'react';
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import { useMutation } from 'react-query';
 import { CSS_TYPE, color, RadiusButton } from '@/src/styles/styles';
 import ScriptItem from './Item';
 import ControlPanel from './ControlPanel';
@@ -10,8 +11,7 @@ import Speed from './bottomSheet/Speed';
 import PauseSecond from './bottomSheet/PauseSecond';
 import { post } from 'src/hooks/asyncHooks';
 import { checkEmptyObject } from '@/src/modules/validation';
-import { useSetRecoilState } from 'recoil';
-import { PageLoadingAtom } from 'src/recoil/atom';
+import PageLoading from '../../loading/PageLoading';
 
 interface SlideProps {
   name: string
@@ -28,15 +28,11 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
   const [isShowBottomSheet, setIsShowBottomSheet] = useState<boolean>(false);
   const [scriptList, setScriptList] = useState(currentSlide.scriptList);
   const [scriptUUID, setScriptUUID] = useState<string>('');
-  const [transfer, setTransfer] = useState<boolean>(false); // 슬라이드 변환여부
   const [speedChildren, setSpeedChildren] = useState(<></>); // React Node
   const [pauseSecondChildren, setPauseSecondChildren] = useState(<></>); // React Node
   const [avatarType, setAvatarType] = useState(''); // TTS, Lipsync
   const [transferResult, setTransferResult] = useState({});
 
-  // Recoil
-  const setLoading = useSetRecoilState(PageLoadingAtom);
-  
   /* 슬라이드 변환하기 */
   const onClickTransformHandler = () => {
 
@@ -45,10 +41,32 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
       if(el.uuid === currentSlide.uuid){
         prevList[index].scriptList = scriptList;
         setSlideList(prevList);
-        setTransfer(true);
       }
     });
+
+    mutate();
   }
+
+  const { mutate, isLoading } = useMutation('slideList', () => post('project/avatar', slideList, {}), {
+    onSuccess: (data, variables, context) =>{
+
+      alert('아바타가 생성되었어요.\n아래 활성화된 다운로드 버튼을 통해 확인해보세요!');
+      // TTS
+      if(checkEmptyObject(currentSlide.avatar)){
+        setAvatarType('audio');
+      }
+      // Lipsync
+      else{
+        setAvatarType('video');
+      }
+      setTransferResult(data.data);
+    },
+    onError: (data, variables, context) =>{ 
+
+      alert('아바타 생성중에 에러가 발생했어요.\n관리자에게 문의해주세요.');
+      console.error(data);
+    }
+  });
 
   useEffect(() => {
     setSpeedChildren(
@@ -69,43 +87,9 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
     )
   }, [scriptUUID])
 
-  useEffect(() => {
-    if(transfer){
-
-      const onCreateProject = async() =>{
-
-        setLoading(true);
-
-        const url = 'project/avatar';
-        const option = {};
-        const { status, data } = await post(url, slideList, option);
-
-        if(status === 201 && data.result !== 'failed'){
-          alert('아바타가 생성되었어요.\n아래 활성화된 다운로드 버튼을 통해 확인해보세요!');
-
-          // TTS
-          if(checkEmptyObject(currentSlide.avatar)){
-            setAvatarType('audio');
-          }
-          // Lipsync
-          else{
-            setAvatarType('video');
-          }
-          setTransferResult(data);
-
-          setLoading(false);
-        }
-        else{
-          alert('아바타 생성중에 에러가 발생했어요.\n관리자에게 문의해주세요.');
-        }
-      }
-      onCreateProject();
-      return () => setTransfer(false);
-    }
-  }, [slideList, transfer])
-
   return (
     <ScriptWrapper>
+      { isLoading &&  <PageLoading /> }
       <HeaderWrapper>
         <ProjectName>프로젝트 명: {name}</ProjectName>
         <AllTransBtn

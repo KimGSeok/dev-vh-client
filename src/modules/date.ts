@@ -3,7 +3,6 @@
  * Date: 2023.02.12
  * Author: Kim Gyeong Seok
  */
-
 const today = new Date();
 
 export const getToday = () =>{

@@ -1,9 +1,8 @@
 'use client';
 
 import styled from "@emotion/styled";
-import { useState,} from 'react';
-import { useRecoilState } from 'recoil';
-import { PageLoadingAtom } from "src/recoil/atom";
+import { useState } from 'react';
+import { useQuery } from 'react-query';
 import Filter from "@/src/components/Filter";
 import PageTitle from "@/src/components/layout/PageTitle";
 import Search from "@/src/components/Search";
@@ -11,6 +10,7 @@ import { CSS_TYPE, color } from "@/src/styles/styles";
 import Portal from '@/src/components/Portal';
 import Modal from '@/src/components/Modal';
 import ModalContent from '@/src/components/avatar/ModalContent';
+
 const Avatar = () => {
 
   // Hooks

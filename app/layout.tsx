@@ -1,52 +1,51 @@
 'use client'; // Temporary
 
-import React, { ReactNode, useEffect, useState } from "react";
-import Head from "./head";
+import React, { ReactNode, useEffect, useState, Suspense } from "react";
 import styled from "@emotion/styled";
+import { QueryClient, QueryClientProvider } from 'react-query';
+import Head from "./head";
 import { usePathname } from 'next/navigation';
-import { RecoilRoot } from 'recoil';
 import { color, globalStyles } from "@/src/styles/styles";
 import SideNavigation from "@/src/components/layout/SideNavigaiton";
-import PageLoading from "@/src/components/loading/PageLoading";
+
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      suspense: true
+    }
+  }
+})
 
 const Layout = ({ children }: { children: ReactNode }) => {
 
   // Hooks
-  const [mount, setMount] = useState<boolean>(false);
   const pathName = usePathname();
   const firstPathName = pathName?.split('/')[1];
   const secondPathName = pathName?.split('/')[2];
 
-  useEffect(() => {
-    setMount(true);
-    return () => setMount(false);
-  }, [])
-
   return (
     <Html>
-      <Head title={'VH Studio'} />
-      <Body>
-        <RecoilRoot>
-          <AppLayout>
-            {globalStyles}
-            {
-              firstPathName === 'project' && secondPathName ?
-              <>{children}</>
-              :
-              <>
-                <SideNavigation />
-                <MainChildren>
-                  {children}
-                </MainChildren>
-              </>
-            }
-          </AppLayout>
-          { mount && <PageLoading /> }
-          <Portal id="portal" />
-          <div id="alert"></div>
-          <div id="confirm"></div>
-        </RecoilRoot>
-      </Body>
+      <QueryClientProvider client={client}>
+        <Head title={'VH Studio'} />
+        <Body>
+          {globalStyles}
+            <LayoutWrapper>
+              {
+                firstPathName === 'project' && secondPathName ?
+                <>{children}</>
+                :
+                <>
+                  <SideNavigation />
+                  <MainChildren>
+                    {children}
+                  </MainChildren>
+                </>
+              }
+            </LayoutWrapper>
+            <Portal id="portal" />
+        </Body>
+      </QueryClientProvider>
     </Html>
   )
 }
@@ -59,7 +58,7 @@ const Body = styled.body({
   height: '100vh',
   position: 'relative'
 })
-const AppLayout = styled.div({
+const LayoutWrapper = styled.div({
   padding: '24px',
   display: 'flex',
 })

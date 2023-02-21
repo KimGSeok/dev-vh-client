@@ -1,20 +1,21 @@
 'use client';
 
 import styled from '@emotion/styled';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useInterval } from 'src/hooks/useInterval';
-import { PageLoadingAtom } from 'src/recoil/atom';
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { color, spin } from '../../styles/styles';
 
 const PageLoading = () =>{
 
-  // Recoil
-  const loading = useRecoilValue(PageLoadingAtom);
+  // Hooks
+  const [mount, setMount] = useState(false);
+
+  useEffect(() => {
+    setMount(true);
+    return () => setMount(true);
+  }, [])
 
   return (
-    loading ?
-    <LoadingWrapper>
+    mount ? <LoadingWrapper>
       <LoaderWrapper>
         <Loader />
       </LoaderWrapper>
