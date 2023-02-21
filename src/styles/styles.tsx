@@ -173,21 +173,31 @@ export const ImageElement = styled(Image)<CSS_TYPE>(
 
 /* Color */
 export const color = {
+
+  // Basic
   BasicColor: '#1D3763',
   BasicBlack: '#181818',
   BasicOrange: '#FF5029',
+
+  // Origin
   Purple: '#640EDC',
   White: '#FFFFFF',
   Black: '#000000',
   Red: '#FF0000',
+
+  // Similar Grey
   ThumbnailColor: '#CDCDCD',
   ModernGrey: '#e6e6e6',
   DarkGrey: '#444444',
-  DarkWhite: '#FAFAFA',
   DeActiveColor: '#888888',
+  BrightGrey: '#E8EAF0',
+
+  // Similar Blue
   BrightBlue: '#0075FF',
   SkyBlue: '#3498db',
   AliceBlue: '#F2F7FF',
+
+  DarkWhite: '#FAFAFA',
   OverallProgressColor: '#F1E3FF',
 }
 

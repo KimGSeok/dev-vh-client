@@ -38,7 +38,7 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
 
     let prevList = [...slideList];
     prevList.forEach((el: any, index: number) => {
-      if(el.uuid === currentSlide.uuid){
+      if (el.uuid === currentSlide.uuid) {
         prevList[index].scriptList = scriptList;
         setSlideList(prevList);
       }
@@ -115,7 +115,7 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
         <ScriptItemWrapper>
           {
             scriptList && scriptList.map((item: any, index: number) => {
-              return(
+              return (
                 <ScriptItem
                   key={item.uuid}
                   indexKey={index}

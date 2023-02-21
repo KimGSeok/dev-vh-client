@@ -27,8 +27,8 @@ const ModalContent = () => {
       setValidation({ name: false })
 
       // Next To Project Generate Page
-      const response = await post('project', { 'projectName' : name }, {});
-      if(response.status === 201 && response.data){
+      const response = await post('project', { 'projectName': name }, {});
+      if (response.status === 201 && response.data.affectedRows > 0) {
 
         alert('프로젝트가 생성되었어요.\n프로젝트 스튜디오에서 아바타를 제작해주세요.');
         router.push(`/project/generate?name=${name}&projectId=${response.data.insertId}`)

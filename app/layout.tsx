@@ -50,7 +50,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   )
 }
 const Html = styled.html({
-  
+
 })
 const Body = styled.body({
   backgroundColor: color.BasicBlack,
