@@ -178,6 +178,7 @@ export const color = {
   BasicColor: '#1D3763',
   BasicBlack: '#181818',
   BasicOrange: '#FF5029',
+  BasicBlue: '#379FFF',
 
   // Origin
   Purple: '#640EDC',
