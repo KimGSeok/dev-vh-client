@@ -111,14 +111,13 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
       }
     };
     const response = await post(url, formData, option);
-    console.log(response);
     if(response.status === 201 && response.statusText === 'Created'){
       alert('아바타 생성이 시작되었습니다.');
-      // router.push('/avatar');
+      router.push('/avatar');
     }
     else{
       alert('아바타 생성중 에러가 발생하였습니다.\n 관리자에게 문의해주세요.');
-      // router.refresh();
+      router.refresh();
     }
   }
 
