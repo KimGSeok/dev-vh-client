@@ -11,13 +11,15 @@ import { get, post } from "src/hooks/asyncHooks";
 import Portal from '@/src/components/Portal';
 import Modal from '@/src/components/Modal';
 import VoiceModalContent from '@/src/components/avatar/generate/VoiceModalContent';
+import { useRouter } from "next/navigation";
 
 const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string }) => {
 
   // Parameter
-  const audio: any = document.getElementById("audio") // Audio객체 취득
+  const audio: any = document.getElementById("audio") // Audio 객체 취득
 
   // Hooks
+  const router = useRouter();
   const [mounted, setMounted] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [scriptList, setScriptList] = useState<any>([]); // 스크립트 목록
@@ -40,26 +42,40 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
     setRecordStatus('complete');
   };
 
+  const onReRecordingHandler = () => {
+    startRecording();
+    setRecordStatus('recording');
+  }
+
   const onNextStepHandler = async () => {
     if (mediaBlobUrl) {
 
       // Parameter
       const blobUrl = mediaBlobUrl;
 
-      const audioBlob = await fetch(blobUrl).then((res) => res.blob());
-      const audioFile = new File([audioBlob], `${scriptList[scriptSequence].script}_audio.wav`, {
-        type: 'audio/wav'
-      });
+      fetch(blobUrl)
+        .then(async (res) => {
+          const audioBlob = await res.blob();
+          if (audioBlob.size < 1) {
+            alert('녹음이 제대로 진행되지 않았습니다.\n다시 진행해주세요.');
+            return false;
+          }
 
-      setRecordScriptLists((prev) => ([...prev, {
-        ...scriptList[scriptSequence],
-        blobUrl: mediaBlobUrl,
-        blob: audioBlob,
-        file: audioFile,
-      }]));
-
-      setScriptSequence(scriptSequence + 1);
-      setRecordStatus('wait');
+          const audioFile = new File([audioBlob], `${scriptList[scriptSequence].script}_audio.wav`, {
+            type: 'audio/wav'
+          });
+          setRecordScriptLists((prev) => ([...prev, {
+            ...scriptList[scriptSequence],
+            blobUrl: mediaBlobUrl,
+            blob: audioBlob,
+            file: audioFile,
+          }]))
+          setScriptSequence(scriptSequence + 1);
+          setRecordStatus('wait');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       alert('녹음이 제대로 진행되지 않았습니다.\n녹음을 다시 진행해주세요.');
     }
@@ -95,9 +111,14 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
       }
     };
     const response = await post(url, formData, option);
-
-    console.log(response);
-
+    if (response.status === 201 && response.statusText === 'Created') {
+      alert('아바타 생성이 시작되었습니다.');
+      router.push('/avatar');
+    }
+    else {
+      alert('아바타 생성중 에러가 발생하였습니다.\n 관리자에게 문의해주세요.');
+      router.refresh();
+    }
   }
 
   const VoiceModalChildren =
@@ -108,7 +129,6 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
     />
 
   useEffect(() => {
-
     const onSaveBlobUrl = async (blobUrl: string) => {
       audio.src = blobUrl;
     }
@@ -154,7 +174,16 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
                     position={'relative'}
                     height={'100%'}
                     cursor={'pointer'}
-                    onClick={() => audio.play()}
+                    onClick={() => {
+                      audio.play()
+                        .then(() => {
+                          audio.play()
+                        })
+                        .catch((error: any) => {
+                          alert('오디오가 제대로 녹음되지 않았습니다.\n다시 녹음해주세요.');
+                          console.error(error);
+                        })
+                    }}
                   >
                     <ImageElement
                       src="/icons/play.svg"
@@ -187,6 +216,7 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
               setRecordScriptLists={setRecordScriptLists}
               onRecordHandler={onStartRecordingHandler}
               onCompleteHandler={onStopRecordingHandler}
+              onReRecordHandler={onReRecordingHandler}
               onNextStepHandler={onNextStepHandler}
             />
           </ScriptArea>

@@ -94,6 +94,7 @@ const RecordButtonWrapper = ({
           <RecordBtn
             backgroundColor={color.Red}
             borderColor={color.Red}
+            onClick={onReRecordHandler}
           >
             <ImageWrap
               position={'relative'}
