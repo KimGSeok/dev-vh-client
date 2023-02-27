@@ -200,6 +200,9 @@ export const color = {
 
   DarkWhite: '#FAFAFA',
   OverallProgressColor: '#F1E3FF',
+
+  // Action
+  WaringRed: '#bf1650'
 }
 
 /* Button */

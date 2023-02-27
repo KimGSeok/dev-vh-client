@@ -31,7 +31,7 @@ export const post = async (url: string, data: any, option: object) => {
       // Service Logic
       return response;
     }).catch((error: any) => {
-      
+
       // Error Handle
       console.error(error);
       return error;

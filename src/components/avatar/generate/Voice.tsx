@@ -56,7 +56,8 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
         blobUrl: mediaBlobUrl,
         blob: audioBlob,
         file: audioFile,
-      }]))
+      }]));
+
       setScriptSequence(scriptSequence + 1);
       setRecordStatus('wait');
     } else {

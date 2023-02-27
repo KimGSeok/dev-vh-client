@@ -4,7 +4,7 @@ import { onClickBlobDownload } from '@/src/modules/onClickBlobDownload';
 import { getToday, getTodayTime } from '@/src/modules/date';
 import { useState, useEffect } from 'react';
 
-interface ControlProps{
+interface ControlProps {
   name: string;
   avatarType: string;
   transferResult: any;
@@ -15,7 +15,7 @@ const ControlPanel = ({ name, avatarType, transferResult }: ControlProps) => {
   // Hooks
   const [type, setType] = useState(avatarType);
 
-  const onClickDownloadFile = () =>{
+  const onClickDownloadFile = () => {
 
     // Parameter
     const fileName = `${getToday()}_${getTodayTime()}_${name}`;

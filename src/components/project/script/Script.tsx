@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useMutation } from 'react-query';
-import { CSS_TYPE, color, RadiusButton } from '@/src/styles/styles';
+import { color, RadiusButton } from '@/src/styles/styles';
 import ScriptItem from './Item';
 import ControlPanel from './ControlPanel';
 import BottomSheet from '@/src/components/BottomSheet';
@@ -44,24 +44,22 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
       }
     });
 
-    mutate();
+    slideMutation.mutate();
   }
 
-  const { mutate, isLoading } = useMutation('slideList', () => post('project/avatar', slideList, {}), {
-    onSuccess: (data, variables, context) =>{
+  const slideMutation = useMutation('slideList', () => post('project/avatar', slideList, {}), {
+    onSuccess: (data) => {
 
       alert('아바타가 생성되었어요.\n아래 활성화된 다운로드 버튼을 통해 확인해보세요!');
-      // TTS
-      if(checkEmptyObject(currentSlide.avatar)){
+
+      if (checkEmptyObject(currentSlide.avatar)) // TTS
         setAvatarType('audio');
-      }
-      // Lipsync
-      else{
+      else // Lip-sync
         setAvatarType('video');
-      }
+
       setTransferResult(data.data);
     },
-    onError: (data, variables, context) =>{ 
+    onError: (data) => {
 
       alert('아바타 생성중에 에러가 발생했어요.\n관리자에게 문의해주세요.');
       console.error(data);
@@ -89,7 +87,7 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
 
   return (
     <ScriptWrapper>
-      { isLoading &&  <PageLoading /> }
+      {slideMutation.isLoading && <PageLoading />}
       <HeaderWrapper>
         <ProjectName>프로젝트 명: {name}</ProjectName>
         <AllTransBtn

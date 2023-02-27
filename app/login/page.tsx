@@ -1,36 +1,88 @@
 'use client';
 
-import { color } from "@/src/styles/styles";
+import { color, CSS_TYPE } from "@/src/styles/styles";
 import styled from "@emotion/styled";
+import { useMutation } from 'react-query';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { ErrorMessage } from '@hookform/error-message';
+import * as yup from 'yup';
+import { post } from "src/hooks/asyncHooks";
 
 const Login = () => {
+
+  const schema = yup.object().shape({
+    id: yup.string()
+      .required('아이디를 입력해주세요.'),
+    password: yup.string()
+      .required('비밀번호를 입력해주세요.')
+      .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%&*?])[A-Za-z\d!@#$%&*?]{8,20}$/,
+        '영어 소문자, 숫자, 특수문자를 조합하여 8자리 이상으로 입력해주세요.')
+  })
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+  })
+
+  const loginMutation = useMutation('userInfo', (data) => post('auth/login', data, {}), {
+    onSuccess: (data) => {
+
+    },
+    onError: (data) => {
+
+    }
+  })
+
+  const onSubmitHandler = (data: any) => {
+    console.log(data);
+    loginMutation.mutate(data)
+  }
+
   return (
     <MainComponent>
       <MainContainer>
-        <LoginContainer>
+        <LoginContainer onSubmit={handleSubmit(onSubmitHandler)}>
           <PageTitleWrapper>Warping</PageTitleWrapper>
-          <InputContainer>
+          <InputContainer
+            margin={errors?.id && '0 auto 8px auto'}
+          >
             <InputWrapper>
               <LoginInputTitle>아이디</LoginInputTitle>
               <LoginInput
+                {...register('id')}
                 type={'text'}
                 placeholder={'아이디를 입력해주세요.'}
                 autoComplete={'off'}
               />
             </InputWrapper>
           </InputContainer>
-          <InputContainer>
+          {
+            errors?.id &&
+            <ErrorWraaper>
+              <ErrorMessage errors={errors} name={'id'} />
+            </ErrorWraaper>
+          }
+          <InputContainer
+            margin={errors?.password && '0 auto 8px auto'}
+          >
             <InputWrapper>
               <LoginInputTitle>비밀번호</LoginInputTitle>
               <LoginInput
+                {...register('password')}
                 type={'password'}
                 placeholder={'비밀번호를 입력해주세요.'}
                 autoComplete={'off'}
               />
             </InputWrapper>
           </InputContainer>
+          {
+            errors?.password &&
+            <ErrorWraaper>
+              <ErrorMessage errors={errors} name={'password'} />
+            </ErrorWraaper>
+          }
           <ButtonWrapper>
-            <LoginBtn>로그인</LoginBtn>
+            <LoginBtn type={'submit'}>로그인</LoginBtn>
           </ButtonWrapper>
           <VerticalLine />
           <FindUserInfoWrapper>
@@ -67,7 +119,7 @@ const MainContainer = styled.div({
   backgroundColor: color.White,
   boxShadow: '1px 1px 25px rgba(132, 132, 132, 0.25)',
 })
-const LoginContainer = styled.div({
+const LoginContainer = styled.form({
   position: 'relative',
   width: '100%',
 })
@@ -78,15 +130,31 @@ const PageTitleWrapper = styled.div({
   fontWeight: '500',
   margin: '16px 0 40px 0'
 })
-const InputContainer = styled.div({
+const InputContainer = styled.div<CSS_TYPE>(
+  {
+    position: 'relative',
+    width: '70%',
+    height: '44px',
+    padding: '4px 8px',
+    border: `1px solid ${color.ThumbnailColor}`,
+    borderRadius: '4px',
+    color: color.BasicColor
+  },
+  props => ({
+    margin: props.margin ? props.margin : '0 auto 24px auto'
+  })
+)
+const ErrorWraaper = styled.div({
   position: 'relative',
   width: '70%',
-  height: '40px',
   margin: '0 auto 24px auto',
-  padding: '4px 12px',
-  border: `1px solid ${color.ThumbnailColor}`,
-  borderRadius: '4px',
-  color: color.BasicColor
+  color: color.WaringRed,
+  fontSize: '0.85rem',
+
+  ':before': {
+    content: '"⚠ "',
+    margin: '0 2px 0 6px'
+  }
 })
 const InputWrapper = styled.div({
   position: 'relative',
@@ -117,7 +185,7 @@ const LoginInput = styled.input({
 const ButtonWrapper = styled.div({
   textAlign: 'center'
 })
-const LoginBtn = styled.div({
+const LoginBtn = styled.button({
   position: 'relative',
   width: '70%',
   margin: '0 auto',
@@ -126,6 +194,8 @@ const LoginBtn = styled.div({
   fontWeight: '500',
   backgroundColor: color.BasicBlue,
   color: color.White,
+  outline: '0',
+  border: '0',
   borderRadius: '25px',
   cursor: 'pointer'
 })
@@ -148,10 +218,32 @@ const VerticalLine = styled.div({
   }
 })
 const FindUserInfoWrapper = styled.div({
+  width: '70%',
+  margin: '0 auto',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: ' space-between',
+  fontSize: '1rem',
+  color: color.BasicColor,
 
+  '& div': {
+    fontWeight: '600',
+    cursor: 'pointer'
+  }
 })
 const FooterWrapper = styled.div({
+  width: '70%',
+  margin: '24px auto',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '1rem',
+  color: color.ThumbnailColor,
 
+  '& div': {
+    fontWeight: '500',
+    cursor: 'pointer'
+  }
 })
 
 export default Login;
