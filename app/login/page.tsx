@@ -26,15 +26,26 @@ const Login = () => {
 
   const loginMutation = useMutation('userInfo', (data) => post('auth/login', data, {}), {
     onSuccess: (data) => {
+      console.log('login onSuccess');
+      console.log(data);
+      const { code, response, message } = data;
 
+      // TODO 로그인 처리 및 로그인 유지
+      if (code === 'ERR_BAD_REQUEST') {
+        alert('일치하는 회원정보가 존재하지 않습니다.');
+      }
+      // 로그인 성공
+      else {
+
+      }
     },
     onError: (data) => {
-
+      console.log('login onError');
+      console.error(data);
     }
   })
 
   const onSubmitHandler = (data: any) => {
-    console.log(data);
     loginMutation.mutate(data)
   }
 

@@ -198,7 +198,10 @@ export const color = {
   SkyBlue: '#3498db',
   AliceBlue: '#F2F7FF',
 
+  // Similar White
   DarkWhite: '#FAFAFA',
+  ModernWhite: '#FEFEFE',
+
   OverallProgressColor: '#F1E3FF',
 
   // Action

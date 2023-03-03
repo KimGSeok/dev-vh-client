@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import dynamic from "next/dynamic";
 import styled from "@emotion/styled";
 import { useSearchParams } from 'next/navigation';
-import VoiceGenerate from "@/src/components/avatar/generate/Voice";
-const VideoGenerate = dynamic(() => import('@/src/components/avatar/generate/Video'), {
+import VoiceGenerate from "@/src/components/virtual-human/generate/Voice";
+const VideoGenerate = dynamic(() => import('@/src/components/virtual-human/generate/Video'), {
   ssr: false
 });
 

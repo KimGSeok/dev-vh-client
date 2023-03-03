@@ -1,8 +1,8 @@
 'use client'; // Temporary
 
-import React, { ReactNode, useEffect, useState, Suspense } from "react";
+import React, { ReactNode, useEffect, useState, PropsWithChildren } from "react";
 import styled from "@emotion/styled";
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import Head from "./head";
 import { usePathname } from 'next/navigation';
 import { color, globalStyles } from "@/src/styles/styles";
@@ -17,34 +17,38 @@ const client = new QueryClient({
   }
 })
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = ({ children }: PropsWithChildren) => {
 
   // Hooks
   const pathName = usePathname();
   const firstPathName = pathName?.split('/')[1];
   const secondPathName = pathName?.split('/')[2];
 
+  // TODO Login Check And Redirecrt
+
   return (
     <Html>
+      <Head title={'VH Studio'} />
       <QueryClientProvider client={client}>
-        <Head title={'VH Studio'} />
-        <Body>
-          {globalStyles}
+        <Hydrate>
+          <Body>
+            {globalStyles}
             <LayoutWrapper>
               {
                 firstPathName === 'project' && secondPathName ?
-                <>{children}</>
-                :
-                <>
-                  <SideNavigation />
-                  <MainChildren>
-                    {children}
-                  </MainChildren>
-                </>
+                  <>{children}</>
+                  :
+                  <>
+                    <SideNavigation />
+                    <MainChildren>
+                      {children}
+                    </MainChildren>
+                  </>
               }
             </LayoutWrapper>
             <Portal id="portal" />
-        </Body>
+          </Body>
+        </Hydrate>
       </QueryClientProvider>
     </Html>
   )
@@ -63,7 +67,7 @@ const LayoutWrapper = styled.div({
   display: 'flex',
 })
 const MainChildren = styled.main({
-  backgroundColor: color.White,
+  backgroundColor: color.ModernWhite,
   width: '85%',
   height: 'calc(100vh - 48px)',
   borderRadius: '16px',

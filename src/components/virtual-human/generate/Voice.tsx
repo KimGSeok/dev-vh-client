@@ -10,7 +10,7 @@ import AudioWaveForm from "@/src/modules/AudioWaveForm";
 import { get, post } from "src/hooks/asyncHooks";
 import Portal from '@/src/components/Portal';
 import Modal from '@/src/components/Modal';
-import VoiceModalContent from '@/src/components/avatar/generate/VoiceModalContent';
+import VoiceModalContent from '@/src/components/virtual-human/generate/VoiceModalContent';
 import { useRouter } from "next/navigation";
 
 const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string }) => {

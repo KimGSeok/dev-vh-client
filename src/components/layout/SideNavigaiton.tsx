@@ -21,21 +21,21 @@ const SideNavigation = () => {
           onClick={() => router.push('/project')}
         >Project</GNBList>
         <GNBList
-          color={firstPathName === 'avatar' ? color.White : ''}
-          onClick={() => router.push('/avatar')}
-        >Avatar</GNBList>
+          color={firstPathName === 'virtual-human' ? color.White : ''}
+          onClick={() => router.push('/virtual-human')}
+        >Virtual Human</GNBList>
         {/* 마스터 계정 한정 */}
         <GNBList
           color={firstPathName === 'Organizations' ? color.White : ''}
-          onClick={() => {alert('그룹 페이지는 개발예정입니다.')}}
+          onClick={() => { alert('그룹 페이지는 개발예정입니다.') }}
         >Organizations</GNBList>
         <GNBList
           color={firstPathName === 'users' ? color.White : ''}
-          onClick={() => {alert('유저 페이지는 개발예정입니다.')}}
+          onClick={() => { alert('유저 페이지는 개발예정입니다.') }}
         >Users</GNBList>
         <GNBList
           color={firstPathName === 'mypage' ? color.White : ''}
-          onClick={() => {alert('마이페이지는 개발예정입니다.')}}
+          onClick={() => { alert('마이페이지는 개발예정입니다.') }}
         >Mypage</GNBList>
       </GNBLists>
     </SideNav>
