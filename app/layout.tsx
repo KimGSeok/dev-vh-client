@@ -1,39 +1,35 @@
 'use client'; // Temporary
 
-import React, { ReactNode, useEffect, useState, PropsWithChildren } from "react";
+import React, { useEffect, PropsWithChildren, useState } from "react";
 import styled from "@emotion/styled";
-import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import dynamic from "next/dynamic";
 import Head from "./head";
-import { usePathname } from 'next/navigation';
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import { useRouter, usePathname } from 'next/navigation';
 import { color, globalStyles } from "@/src/styles/styles";
+const LayoutContainer = dynamic(() => import('@/src/components/layout/Layout'));
 import SideNavigation from "@/src/components/layout/SideNavigaiton";
-
-const client = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      suspense: true
-    }
-  }
-})
+import { config } from "src/lib/react-query-config";
 
 const Layout = ({ children }: PropsWithChildren) => {
 
   // Hooks
+  const [queryClient] = useState(() => new QueryClient(config))
+  const router = useRouter();
   const pathName = usePathname();
   const firstPathName = pathName?.split('/')[1];
   const secondPathName = pathName?.split('/')[2];
 
-  // TODO Login Check And Redirecrt
+  console.log('호출0');
 
   return (
     <Html>
       <Head title={'VH Studio'} />
-      <QueryClientProvider client={client}>
+      <QueryClientProvider client={queryClient}>
         <Hydrate>
           <Body>
             {globalStyles}
-            <LayoutWrapper>
+            <LayoutContainer>
               {
                 firstPathName === 'project' && secondPathName ?
                   <>{children}</>
@@ -45,7 +41,7 @@ const Layout = ({ children }: PropsWithChildren) => {
                     </MainChildren>
                   </>
               }
-            </LayoutWrapper>
+            </LayoutContainer>
             <Portal id="portal" />
           </Body>
         </Hydrate>
@@ -61,10 +57,6 @@ const Body = styled.body({
   width: '100%',
   height: '100vh',
   position: 'relative'
-})
-const LayoutWrapper = styled.div({
-  padding: '24px',
-  display: 'flex',
 })
 const MainChildren = styled.main({
   backgroundColor: color.ModernWhite,

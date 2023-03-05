@@ -2,14 +2,19 @@
 
 import { color, CSS_TYPE } from "@/src/styles/styles";
 import styled from "@emotion/styled";
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ErrorMessage } from '@hookform/error-message';
 import * as yup from 'yup';
 import { post } from "src/hooks/asyncHooks";
+import { checkEmptyObject } from "@/src/modules/validation";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
+
+  const queryClient = useQueryClient();
+  const router = useRouter();
 
   const schema = yup.object().shape({
     id: yup.string()
@@ -25,18 +30,23 @@ const Login = () => {
   })
 
   const loginMutation = useMutation('userInfo', (data) => post('auth/login', data, {}), {
-    onSuccess: (data) => {
-      console.log('login onSuccess');
-      console.log(data);
-      const { code, response, message } = data;
+    onSuccess: (res) => {
 
-      // TODO 로그인 처리 및 로그인 유지
-      if (code === 'ERR_BAD_REQUEST') {
+      // Response
+      const { status, code, response, message, data } = res;
+
+      if (code === 'ERR_BAD_REQUEST' && response.status === 401) {
         alert('일치하는 회원정보가 존재하지 않습니다.');
       }
-      // 로그인 성공
-      else {
+      else if(!checkEmptyObject(data) && data.accessToken && status === 201){
 
+        // TODO
+        const { accessToken } = data;
+
+        localStorage.setItem('accessToken', accessToken);
+        router.push('/');
+      }else{
+        alert('로그인 도중 에러가 발생하였습니다.\n관리자에게 문의해주세요.');
       }
     },
     onError: (data) => {

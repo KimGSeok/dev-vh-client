@@ -10,6 +10,8 @@ const Home = () => {
   // Hooks
   const router = useRouter();
 
+  console.log('호출4');
+
   return (
     <>
       <Page>
