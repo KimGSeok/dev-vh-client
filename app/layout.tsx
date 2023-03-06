@@ -1,54 +1,34 @@
 'use client'; // Temporary
 
-import React, { ReactNode, useEffect, useState, PropsWithChildren } from "react";
+import React, { useState, PropsWithChildren } from "react";
 import styled from "@emotion/styled";
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import { RecoilRoot, useRecoilState } from "recoil";
 import Head from "./head";
-import { usePathname } from 'next/navigation';
-import { color, globalStyles } from "@/src/styles/styles";
-import SideNavigation from "@/src/components/layout/SideNavigaiton";
-
-const client = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      suspense: true
-    }
-  }
-})
+import { color, globalStyles } from "@styles/styles";
+import InterceptLayout from '@components/layout/InterceptLayout';
+import { config } from "@lib/react-query/config";
 
 const Layout = ({ children }: PropsWithChildren) => {
 
-  // Hooks
-  const pathName = usePathname();
-  const firstPathName = pathName?.split('/')[1];
-  const secondPathName = pathName?.split('/')[2];
+  console.log(children);
 
-  // TODO Login Check And Redirecrt
+  // Hooks
+  const [queryClient] = useState(() => new QueryClient(config))
 
   return (
     <Html>
-      <Head title={'VH Studio'} />
-      <QueryClientProvider client={client}>
-        <Hydrate>
-          <Body>
-            {globalStyles}
-            <LayoutWrapper>
-              {
-                firstPathName === 'project' && secondPathName ?
-                  <>{children}</>
-                  :
-                  <>
-                    <SideNavigation />
-                    <MainChildren>
-                      {children}
-                    </MainChildren>
-                  </>
-              }
-            </LayoutWrapper>
-            <Portal id="portal" />
-          </Body>
-        </Hydrate>
+      <Head title={'두:분의 스튜디오'} />
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <Hydrate>
+            <Body>
+              {globalStyles}
+              <InterceptLayout children={children} />
+              <Portal id="portal" />
+            </Body>
+          </Hydrate>
+        </RecoilRoot>
       </QueryClientProvider>
     </Html>
   )
@@ -61,17 +41,6 @@ const Body = styled.body({
   width: '100%',
   height: '100vh',
   position: 'relative'
-})
-const LayoutWrapper = styled.div({
-  padding: '24px',
-  display: 'flex',
-})
-const MainChildren = styled.main({
-  backgroundColor: color.ModernWhite,
-  width: '85%',
-  height: 'calc(100vh - 48px)',
-  borderRadius: '16px',
-  padding: '24px'
 })
 const Portal = styled.div({})
 

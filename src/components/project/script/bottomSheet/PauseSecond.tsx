@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
-import { CSS_TYPE, color } from '@/src/styles/styles';
+import { CSS_TYPE, color } from '@styles/styles';
 
 interface SpeedProps {
   scriptUUID: string
@@ -11,13 +11,13 @@ interface SpeedProps {
   setIsShowBottomSheet: Dispatch<SetStateAction<boolean>>
 }
 
-const PauseSecond = ({ scriptUUID, scriptList, setScriptList, setIsShowBottomSheet }: SpeedProps) =>{
+const PauseSecond = ({ scriptUUID, scriptList, setScriptList, setIsShowBottomSheet }: SpeedProps) => {
 
-  const onClickScriptSpeedHandler = (speed: number) =>{
+  const onClickScriptSpeedHandler = (speed: number) => {
 
     let prevList = [...scriptList];
     scriptList.forEach((el: any, index: number) => {
-      if(el.uuid === scriptUUID){
+      if (el.uuid === scriptUUID) {
         prevList[index].speed = speed;
         setScriptList(prevList);
       }

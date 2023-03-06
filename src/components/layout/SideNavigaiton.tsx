@@ -1,4 +1,4 @@
-import { CSS_TYPE, color } from '@/src/styles/styles';
+import { CSS_TYPE, color } from '@styles/styles';
 import styled from '@emotion/styled';
 import { useRouter, usePathname } from 'next/navigation';
 

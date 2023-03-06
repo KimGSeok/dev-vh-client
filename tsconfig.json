@@ -29,13 +29,22 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@/src/components/*": [
+      "@components/*": [
         "src/components/*"
       ],
-      "@/src/modules/*": [
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@modules/*": [
         "src/modules/*"
       ],
-      "@/src/styles/*": [
+      "@recoil/*": [
+        "src/recoil/*"
+      ],
+      "@styles/*": [
         "src/styles/*"
       ],
     }
