@@ -6,7 +6,7 @@ import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot, useRecoilState } from "recoil";
 import Head from "./head";
 import { color, globalStyles } from "@styles/styles";
-import InterceptLayout from '@components/layout/InterceptLayout';
+import InterceptLayout from '@components/layout/AppLayout';
 import { config } from "@lib/react-query/config";
 
 const Layout = ({ children }: PropsWithChildren) => {

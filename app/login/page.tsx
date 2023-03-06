@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { post } from "src/hooks/asyncHooks";
-import { checkEmptyObject } from "@/src/modules/validation";
+import { checkEmptyObject } from "@modules/validation";
 import { useRouter } from "next/navigation";
-import LoginComponent from '@/src/components/login/Login';
+import LoginComponent from '@components/login/Login';
 import { useSetRecoilState } from 'recoil';
 import { authState } from '@recoil/states';
 
