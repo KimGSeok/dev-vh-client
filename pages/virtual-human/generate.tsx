@@ -1,13 +1,11 @@
-'use client';false
+'use client';
 
 import { useState, useEffect } from 'react';
 import dynamic from "next/dynamic";
 import styled from "@emotion/styled";
 import { useSearchParams } from 'next/navigation';
 import VoiceGenerate from "@components/virtual-human/generate/Voice";
-const VideoGenerate = dynamic(() => import('@components/virtual-human/generate/Video'), {
-  ssr: false
-});
+const VideoGenerate = dynamic(() => import('@components/virtual-human/generate/Video'), { ssr: false });
 
 const AvatarGenerate = () => {
 
@@ -18,7 +16,6 @@ const AvatarGenerate = () => {
 
   useEffect(() => {
     setMounted(true);
-
     return () => setMounted(false);
   }, [])
 

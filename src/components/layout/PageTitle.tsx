@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, RadiusButton } from '@/src/styles/styles';
+import { CSS_TYPE, color, RadiusButton } from '@styles/styles';
 import { MouseEventHandler } from 'react';
 
 interface PageTitleProps {

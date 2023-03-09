@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useReactMediaRecorder } from "react-media-recorder";
 import { v4 as uuidV4 } from 'uuid';
-import { color, ImageWrap, ImageElement, RadiusButton } from "@/src/styles/styles";
+import { color, ImageWrap, ImageElement, RadiusButton } from "@styles/styles";
 import RecordButtonWrapper from "./RecordButton";
-import AudioWaveForm from "@/src/modules/AudioWaveForm";
+import AudioWaveForm from "@modules/AudioWaveForm";
 import { get, post } from "src/hooks/asyncHooks";
-import Portal from '@/src/components/Portal';
-import Modal from '@/src/components/Modal';
-import VoiceModalContent from '@/src/components/virtual-human/generate/VoiceModalContent';
+import Portal from '@components/Portal';
+import Modal from '@components/Modal';
+import VoiceModalContent from '@components/virtual-human/generate/VoiceModalContent';
 import { useRouter } from "next/navigation";
 
 const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string }) => {
@@ -111,13 +111,16 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
       }
     };
     const response = await post(url, formData, option);
+
+    console.log(response);
+
     if (response.status === 201 && response.statusText === 'Created') {
       alert('아바타 생성이 시작되었습니다.');
-      router.push('/avatar');
+      // router.push('/virtual-human');
     }
     else {
       alert('아바타 생성중 에러가 발생하였습니다.\n 관리자에게 문의해주세요.');
-      router.refresh();
+      // router.refresh();
     }
   }
 

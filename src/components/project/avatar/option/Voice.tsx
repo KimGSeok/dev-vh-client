@@ -1,32 +1,33 @@
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, ImageElement, ImageWrap } from '@/src/styles/styles';
+import { CSS_TYPE, color } from '@styles/styles';
 import { Dispatch, SetStateAction } from 'react';
-import { checkEmptyObject } from '@/src/modules/validation';
+import { ProjectProps, VoiceProps } from '@modules/interface';
 
-interface AvatarProps {
-  slideList: any;
-  setSlideList: Dispatch<SetStateAction<any>>;
-  activeSlideIndex: number;
+interface VoiceOptionProps {
+  voice: VoiceProps;
+  project: ProjectProps;
+  setProject: Dispatch<SetStateAction<ProjectProps>>;
 }
 
-const VoiceOption = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps) =>{
+const VoiceOption = ({ voice, project, setProject }: VoiceOptionProps) =>{
 
-  // Parameter
-  const voice = slideList[activeSlideIndex].voice;
-
-  const onClickChangeVoiceInfoHandler = (voice: object) =>{
+  const onClickChangeVoiceInfoHandler = (param: VoiceProps) =>{
     
-    let prevState = [...slideList];
-    prevState[activeSlideIndex].voice = voice;
-    setSlideList(prevState);
+    let prevState = { ...project };
+    prevState.voice = param;
+    setProject(prevState);
   }
 
   return (
     <OptionWrapper>
       <ItemLists>
-        <ItemList onClick={() => onClickChangeVoiceInfoHandler({}) } >
+        <ItemList onClick={() => onClickChangeVoiceInfoHandler({
+          name :'',
+          model: '',
+          imageFileUrl: ''
+        })} >
           <ImageWrapper
-            opacity={checkEmptyObject(voice) ? 1 : 0}
+            opacity={voice.name === '' ? 1 : 0}
             backgroundImage={"url('/images/avatar/unchecked_avatar.svg')"}
             backgroundRepeat={'no-repeat'}
             backgroundSize={'cover'}
@@ -39,8 +40,7 @@ const VoiceOption = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps)
           onClick={() =>
             onClickChangeVoiceInfoHandler({
               name: 'Kevin',
-              type: 'voice',
-              voiceModel: '01831c53-3a8b-7a50-bd97-v16ch5f8d45s',
+              model: '01831c53-3a8b-7a50-bd97-v16ch5f8d45s',
               imageFileUrl: '/images/avatar/kevin.jpeg'
             })}
         >
@@ -50,16 +50,13 @@ const VoiceOption = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps)
             backgroundRepeat={'no-repeat'}
             backgroundSize={'cover'}
           />
-          <ItemName>
-            Kevin
-          </ItemName>
+          <ItemName>Kevin</ItemName>
         </ItemList>
         <ItemList
           onClick={() =>
             onClickChangeVoiceInfoHandler({
               name: 'Beryl',
-              type: 'voice',
-              voiceModel: '01831c53-3a8b-7a50-bd97-g63fxhc34sgy',
+              model: '01831c53-3a8b-7a50-bd97-g63fxhc34sgy',
               imageFileUrl: '/images/avatar/beryl.svg'
             })}
         >
@@ -69,9 +66,7 @@ const VoiceOption = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps)
             backgroundRepeat={'no-repeat'}
             backgroundSize={'cover'}
           />
-          <ItemName>
-            Beryl
-          </ItemName>
+          <ItemName>Beryl</ItemName>
         </ItemList>
       </ItemLists>
     </OptionWrapper>

@@ -1,42 +1,36 @@
 import { CSS_TYPE, color } from '@styles/styles';
 import styled from '@emotion/styled';
 import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 const SideNavigation = () => {
 
   // Hooks
-  const router = useRouter();
   const pathName = usePathname();
   const firstPathName = pathName?.split('/')[1];
 
   return (
     <SideNav>
       <GNBLists>
-        <GNBList
-          color={firstPathName === '' ? color.White : ''}
-          onClick={() => router.push('/')}
-        >Home</GNBList>
-        <GNBList
-          color={firstPathName === 'project' ? color.White : ''}
-          onClick={() => router.push('/project')}
-        >Project</GNBList>
-        <GNBList
-          color={firstPathName === 'virtual-human' ? color.White : ''}
-          onClick={() => router.push('/virtual-human')}
-        >Virtual Human</GNBList>
+        <GNBList color={firstPathName === '' ? color.White : ''}>
+          <Link href="/" passHref>Home</Link>
+        </GNBList>
+        <GNBList color={firstPathName === 'project' ? color.White : ''}>
+          <Link href="/project" passHref>Project</Link>
+        </GNBList>
+        <GNBList color={firstPathName === 'virtual-human' ? color.White : ''}>
+          <Link href="/virtual-human" passHref>Virtual Human</Link>
+        </GNBList>
         {/* 마스터 계정 한정 */}
-        <GNBList
-          color={firstPathName === 'Organizations' ? color.White : ''}
-          onClick={() => { alert('그룹 페이지는 개발예정입니다.') }}
-        >Organizations</GNBList>
-        <GNBList
-          color={firstPathName === 'users' ? color.White : ''}
-          onClick={() => { alert('유저 페이지는 개발예정입니다.') }}
-        >Users</GNBList>
-        <GNBList
-          color={firstPathName === 'mypage' ? color.White : ''}
-          onClick={() => { alert('마이페이지는 개발예정입니다.') }}
-        >Mypage</GNBList>
+        <GNBList color={firstPathName === 'Organizations' ? color.White : ''}>
+          <Link href="/" passHref>Organizations</Link>
+        </GNBList>
+        <GNBList color={firstPathName === 'users' ? color.White : ''}>
+          <Link href="/" passHref>Users</Link>
+        </GNBList>
+        <GNBList color={firstPathName === 'mypage' ? color.White : ''}>
+          <Link href="/" passHref>Mypage</Link>
+        </GNBList>
       </GNBLists>
     </SideNav>
   )

@@ -3,66 +3,63 @@
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useMutation } from 'react-query';
-import { color, RadiusButton } from '@/src/styles/styles';
+import { color, RadiusButton } from '@styles/styles';
 import ScriptItem from './Item';
 import ControlPanel from './ControlPanel';
-import BottomSheet from '@/src/components/BottomSheet';
+import BottomSheet from '@components/BottomSheet';
 import Speed from './bottomSheet/Speed';
 import PauseSecond from './bottomSheet/PauseSecond';
 import { post } from 'src/hooks/asyncHooks';
-import { checkEmptyObject } from '@/src/modules/validation';
 import PageLoading from '../../loading/PageLoading';
+import { ProjectProps } from '@modules/interface';
 
 interface SlideProps {
-  name: string
-  slideList: any;
-  setSlideList: Dispatch<SetStateAction<object[]>>;
-  currentSlide: any;
+  name: string;
+  project: ProjectProps;
+  setProject: Dispatch<SetStateAction<ProjectProps>>
+  isTransform: boolean;
+  setIsTransform: Dispatch<SetStateAction<boolean>>
 }
 
-const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => {
+const Script = ({ name, project, setProject, isTransform, setIsTransform }: SlideProps) => {
 
   // Hooks
   const [bottomSheetTitle, setBottomSheetTitle] = useState<string>('');
   const [bottomSheetType, setBottomSheetType] = useState<string>(''); // 음성 빠르기, 대기시간
   const [isShowBottomSheet, setIsShowBottomSheet] = useState<boolean>(false);
-  const [scriptList, setScriptList] = useState(currentSlide.scriptList);
+  const [scriptList, setScriptList] = useState(project.scriptList);
   const [scriptUUID, setScriptUUID] = useState<string>('');
   const [speedChildren, setSpeedChildren] = useState(<></>); // React Node
   const [pauseSecondChildren, setPauseSecondChildren] = useState(<></>); // React Node
   const [avatarType, setAvatarType] = useState(''); // TTS, Lipsync
   const [transferResult, setTransferResult] = useState({});
 
-  /* 슬라이드 변환하기 */
-  const onClickTransformHandler = () => {
+  const onGenerateAvatarHandler = () => { return () => post('project/avatar', project, {})}
 
-    let prevList = [...slideList];
-    prevList.forEach((el: any, index: number) => {
-      if (el.uuid === currentSlide.uuid) {
-        prevList[index].scriptList = scriptList;
-        setSlideList(prevList);
+  const slideMutation = useMutation('slideList', onGenerateAvatarHandler(), {
+    onSuccess: (response) => {
+
+      const { data } = response;
+      setIsTransform(false);
+
+      if(data.result === 'success'){
+        if (project.avatar.name === '') // TTS
+          setAvatarType('audio');
+        else // Lip-sync
+          setAvatarType('video');
+
+        alert('아바타가 생성되었어요.\n아래 활성화된 다운로드 버튼을 통해 확인해보세요!');
+        setTransferResult(response.data);
       }
-    });
-
-    slideMutation.mutate();
-  }
-
-  const slideMutation = useMutation('slideList', () => post('project/avatar', slideList, {}), {
-    onSuccess: (data) => {
-
-      alert('아바타가 생성되었어요.\n아래 활성화된 다운로드 버튼을 통해 확인해보세요!');
-
-      if (checkEmptyObject(currentSlide.avatar)) // TTS
-        setAvatarType('audio');
-      else // Lip-sync
-        setAvatarType('video');
-
-      setTransferResult(data.data);
+      else{
+        alert('아바타 생성중에 에러가 발생했어요.\n관리자에게 문의해주세요.');
+        console.log(response);
+      }
     },
     onError: (data) => {
-
       alert('아바타 생성중에 에러가 발생했어요.\n관리자에게 문의해주세요.');
       console.error(data);
+      setIsTransform(false);
     }
   });
 
@@ -85,30 +82,23 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
     )
   }, [scriptUUID])
 
+  useEffect(() => {
+    let prevState = { ...project };
+    prevState.scriptList = scriptList;
+    setProject(prevState);
+  }, [scriptList])
+
+  useEffect(() => {
+    if(isTransform)
+      slideMutation.mutate()
+  }, [isTransform])
+
   return (
     <ScriptWrapper>
       {slideMutation.isLoading && <PageLoading />}
-      <HeaderWrapper>
-        <ProjectName>프로젝트 명: {name}</ProjectName>
-        <AllTransBtn
-          padding={'8px 24px'}
-          color={color.BasicColor}
-          borderColor={color.BasicColor}
-          fontWeight={'500'}
-        >프로젝트 변환하기</AllTransBtn>
-      </HeaderWrapper>
       <ScriptArea>
         <TitleWrapper>
           <Title>스크립트 영역</Title>
-          <RadiusButton
-            backgroundColor={color.BasicColor}
-            borderColor={color.BasicColor}
-            color={color.White}
-            padding={'8px 24px'}
-            onClick={() => onClickTransformHandler()}
-          >
-            슬라이드 변환하기
-          </RadiusButton>
         </TitleWrapper>
         <ScriptItemWrapper>
           {
@@ -147,34 +137,13 @@ const Script = ({ name, slideList, setSlideList, currentSlide }: SlideProps) => 
   )
 }
 const ScriptWrapper = styled.div({
-  width: 'calc(50% - 16px)',
+  width: 'calc(65% - 8px)',
   height: '100%',
   position: 'relative',
 })
-const HeaderWrapper = styled.div({
-  width: '100%',
-  height: 'calc(7% - 12px)',
-  margin: '0 0 12px 0',
-  padding: '8px 24px',
-  position: 'relative',
-  backgroundColor: color.White,
-  borderRadius: '16px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  zIndex: '1'
-})
-const ProjectName = styled.div({
-  color: color.BasicColor,
-  fontSize: '1.1rem',
-  fontWeight: '700'
-})
-const AllTransBtn = styled(RadiusButton)({
-
-})
 const ScriptArea = styled.div({
   width: '100%',
-  height: '93%',
+  height: '100%',
   position: 'relative',
   backgroundColor: color.White,
   borderRadius: '16px',

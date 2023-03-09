@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, ImageWrap, ImageElement, fadeUp } from '@/src/styles/styles';
+import { CSS_TYPE, color, ImageWrap, ImageElement, fadeUp } from '@styles/styles';
 
 interface ModalProps {
   title: string;

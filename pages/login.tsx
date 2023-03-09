@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import LoginComponent from '@components/login/Login';
 import { useSetRecoilState } from 'recoil';
 import { authState } from '@recoil/states';
+import { setCookie } from '@lib/auth/cookie';
 
 const Login = () => {
 
@@ -32,24 +33,26 @@ const Login = () => {
   const loginMutation = useMutation('userInfo', (data) => post('auth/login', data, {}), {
     onSuccess: (res) => {
 
-      console.log(res);
+      // console.log(res);
+      
       const { status, code, response, message, data } = res;
 
       // TODO Handler 깔끔하게 처리
-
       if (code === 'ERR_BAD_REQUEST' && response.status === 401) {
         alert('일치하는 회원정보가 존재하지 않습니다.');
       }
       else if (!checkEmptyObject(data) && data.accessToken && status === 201) {
 
         const { accessToken } = data;
-        setAuthState(accessToken);
+        setAuthState(accessToken); // TODO Recoil State
+        setCookie(accessToken);
         router.push('/');
       } else {
         alert('로그인 도중 에러가 발생하였습니다.\n관리자에게 문의해주세요.');
       }
     },
     onError: (data) => {
+      alert('로그인 도중 에러가 발생하였습니다.\n관리자에게 문의해주세요.');
       console.log('login onError');
       console.error(data);
     }

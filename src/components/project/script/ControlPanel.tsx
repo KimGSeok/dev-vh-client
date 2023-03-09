@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, ImageElement, ImageWrap, RadiusButton } from '@/src/styles/styles';
-import { onClickBlobDownload } from '@/src/modules/onClickBlobDownload';
-import { getToday, getTodayTime } from '@/src/modules/date';
+import { CSS_TYPE, color, ImageElement, ImageWrap, RadiusButton } from '@styles/styles';
+import { onClickBlobDownload } from '@modules/onClickBlobDownload';
+import { getToday, getTodayTime } from '@modules/date';
 import { useState, useEffect } from 'react';
 
 interface ControlProps {

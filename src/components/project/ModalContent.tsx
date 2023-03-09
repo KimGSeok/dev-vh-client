@@ -3,7 +3,7 @@
 import styled from '@emotion/styled';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CSS_TYPE, color, RadiusButton, Warning, ImageElement } from '@/src/styles/styles';
+import { CSS_TYPE, color, RadiusButton, Warning, ImageElement } from '@styles/styles';
 import { post } from 'src/hooks/asyncHooks';
 
 const ModalContent = () => {
@@ -37,7 +37,6 @@ const ModalContent = () => {
         alert('프로젝트 생성에 실패했어요.\n관리자에게 문의해주세요.')
       }
     } else {
-
       setValidation({ name: true })
     }
   }
@@ -85,7 +84,7 @@ const ModalContent = () => {
 
 const MainComponent = styled.div({
   margin: '0 12px',
-  padding: '0 0 24px 0'
+  padding: '0 0 12px 0'
 })
 const ContentWrapper = styled.div({
   margin: '0 0 24px 0'

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, ImageElement } from '@/src/styles/styles';
+import { CSS_TYPE, color, ImageElement } from '@styles/styles';
 import { useRef, useState } from 'react';
-import { onClickOutsideHandler } from '@/src/modules/onClickOutside';
+import { onClickOutsideHandler } from '@modules/onClickOutside';
 
 const Filter = () => {
 

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, SelectBox } from '@/src/styles/styles';
+import { CSS_TYPE, color, SelectBox } from '@styles/styles';
 
 const Search = () => {
   return (

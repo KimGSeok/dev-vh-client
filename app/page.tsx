@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import Head from 'next/head';
-import { CSS_TYPE, color, RadiusButton, ImageElement, shaking } from '@/src/styles/styles';
+import { CSS_TYPE, color, RadiusButton, ImageElement, shaking } from '@styles/styles';
 import { useRouter } from 'next/navigation';
 
 const Home = () => {

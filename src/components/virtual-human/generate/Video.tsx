@@ -2,10 +2,10 @@
 
 import styled from "@emotion/styled";
 import RecordRTC from 'recordrtc';
-import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@/src/styles/styles";
+import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@styles/styles";
 import { useEffect, useState } from "react";
 import RecordButtonWrapper from "./RecordButton";
-import { onChangeVideoCssProps } from "@/src/modules/avatar/onChangeVideoCssProps";
+import { onChangeVideoCssProps } from "@modules/avatar/onChangeVideoCssProps";
 
 const VideoGenerate = ({ type, avatarName }: { type: string, avatarName: string }) => {
 

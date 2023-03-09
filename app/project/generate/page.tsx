@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useSearchParams } from 'next/navigation';
 import { v4 as uuidV4 } from 'uuid';
-import SlideWrapper from '@/src/components/project/slide/Slide';
-import AvatarWrapper from '@/src/components/project/avatar/Avatar';
-import ScriptWrapper from '@/src/components/project/script/Script';
+import SlideWrapper from '@components/project/slide/Slide';
+import AvatarWrapper from '@components/project/avatar/Avatar';
+import ScriptWrapper from '@components/project/script/Script';
 
 const ProjectGenerate = () => {
 

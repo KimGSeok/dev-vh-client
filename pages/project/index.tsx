@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from "react";
 import Filter from "@components/Filter";
 import PageTitle from "@components/layout/PageTitle";
@@ -17,10 +15,7 @@ const Project = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   // Modal에 전달할 Avatar Generate Modal Content
-  const projectChildren =
-    <ModalContent
-
-    />;
+  const projectChildren = <ModalContent />;
 
   return (
     <MainComponent>

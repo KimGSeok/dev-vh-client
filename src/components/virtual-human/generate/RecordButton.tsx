@@ -1,7 +1,7 @@
 'use client';
 
 import styled from "@emotion/styled";
-import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@/src/styles/styles";
+import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@styles/styles";
 import { Dispatch, SetStateAction } from "react";
 
 interface RecordProps {

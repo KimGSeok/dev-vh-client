@@ -1,6 +1,6 @@
 import { Dispatch, ChangeEvent, FormEvent, SetStateAction, useState, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from '@/src/styles/styles';
+import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from '@styles/styles';
 import { v4 as uuidV4 } from 'uuid';
 
 interface ScriptProps {
@@ -19,7 +19,6 @@ const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScript
   // Hooks
   const scriptRef = useRef<any>(null);
   const [mount, setMount] = useState<boolean>(false);
-  const [value, setValue] = useState(scriptInfo.text);
 
   const onClickScriptSpeedHandler = () => {
 
@@ -46,45 +45,19 @@ const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScript
     if (scriptList.length > 1)
       setScriptList(scriptList.filter((el: any) => (el.uuid !== args.uuid)));
   }
-
-  const onChangeInputScriptHandler = (e: ChangeEvent<HTMLInputElement>) => {
-
-    let prevList = [...scriptList];
-    const script = e.target.value;
-
-    scriptList.forEach((el: any, index: number) => {
-      if (el.uuid === scriptInfo.uuid) {
-        prevList[index].text = script;
-        setScriptList(prevList);
-      }
-    });
-
-    setValue(e.target.value);
-  }
-
   const onInputScriptHandler = (e: FormEvent<HTMLDivElement>) => {
 
-    console.log(scriptRef);
-    console.log(scriptRef.current);
-    console.log(scriptRef.current.client);
-    console.log(scriptRef.current.offsetHeight);
-    console.log(scriptRef.current.clientHeight);
+    let prevList = [...scriptList];
+    const script = scriptRef.current.innerText;
 
-    // let prevList = [...scriptList];
-    // const script = e.target.value;
-
-    // scriptList.forEach((el: any, index: number) => {
-    //   if (el.uuid === scriptInfo.uuid) {
-    //     prevList[index].text = script;
-    //     setScriptList(prevList);
-    //   }
-    // });
-
-    // setValue(e.target.value);
+    scriptList.forEach((el: any, index: number) => {
+      if (el.uuid === scriptInfo.uuid)
+        prevList[index].text = script;
+    });
+    setScriptList(prevList);
   }
 
   useEffect(() => {
-
     setMount(true);
     return () => setMount(false);
   }, [])
@@ -114,13 +87,6 @@ const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScript
         onInput={(e) => onInputScriptHandler(e)}
         contentEditable={true}
       />
-      {/* <Script
-        ref={scriptRef}
-        type={'text'}
-        placeholder={'슬라이드 텍스트를 입력해주세요.'}
-        onChange={(e) => onChangeInputScriptHandler(e)}
-        defaultValue={value}
-      /> */}
       <RadiusBtn
         backgroundColor={color.BasicColor}
         borderColor={color.BasicColor}

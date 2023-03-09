@@ -1,55 +1,52 @@
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, ImageElement, ImageWrap } from '@/src/styles/styles';
+import { CSS_TYPE, color, ImageElement, ImageWrap } from '@styles/styles';
 import { Dispatch, SetStateAction, useState } from 'react';
 import AvatarOption from './option/Avatar';
 import VoiceOption from './option/Voice';
-import { checkEmptyObject } from '@/src/modules/validation';
+import { AvatarProps, ProjectProps, VoiceProps } from '@modules/interface';
 
-interface AvatarProps {
-  slideList: any;
-  setSlideList: Dispatch<SetStateAction<any>>;
-  activeSlideIndex: number;
+interface ProjectAvatarProps {
+  project: ProjectProps;
+  setProject: Dispatch<SetStateAction<ProjectProps>>;
 }
 
-const Avatar = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps) => {
+const Avatar = ({ project, setProject }: ProjectAvatarProps) => {
 
   // Hooks
   const [showOption, setShowOption] = useState('avatar'); // 현재 가상인간의 옵션
-
-  // Parameter
-  const avatar = slideList[activeSlideIndex].avatar;
-  const voice = slideList[activeSlideIndex].voice;
+  const avatar: AvatarProps = project.avatar;
+  const voice: VoiceProps = project.voice;
 
   return (
     <AvatarWrapper>
       <ImageWrapper>
         <ImageWrap
           position={'absolute'}
-          width={checkEmptyObject(avatar) ? '100%' : '70%'}
-          height={checkEmptyObject(avatar) ? '90%' : '100%'}
-          margin={checkEmptyObject(avatar) ? '0' : '0 15%'}
-          bottom={checkEmptyObject(avatar) ? '0' : '1px'}
+          width={avatar.name === '' ? '100%' : '70%'}
+          height={avatar.name === '' ? '90%' : '100%'}
+          margin={avatar.name === '' ? '0' : '0 15%'}
+          bottom={avatar.name === '' ? '0' : '1px'}
         >
           <ImageElement
-            src={checkEmptyObject(avatar) ? '/images/avatar/human_figure.svg' : avatar.imageFileUrl}
+            src={avatar.name === '' ? '/images/avatar/human_figure.svg' : avatar.imageFileUrl}
             fill
             style={{
               inset: 'auto',
-              objectFit: `${checkEmptyObject(avatar) ? 'contain' : 'cover'}`, // contain
+              objectFit: `${avatar.name === '' ? 'contain' : 'cover'}`, // contain
               borderTopRightRadius: '16px',
               borderTopLeftRadius: '16px',
             }}
-            alt={checkEmptyObject(avatar) ? 'human figure' : avatar.name}
+            alt={avatar.name === '' ? 'human figure' : avatar.name}
           />
         </ImageWrap>
       </ImageWrapper>
       <AvatarDataWrapper>
         <AvatarData
-          isActive={checkEmptyObject(avatar)}
-        >{checkEmptyObject(avatar) ? '아바타 미선택' : '아바타: ' + avatar.name}</AvatarData>
+          isActive={avatar.name === '' ? true : false}
+        >{avatar.name === '' ? '아바타 미선택' : '아바타: ' + avatar.name}</AvatarData>
         <AvatarData
-          isActive={checkEmptyObject(voice)}
-        >{checkEmptyObject(voice) ? '목소리 미선택' : '목소리: ' + voice.name}</AvatarData>
+          isActive={voice.name === '' ? true : false}
+        >{voice.name === '' ? '목소리 미선택' : '목소리: ' + voice.name}</AvatarData>
       </AvatarDataWrapper>
       <AvatarDecorateWrapper>
         <OptionWrapper>
@@ -108,13 +105,11 @@ const Avatar = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps) => {
             </OptionList>
           </OptionLists>
           <OptionItemWrapper>
-
             {/* 아바타 선택 */}
-            {showOption === 'avatar' ? <AvatarOption slideList={slideList} setSlideList={setSlideList} activeSlideIndex={activeSlideIndex} /> : ''}
+            {showOption === 'avatar' ? <AvatarOption avatar={avatar} project={project} setProject={setProject} /> : ''}
 
             {/* 목소리 선택 */}
-            {showOption === 'voice' ? <VoiceOption slideList={slideList} setSlideList={setSlideList} activeSlideIndex={activeSlideIndex} /> : ''}
-
+            {showOption === 'voice' ? <VoiceOption voice={voice} project={project} setProject={setProject} /> : ''}
           </OptionItemWrapper>
         </OptionWrapper>
       </AvatarDecorateWrapper>
@@ -122,10 +117,10 @@ const Avatar = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps) => {
   )
 }
 const AvatarWrapper = styled.div({
-  width: 'calc(38% - 16px)',
+  width: 'calc(35% - 8px)',
   height: '100%',
   backgroundColor: color.White,
-  margin: '0 24px',
+  margin: '0 24px 0 0',
   borderRadius: '16px'
 })
 const ImageWrapper = styled.div({

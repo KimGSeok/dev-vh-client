@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { color, CSS_TYPE, pulseKeyFrames } from "@/src/styles/styles";
+import { color, CSS_TYPE, pulseKeyFrames } from "@styles/styles";
 
 const AudioWaveForm = () => {
 

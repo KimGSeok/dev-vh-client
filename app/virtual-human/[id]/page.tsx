@@ -1,7 +1,7 @@
 'use client';
 
 import styled from "@emotion/styled";
-import { CSS_TYPE, color } from "@/src/styles/styles";
+import { CSS_TYPE, color } from "@styles/styles";
 
 
 const AvatarDetail = () => {

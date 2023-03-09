@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useSearchParams } from 'next/navigation';
-import { ProjectSlideInterfaceProps } from '@/src/modules/type';
-import SlideWrapper from '@/src/components/project/slide/Slide';
-import AvatarWrapper from '@/src/components/project/avatar/Avatar';
-import ScriptWrapper from '@/src/components/project/script/Script';
+import { ProjectSlideInterfaceProps } from '@modules/interface';
+import AvatarWrapper from '@components/project/avatar/Avatar';
+import ScriptWrapper from '@components/project/script/Script';
 
 const ProjectDetail = () => {
 

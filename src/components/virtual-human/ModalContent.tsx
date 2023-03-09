@@ -1,7 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, RadiusButton, Warning } from '@/src/styles/styles';
+import { CSS_TYPE, color, RadiusButton, Warning } from '@styles/styles';
 import { Dispatch, SetStateAction, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -30,12 +30,11 @@ const ModalContent = ({ avatarType, setAvatarType }: ModalProps) => {
     if (checkNameHandler(name)) {
 
       setValidation({ name: false })
-      alert('아바타 생성을 시작합니다.');
-      router.push(`/avatar/generate?type=${type}&name=${name}`)
-    } else {
-
-      setValidation({ name: true })
+      alert('가상인간 생성을 시작합니다.');
+      router.push(`/virtual-human/generate?type=${type}&name=${name}`)
     }
+    else
+      setValidation({ name: true })
   }
 
   return (
@@ -119,7 +118,7 @@ const ModalContent = ({ avatarType, setAvatarType }: ModalProps) => {
 }
 const MainComponent = styled.div({
   margin: '0 12px',
-  padding: '0 0 24px 0'
+  padding: '0 0 12px 0'
 })
 const ContentWrapper = styled.div({
   margin: '0 0 24px 0'

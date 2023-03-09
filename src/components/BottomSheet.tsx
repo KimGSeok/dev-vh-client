@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useRef } from 'react';
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, ImageElement, ImageWrap } from '@/src/styles/styles';
-import { onClickOutsideHandler } from '@/src/modules/onClickOutside';
+import { CSS_TYPE, color, ImageElement, ImageWrap } from '@styles/styles';
+import { onClickOutsideHandler } from '@modules/onClickOutside';
 
 interface SheetProps {
   isShowBottomSheet: boolean;

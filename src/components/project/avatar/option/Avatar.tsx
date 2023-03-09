@@ -1,32 +1,33 @@
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, ImageElement, ImageWrap } from '@/src/styles/styles';
+import { CSS_TYPE, color } from '@styles/styles';
 import { Dispatch, SetStateAction } from 'react';
-import { checkEmptyObject } from '@/src/modules/validation';
+import { ProjectProps, AvatarProps } from '@modules/interface';
 
-interface AvatarProps {
-  slideList: any;
-  setSlideList: Dispatch<SetStateAction<any>>;
-  activeSlideIndex: number;
+interface AvatarOptionProps {
+  avatar: AvatarProps;
+  project: ProjectProps;
+  setProject: Dispatch<SetStateAction<ProjectProps>>;
 }
 
-const AvatarOption = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps) => {
+const AvatarOption = ({ avatar, project, setProject }: AvatarOptionProps) => {
 
-  // Parameter
-  const avatar = slideList[activeSlideIndex].avatar;
-
-  const onClickChangeAvatarInfoHandler = (avatar: object) =>{
+  const onClickChangeAvatarInfoHandler = (param: AvatarProps) =>{
     
-    let prevState = [...slideList];
-    prevState[activeSlideIndex].avatar = avatar;
-    setSlideList(prevState);
+    let prevState = { ...project };
+    prevState.avatar = param;
+    setProject(prevState);
   }
   
   return (
     <OptionWrapper>
       <ItemLists>
-        <ItemList onClick={() => onClickChangeAvatarInfoHandler({})} >
+        <ItemList onClick={() => onClickChangeAvatarInfoHandler({
+          name :'',
+          model: '',
+          imageFileUrl: ''
+        })} >
           <ImageWrapper
-            opacity={checkEmptyObject(avatar) ? 1 : 0}
+            opacity={avatar.name === '' ? 1 : 0}
             backgroundImage={"url('/images/avatar/unchecked_avatar.svg')"}
             backgroundRepeat={'no-repeat'}
             backgroundSize={'cover'}
@@ -39,8 +40,7 @@ const AvatarOption = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps
           onClick={() =>
             onClickChangeAvatarInfoHandler({
               name: 'Kevin',
-              type: 'avatar',
-              avatarModel: '01831218-c70d-78ee-9cba-03532fabd6f6', // TODO Lipsync 모델
+              model: '01831218-c70d-78ee-9cba-03532fabd6f6', // TODO Lipsync 모델
               imageFileUrl: '/images/avatar/kevin.jpeg'
             })}
         >
@@ -58,8 +58,7 @@ const AvatarOption = ({ slideList, setSlideList, activeSlideIndex }: AvatarProps
           onClick={() =>
             onClickChangeAvatarInfoHandler({
               name: 'Beryl',
-              type: 'avatar',
-              avatarModel: '018334a3-693b-76b1-902b-39d4595403a8', // TODO Lipsync 모델
+              model: '018334a3-693b-76b1-902b-39d4595403a8', // TODO Lipsync 모델
               imageFileUrl: '/images/avatar/beryl.svg'
             })}
         >

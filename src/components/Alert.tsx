@@ -1,6 +1,6 @@
 import { } from 'react';
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, RadiusButton } from '@/src/styles/styles';
+import { CSS_TYPE, color, RadiusButton } from '@styles/styles';
 
 const Alert = () => {
   return (
