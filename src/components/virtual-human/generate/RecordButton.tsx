@@ -38,7 +38,8 @@ const RecordButtonWrapper = ({
         (recordStatus === 'wait' || recordStatus === 'fail') &&
         <RecordBtn
           backgroundColor={color.Red}
-          borderColor={color.Red}
+          border={'0'}
+          margin={'0 0 0 0'}
           onClick={onRecordHandler}
         >
           <ImageWrap
@@ -48,13 +49,13 @@ const RecordButtonWrapper = ({
           >
             <ImageElement
               src={type === 'voice' ? '/icons/mic.svg' : '/icons/videocam.svg'}
-              width={24}
-              height={24}
+              width={28}
+              height={28}
               style={{
-                width: '75%',
-                height: '75%',
+                width: type === 'voice' ? '100%' : '85%',
+                height: type === 'voice' ? '100%' : '85%',
                 position: 'relative',
-                top: '2px'
+                top: '3px'
               }}
               alt="mic"
             />
@@ -65,7 +66,8 @@ const RecordButtonWrapper = ({
         recordStatus === 'recording' &&
         <RecordBtn
           backgroundColor={color.Purple}
-          borderColor={color.Purple}
+          border={'0'}
+          margin={'0 0 0 0'}
           onClick={onCompleteHandler}
         >
           <ImageWrap
@@ -81,7 +83,7 @@ const RecordButtonWrapper = ({
                 width: '100%',
                 height: '100%',
                 position: 'relative',
-                top: '2px'
+                top: '3px'
               }}
               alt="mic"
             />
@@ -93,7 +95,7 @@ const RecordButtonWrapper = ({
         <RecordBtnWrapper>
           <RecordBtn
             backgroundColor={color.Red}
-            borderColor={color.Red}
+            border={'0'}
             onClick={onReRecordHandler}
           >
             <ImageWrap
@@ -109,17 +111,17 @@ const RecordButtonWrapper = ({
                   width: '100%',
                   height: '100%',
                   position: 'relative',
-                  top: '2px'
+                  top: '3px'
                 }}
                 alt="mic"
               />
-            </ImageWrap>다시 녹음하기
+            </ImageWrap>{type === 'voice' ? '다시 녹음하기' : '다시 녹화하기'}
           </RecordBtn>
           <RecordBtn
             backgroundColor={color.BasicColor}
             borderColor={color.BasicColor}
             onClick={onNextStepHandler}
-          >다음으로
+          >{type === 'voice' ? '다음으로' : '아바타 생성하기'}
           </RecordBtn>
         </RecordBtnWrapper>
       }
@@ -137,15 +139,17 @@ const RecordBtn = styled(RadiusButton)<CSS_TYPE>(
     display: 'inline-flex',
     alignItems: 'center',
     padding: '8px 24px',
-    margin: '0 16px 0 0'
   },
   props => ({
     color: props.color,
+    margin: props.margin ? props.margin : '0 16px 0 0',
     backgroundColor: props.backgroundColor
   })
 )
 const RecordBtnWrapper = styled.div({
-
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 })
 
 export default RecordButtonWrapper;

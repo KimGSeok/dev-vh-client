@@ -12,7 +12,7 @@ const AvatarGenerate = () => {
   // Hooks
   const [mounted, setMounted] = useState<boolean>(false);
   const type: string = useSearchParams().get('type')!; // non-null assertion
-  const avatarName: string = useSearchParams().get('name')!;
+  const virtualHumanName: string = useSearchParams().get('name')!;
 
   useEffect(() => {
     setMounted(true);
@@ -22,8 +22,8 @@ const AvatarGenerate = () => {
   return (
     mounted ?
       <MainComponent>
-        {type === 'voice' && <VoiceGenerate type={type} avatarName={avatarName} />}
-        {type === 'video' && <VideoGenerate type={type} avatarName={avatarName} />}
+        {type === 'voice' && <VoiceGenerate type={type} virtualHumanName={virtualHumanName} />}
+        {type === 'video' && <VideoGenerate type={type} virtualHumanName={virtualHumanName} />}
       </MainComponent> : <></>
   )
 }

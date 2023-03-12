@@ -3,41 +3,33 @@
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import { CSS_TYPE, color, RadiusButton, ImageElement, shaking } from '@styles/styles';
-import { useRouter } from 'next/navigation';
 
 const Home = () => {
 
-  // Hooks
-  const router = useRouter();
+  // TODO 조직 혹은 사용자명 추출하여 표출
 
   return (
-    <>
-      <Page>
-        <DashboardWrapper>
-          <TitleWraaper>
-            <DashboardTitle>
-              회원님 스튜디오에 오신 걸 환영해요!
-              <ImageElement
-                src={'/icons/waving_hand.svg'}
-                css={shaking}
-                width={28}
-                height={28}
-                alt={'waving_hand'}
-                style={{
-                  margin: '0 0 0 8px',
-                }}
-              />
-            </DashboardTitle>
-            <DashboardSubTitle>음성녹음과 영상 촬영을 통해서 나만의 아바타를 만들어 볼 수 있어요.</DashboardSubTitle>
-          </TitleWraaper>
-          {/* <DashboardArea>
-          준비중이에요.
-          </DashboardArea> */}
-        </DashboardWrapper>
-        <ServicePreviewWrap>
-          <ServicePreviewEl
-            backgroundColor={'#524946'}
-            margin={'0 0 24px 0'}
+    <PageContainer>
+      <DashboardWrapper>
+        <TitleWraaper>
+          <DashboardTitle>
+            회원님 스튜디오에 오신 걸 환영해요!
+            <ImageElement
+              src={'/icons/waving_hand.svg'}
+              css={shaking}
+              width={28}
+              height={28}
+              alt={'waving_hand'}
+              style={{
+                margin: '0 0 0 8px',
+              }}
+            />
+          </DashboardTitle>
+          <DashboardSubTitle>음성 녹음과 영상 촬영을 통해서 나만의 가상인간을 만들어 볼 수 있어요.</DashboardSubTitle>
+        </TitleWraaper>
+        <ServicePreviewContainer>
+          <ServicePreview
+            backgroundColor={'#85736d'}
           >
             <ServiceName>가상 인간&#40;Virtual Human&#41;</ServiceName>
             <ServiceDescription>
@@ -53,7 +45,6 @@ const Home = () => {
               margin={'0 32px 32px 0'}
               bottom={'0'}
               right={'0'}
-              onClick={() => router.push('/avatar')}
             >
               아바타 생성하기
               <ImageElement
@@ -63,8 +54,8 @@ const Home = () => {
                 alt="arrow_right"
               />
             </RadiusBtn>
-          </ServicePreviewEl>
-          <ServicePreviewEl
+          </ServicePreview>
+          <ServicePreview
             backgroundColor={'#4c4e51'}
           >
             <ServiceName>프로젝트&#40;Project&#41;</ServiceName>
@@ -78,7 +69,6 @@ const Home = () => {
               margin={'0 32px 32px 0'}
               bottom={'0'}
               right={'0'}
-              onClick={() => router.push('/project')}
             >
               프로젝트 생성하기
               <ImageElement
@@ -88,21 +78,19 @@ const Home = () => {
                 alt="arrow_right"
               />
             </RadiusBtn>
-          </ServicePreviewEl>
-        </ServicePreviewWrap>
-      </Page>
-    </>
+          </ServicePreview>
+        </ServicePreviewContainer>
+      </DashboardWrapper>
+    </PageContainer>
   )
 }
 
-const Page = styled.div({
-  display: 'flex',
+const PageContainer = styled.div({
   width: '100%',
   height: '100%',
   position: 'relative',
 })
 const DashboardWrapper = styled.div({
-  width: '55%',
   height: '100%',
   position: 'relative'
 })
@@ -145,35 +133,19 @@ const DashboardSubTitle = styled.div({
     fontSize: '0.7rem',
   }
 })
-const DashboardArea = styled.div({
-  height: 'calc(90% - 16px)',
-  fontSize: '1.1rem',
-  fontWeight: '500',
-  color: color.BasicBlack,
-  margin: '16px 24px 0 0',
-  padding: '16px',
-  border: `1px solid ${color.ThumbnailColor}`,
-  borderRadius: '16px',
-
-
-  '@media screen and (max-width: 1440px)': {
-    fontSize: '0.9rem',
-  },
-
-  '@media screen and (max-width: 1023px)': {
-    fontSize: '0.8rem',
-  },
-
-  '@media screen and (max-width: 960px)': {
-    fontSize: '0.7rem',
-  }
+const ServicePreviewContainer = styled.div({
+  position: 'relative',
+  width: '100%',
+  height: '88%',
+  margin: '1% 0 1% 0',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between'
 })
-const ServicePreviewWrap = styled.div({
-  width: '45%'
-})
-const ServicePreviewEl = styled.div<CSS_TYPE>(
+const ServicePreview = styled.div<CSS_TYPE>(
   {
-    height: 'calc(50% - 12px)',
+    width: 'calc(50% - 12px)',
+    height: 'calc(100% - 12px)',
     borderRadius: '16px',
     padding: '32px',
     position: 'relative'
@@ -202,8 +174,8 @@ const ServiceName = styled.div({
   }
 })
 const ServiceDescription = styled.div({
-  fontSize: '0.95rem',
-  lineHeight: '24px',
+  fontSize: '1rem',
+  lineHeight: '28px',
   color: color.ThumbnailColor,
 
   '@media screen and (max-width: 1440px)': {

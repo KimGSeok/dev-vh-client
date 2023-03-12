@@ -2,16 +2,26 @@
 
 import styled from "@emotion/styled";
 import RecordRTC from 'recordrtc';
-import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@styles/styles";
+import dynamic from "next/dynamic";
+import { v4 as uuidV4 } from 'uuid';
+// import getBlobDuration from 'get-blob-duration'
+import { CSS_TYPE, color, ImageWrap, ImageElement } from "@styles/styles";
 import { useEffect, useState } from "react";
-import RecordButtonWrapper from "./RecordButton";
+import { post } from "@hooks/asyncHooks";
+import RecordButtonContainer from "./RecordButton";
 import { onChangeVideoCssProps } from "@modules/avatar/onChangeVideoCssProps";
+const StopWatch = dynamic(() => import('@components/stopWatch'), {
+  ssr: false
+});
 
-const VideoGenerate = ({ type, avatarName }: { type: string, avatarName: string }) => {
+const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanName: string }) => {
 
   // Hooks
   const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete), 녹음실패(fail)
-  const [videoMedia, setVideoMedia] = useState<object>({
+  const [duration, setDuration] = useState<number>(0);
+  const [timer, setTimer] = useState('init');
+  const [videoMedia, setVideoMedia] = useState<any>({
+    uploading: false,
     recorder: null,
     video: null,
     src: null
@@ -47,10 +57,13 @@ const VideoGenerate = ({ type, avatarName }: { type: string, avatarName: string 
 
     const recorder: any = new RecordRTC(stream, {
       type: 'video',
+      mimeType: 'video/webm',
+      // recorderType: RecordRTC.WhammyRecorder
       checkForInactiveTracks: false,
       disableLogs: true,
     });
 
+    setTimer('start');
     recorder.startRecording();
     recorder.camera = stream;
 
@@ -64,6 +77,7 @@ const VideoGenerate = ({ type, avatarName }: { type: string, avatarName: string 
 
     const { recorder }: any = videoMedia;
     if (recorder) {
+      setTimer('stop');
       recorder.camera.stop();
 
       const stopRecordingHandler = async () => {
@@ -71,21 +85,68 @@ const VideoGenerate = ({ type, avatarName }: { type: string, avatarName: string 
           const blob = recorder.getBlob();
 
           setVideoMedia({
+            uploading: true,
             recorder: null,
             video: blob,
-            src: URL.createObjectURL(blob)
+            videoBlobUrl: URL.createObjectURL(blob)
           })
           recorder.reset();
+          setRecordStatus('complete');
         });
       }
       stopRecordingHandler();
     }
   }
 
+  const onReRecordHandler = () =>{
+
+    setTimer('init');
+    setRecordStatus('recording');
+    onClickRecordHandler();
+  }
+
+  const onNextStepHandler = () =>{
+
+    // Parameter
+    const virtualHumanId = uuidV4();
+    const formData = new FormData();
+    const scriptArr = Array();
+    const blobUrl = videoMedia.videoBlobUrl;
+
+    const videoFile = new File([videoMedia.video], `${virtualHumanName}_video.mp4`, {
+      type: 'video/mp4'
+    });
+
+    formData.append('files', videoFile);
+    formData.append('virtualHumanType', type);
+    formData.append('virtualHumanId', virtualHumanId);
+    formData.append('virtualHumanName', virtualHumanName);
+
+    const url = 'avatar/upload';
+    const headers ={
+        "Contest-Type": "multipart/form-data",
+        "uuid": virtualHumanId
+      }
+    const response = post(url, formData, headers);
+    console.log(response);
+  }
+
   useEffect(() => {
 
-    return () => { onStopRecordingHandler() };
-  }, [videoMedia])
+    if(recordStatus === 'complete'){
+      const video: any = document.getElementById('previewVideo');
+      video.src = URL.createObjectURL(videoMedia.video);
+    }
+
+    // if(recordStatus === 'complete' && duration < 180){
+    //   alert('최소 3분이상 녹화되지 않았습니다.\n다시 녹화해주세요.');
+    //   setTimer('init');
+    // }
+    // else if(recordStatus === 'complete' && duration >= 180){
+    //   const video: any = document.getElementById('previewVideo');
+    //   video.src = URL.createObjectURL(videoMedia.video);duration < 180
+    // }
+  }, [recordStatus])
 
   return (
     <VideoGenerateWrapper>
@@ -116,16 +177,21 @@ const VideoGenerate = ({ type, avatarName }: { type: string, avatarName: string 
       <VideoCameraWrapper>
         <VideoArea>
           {
-            recordStatus === 'fail' ?
-              <DeviceNotFoundWrapper><DeviceNotFound>Device not found</DeviceNotFound></DeviceNotFoundWrapper>
-              :
-              <Video
-                id="video"
-                autoPlay
-                backgroundImage={onChangeVideoCssProps(recordStatus, 'image')}
-                backgroundRepeat={onChangeVideoCssProps(recordStatus, 'repeat')}
-                backgroundSize={onChangeVideoCssProps(recordStatus, 'size')}
-              />
+            recordStatus === 'fail' && <DeviceNotFoundWrapper><DeviceNotFound>Device not found</DeviceNotFound></DeviceNotFoundWrapper>
+          }
+          {
+            (recordStatus === 'wait' || recordStatus === 'recording') && <Video
+              id="video"
+              autoPlay
+              backgroundImage={onChangeVideoCssProps(recordStatus, 'image')}
+              backgroundRepeat={onChangeVideoCssProps(recordStatus, 'repeat')}
+              backgroundSize={onChangeVideoCssProps(recordStatus, 'size')}
+            />
+          }
+
+          {/* <Video display={recordStatus === 'complete' ? 'block' : 'none'} id="previewVideo" controls/> */}
+          {
+            recordStatus === 'complete' && <Video id="previewVideo" controls/> 
           }
           {
             recordStatus === 'wait' &&
@@ -136,7 +202,7 @@ const VideoGenerate = ({ type, avatarName }: { type: string, avatarName: string 
               top={'5%'}
             >
               <ImageElement
-                src="/images/human_figure.svg"
+                src="/images/avatar/human_figure.svg"
                 fill
                 style={{
                   inset: 'auto',
@@ -147,12 +213,15 @@ const VideoGenerate = ({ type, avatarName }: { type: string, avatarName: string 
             </ImageWrap>
           }
         </VideoArea>
-        <RecordButtonWrapper
+        <StopWatch timer={timer} setTimer={setTimer} duration={duration} setDuration={setDuration} />
+        <RecordButtonContainer
           type={type}
           recordStatus={recordStatus}
           setRecordStatus={setRecordStatus}
           onRecordHandler={onClickRecordHandler}
+          onReRecordHandler={onReRecordHandler}
           onCompleteHandler={onStopRecordingHandler}
+          onNextStepHandler={onNextStepHandler}
         />
       </VideoCameraWrapper>
     </VideoGenerateWrapper >
@@ -190,8 +259,8 @@ const VideoCameraWrapper = styled.div({
 })
 const VideoArea = styled.div({
   position: 'relative',
-  height: '80%',
-  margin: '24px 0'
+  height: '75%',
+  margin: '24px 0 16px 0'
 })
 const Video = styled.video<CSS_TYPE>(
   {
@@ -203,7 +272,8 @@ const Video = styled.video<CSS_TYPE>(
   props => ({
     backgroundImage: props.backgroundImage,
     backgroundRepeat: props.backgroundRepeat,
-    backgroundSize: props.backgroundSize
+    backgroundSize: props.backgroundSize,
+    display: props.display
   })
 )
 const DeviceNotFoundWrapper = styled.div({

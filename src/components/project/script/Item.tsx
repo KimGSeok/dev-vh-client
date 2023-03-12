@@ -157,7 +157,7 @@ const ItemWrapper = styled.div({
 })
 const Script = styled.div(
   {
-    width: '60%',
+    width: '80%',
     height: 'auto',
     border: `1px solid ${color.ThumbnailColor}`,
     borderRadius: '8px',
@@ -166,19 +166,19 @@ const Script = styled.div(
     margin: '0 12px',
 
     '@media screen and (max-width: 1440px)': {
-      width: '50%',
+      width: '70%',
       padding: '7px 10px',
       margin: '0 10px',
     },
 
     '@media screen and (max-width: 1023px)': {
-      width: '45%',
+      width: '60%',
       padding: '6px 10px',
       margin: '0 8px',
     },
 
     '@media screen and (max-width: 960px)': {
-      width: '40%',
+      width: '50%',
       padding: '6px 10px',
       margin: '0 6px',
     }

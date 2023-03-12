@@ -7,11 +7,16 @@ import styled from "@emotion/styled";
 import Portal from '@components/Portal';
 import Modal from '@components/Modal';
 import ModalContent from '@components/project/ModalContent';
+import { GetServerSideProps } from "next";
+import { getProjectList } from "@hooks/queries/project";
+import { dehydrate, QueryClient, useQuery } from "react-query";
+import PageLoading from "@components/loading/PageLoading";
 
 const Project = () => {
 
+  const { data } = useQuery(['project'], getProjectList, { staleTime: 10 * 1000 });
+
   // Hooks
-  const [list, setList] = useState([]);
   const [showModal, setShowModal] = useState<boolean>(false);
 
   // Modal에 전달할 Avatar Generate Modal Content
@@ -44,10 +49,10 @@ const Project = () => {
               >프로젝트명</ListInfo>
               <ListInfo
                 width={'15%'}
-              >아바타 명</ListInfo>
+              >프로젝트 길이</ListInfo>
               <ListInfo
                 width={'15%'}
-              >프로젝트 길이</ListInfo>
+              >생성날짜</ListInfo>
               <ListInfo
                 width={'15%'}
               >최근 수정날짜</ListInfo>
@@ -60,10 +65,14 @@ const Project = () => {
         <ListWrapper>
           <ProjectLists>
             {
-              list && list.length > 0 ?
-                list.map((item: any, index: any) => {
+              data && data.length > 0 ?
+                data.map((item: any, index: any) => {
                   return (
-                    <ProjectList key={index}>
+                    <ProjectList
+                      key={index}
+                      fontSize={'0.95rem'}
+                      cursor={'pointer'}
+                    >
                       <ListInfo
                         width={'10%'}
                         color={''}
@@ -76,7 +85,7 @@ const Project = () => {
                         color={''}
                         fontSize={''}
                         fontWeight={''}
-                      >이미지
+                      >{item.name}
                       </ListInfo>
                       <ListInfo
                         width={'15%'}
@@ -90,14 +99,14 @@ const Project = () => {
                         color={''}
                         fontSize={''}
                         fontWeight={''}
-                      >이미지
+                      >{item.created_at}
                       </ListInfo>
                       <ListInfo
                         width={'15%'}
                         color={''}
                         fontSize={''}
                         fontWeight={''}
-                      >이미지
+                      >{item.updated_at}
                       </ListInfo>
                       <ListInfo
                         width={'15%'}
@@ -108,7 +117,7 @@ const Project = () => {
                       </ListInfo>
                     </ProjectList>
                   )
-                }) : <EmptyList>프로젝트 목록이 없습니다.</EmptyList>
+                }) : <EmptyList><PageLoading />프로젝트 목록이 없습니다.</EmptyList>
             }
           </ProjectLists>
         </ListWrapper>
@@ -128,22 +137,15 @@ const Project = () => {
   )
 }
 
-const MainComponent = styled.div({
-
-})
+const MainComponent = styled.div({})
 const ProjectWrapper = styled.div({
   margin: '16px 0 0 0',
   textAlign: 'center'
 })
-const HeaderWrapper = styled.div({
-
-})
-const ListWrapper = styled.div({
-
-})
+const HeaderWrapper = styled.div({})
+const ListWrapper = styled.div({})
 const ProjectLists = styled.ul<CSS_TYPE>(
   {
-
   }
 )
 const ProjectList = styled.li<CSS_TYPE>(
@@ -156,7 +158,8 @@ const ProjectList = styled.li<CSS_TYPE>(
     borderTop: props.borderTop,
     borderBottom: props.borderBottom,
     fontSize: props.fontSize,
-    color: props.color ? props.color : color.BasicBlack
+    color: props.color ? props.color : color.BasicBlack,
+    cursor: props.cursor
   })
 )
 const ListInfo = styled.div<CSS_TYPE>(
@@ -173,5 +176,18 @@ const EmptyList = styled.div({
   color: color.DeActiveColor,
   padding: '24px 0'
 })
+
+export const getServerSideProps: GetServerSideProps = async () =>{
+
+  // TODO Server Side에서 Cookie값을 못 읽는 듯
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(['project'], getProjectList);
+
+  return{
+    props: {
+      dehydrateProps: dehydrate(queryClient),
+    }
+  }
+}
 
 export default Project;

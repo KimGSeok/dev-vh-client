@@ -1,3 +1,4 @@
+import { getCookie } from '@lib/auth/cookie';
 import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -8,9 +9,17 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
  */
 export const get = async (url: string, cache: RequestCache) => {
   try {
-    const response = await fetch(`${API_URL}/${url}`, { cache: cache })
+    const response = await fetch(
+      `${API_URL}/${url}`,{
+        headers: {
+          Authorization: `Bearer ${getCookie()}`
+        },
+        cache: cache
+      })
+
     return response.json();
   } catch (error) {
+    console.error(error);
     return error;
   }
 }
@@ -19,13 +28,18 @@ export const get = async (url: string, cache: RequestCache) => {
  * Post
  * Author: Kim Gyeong Seok
  */
-export const post = async (url: string, data: any, option: object) => {
+export const post = async (url: string, data: any, headers: object) => {
+  headers = {
+    ...headers,
+    Authorization: `Bearer ${getCookie()}`
+  }
   try {
-
     const result = axios.post(
       `${API_URL}/${url}`,
       data,
-      option
+      {
+        headers: {... headers}
+      }
     ).then((response: any) => {
 
       // Service Logic

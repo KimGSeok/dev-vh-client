@@ -7,7 +7,7 @@ const Login = ({ register, handleSubmit, errors, onSubmitHandler }: any) => {
     <MainComponent>
       <MainContainer>
         <LoginContainer onSubmit={handleSubmit(onSubmitHandler)}>
-          <PageTitleWrapper>Warping</PageTitleWrapper>
+          <PageTitleWrapper>두:분</PageTitleWrapper>
           <InputContainer
             margin={errors?.id && '0 auto 8px auto'}
           >
@@ -56,9 +56,9 @@ const Login = ({ register, handleSubmit, errors, onSubmitHandler }: any) => {
             <div>비밀번호 찾기</div>
           </FindUserInfoWrapper>
           <FooterWrapper>
+            {/* <div>개인정보처리방침</div>
+            <div>이용약관</div> */}
             <div>개인정보처리방침</div>
-            <div>이용약관</div>
-            <div>Warping</div>
           </FooterWrapper>
         </LoginContainer>
       </MainContainer>

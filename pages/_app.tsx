@@ -13,7 +13,7 @@ const MyApp = ({ Component, pageProps }: any) => {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <Hydrate>
+        <Hydrate state={pageProps?.dehydrateState}>
           {globalStyles}
           <AppLayout>
             <Component {...pageProps} />

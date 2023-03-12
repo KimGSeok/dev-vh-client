@@ -24,7 +24,6 @@ const ControlPanel = ({ name, avatarType, transferResult }: ControlProps) => {
   }
 
   useEffect(() => {
-
     setType(avatarType);
   }, [avatarType])
 
@@ -58,6 +57,7 @@ const ControlPanel = ({ name, avatarType, transferResult }: ControlProps) => {
       <RadiusBtn
         display={'flex'}
         alignItems={'center'}
+        minWidth={'155px'}
         color={color.White}
         backgroundColor={color.Purple}
         borderColor={color.Purple}
@@ -89,6 +89,7 @@ const ControlPanel = ({ name, avatarType, transferResult }: ControlProps) => {
       <RadiusBtn
         display={'flex'}
         alignItems={'center'}
+        minWidth={'155px'}
         color={color.White}
         backgroundColor={color.BasicOrange}
         borderColor={color.BasicOrange}
@@ -130,21 +131,21 @@ const PanelWrapper = styled.div({
 })
 const ProgressWrapper = styled.div({
   position: 'relative',
-  width: '40%',
+  width: '60%',
   margin: '0 24px',
 
   '@media screen and (max-width: 1440px)': {
-    width: '35%',
+    width: '50%',
     margin: '0 20px',
   },
 
   '@media screen and (max-width: 1023px)': {
-    width: '30%',
+    width: '45%',
     margin: '0 18px',
   },
 
   '@media screen and (max-width: 960px)': {
-    width: '25%',
+    width: '40%',
     margin: '0 16px',
   }
 })
@@ -174,8 +175,8 @@ const ProjectLength = styled.div({
 const RadiusBtn = styled(RadiusButton)<CSS_TYPE>(
   {
     '@media screen and (max-width: 1440px)': {
-      fontSize: '0.7rem',
-      padding: '4px 16px',
+      fontSize: '0.85rem',
+      padding: '4px 24px',
     },
 
     '@media screen and (max-width: 1023px)': {
@@ -189,6 +190,7 @@ const RadiusBtn = styled(RadiusButton)<CSS_TYPE>(
     }
   },
   props => ({
+    minWidth: props.minWidth,
     opacity: props.opacity,
     cursor: props.cursor
   })

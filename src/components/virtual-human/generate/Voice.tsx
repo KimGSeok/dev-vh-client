@@ -7,13 +7,13 @@ import { v4 as uuidV4 } from 'uuid';
 import { color, ImageWrap, ImageElement, RadiusButton } from "@styles/styles";
 import RecordButtonWrapper from "./RecordButton";
 import AudioWaveForm from "@modules/AudioWaveForm";
-import { get, post } from "src/hooks/asyncHooks";
+import { get, post } from "@hooks/asyncHooks";
 import Portal from '@components/Portal';
 import Modal from '@components/Modal';
 import VoiceModalContent from '@components/virtual-human/generate/VoiceModalContent';
 import { useRouter } from "next/navigation";
 
-const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string }) => {
+const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanName: string }) => {
 
   // Parameter
   const audio: any = document.getElementById("audio") // Audio 객체 취득
@@ -53,8 +53,11 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
       // Parameter
       const blobUrl = mediaBlobUrl;
 
+      console.log(blobUrl);
+
       fetch(blobUrl)
         .then(async (res) => {
+
           const audioBlob = await res.blob();
           if (audioBlob.size < 1) {
             alert('녹음이 제대로 진행되지 않았습니다.\n다시 진행해주세요.');
@@ -64,6 +67,7 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
           const audioFile = new File([audioBlob], `${scriptList[scriptSequence].script}_audio.wav`, {
             type: 'audio/wav'
           });
+
           setRecordScriptLists((prev) => ([...prev, {
             ...scriptList[scriptSequence],
             blobUrl: mediaBlobUrl,
@@ -100,28 +104,31 @@ const VoiceGenerate = ({ type, avatarName }: { type: string, avatarName: string 
       })
     })
     formData.append('data', JSON.stringify(scriptArr));
-    formData.append('avatarType', type);
-    formData.append('avatarId', avatarId);
+    formData.append('virtualHumanType', type);
+    formData.append('virtualHumanId', avatarId);
+    formData.append('virtualHumanName', virtualHumanName);
 
     const url = 'avatar/upload';
-    const option = {
-      headers: {
+    const headers ={
         "Contest-Type": "multipart/form-data",
         "uuid": avatarId
       }
-    };
-    const response = await post(url, formData, option);
+    const response = post(url, formData, headers);
 
     console.log(response);
 
-    if (response.status === 201 && response.statusText === 'Created') {
-      alert('아바타 생성이 시작되었습니다.');
+    alert('아바타 생성이 요청이 완료되었습니다.');
+
+    // TODO
+
+    // if (response.status === 201 && response.statusText === 'Created') {
+      
       // router.push('/virtual-human');
-    }
-    else {
-      alert('아바타 생성중 에러가 발생하였습니다.\n 관리자에게 문의해주세요.');
+    // }
+    // else {
+      // alert('아바타 생성중 에러가 발생하였습니다.\n 관리자에게 문의해주세요.');
       // router.refresh();
-    }
+    // }
   }
 
   const VoiceModalChildren =
