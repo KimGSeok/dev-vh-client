@@ -41,12 +41,12 @@ const VoiceOption = ({ voice, project, setProject }: VoiceOptionProps) =>{
             onClickChangeVoiceInfoHandler({
               name: 'Kevin',
               model: '01831c53-3a8b-7a50-bd97-v16ch5f8d45s',
-              imageFileUrl: '/images/avatar/kevin.jpeg'
+              imageFileUrl: '/images/avatar/kevin.svg'
             })}
         >
           <ImageWrapper
             opacity={voice.name === 'Kevin' ? 1 : 0} // TODO avatar.name ==> avatar.id && avatar.uuid
-            backgroundImage={"url('/images/avatar/kevin.jpeg')"}
+            backgroundImage={"url('/images/avatar/kevin.svg')"}
             backgroundRepeat={'no-repeat'}
             backgroundSize={'cover'}
           />

@@ -41,12 +41,12 @@ const AvatarOption = ({ avatar, project, setProject }: AvatarOptionProps) => {
             onClickChangeAvatarInfoHandler({
               name: 'Kevin',
               model: '01831218-c70d-78ee-9cba-03532fabd6f6', // TODO Lipsync 모델
-              imageFileUrl: '/images/avatar/kevin.jpeg'
+              imageFileUrl: '/images/avatar/kevin.svg'
             })}
         >
           <ImageWrapper
             opacity={avatar.name === 'Kevin' ? 1 : 0} // TODO avatar.name ==> avatar.id && avatar.uuid
-            backgroundImage={"url('/images/avatar/kevin.jpeg')"}
+            backgroundImage={"url('/images/avatar/kevin.svg')"}
             backgroundRepeat={'no-repeat'}
             backgroundSize={'cover'}
           />
