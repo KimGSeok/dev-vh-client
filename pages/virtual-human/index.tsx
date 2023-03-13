@@ -8,11 +8,14 @@ import { CSS_TYPE, color } from "@styles/styles";
 import Portal from '@components/Portal';
 import Modal from '@components/Modal';
 import ModalContent from '@components/virtual-human/ModalContent';
+import { getVirtualHumanList } from "@hooks/queries/virtual-human";
+import { getVirtualHumanStatusToKorean } from "@modules/virtual-human/virtualHumanStatus";
 
 const VirtualHuman = () => {
 
+  const { data } = useQuery(['virtual-human'], getVirtualHumanList, { staleTime: 10 * 1000 });
+
   // Hooks
-  const [list, setList] = useState([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [virtualHumanType, setVirtualHumanType] = useState<string>('voice');
 
@@ -36,114 +39,29 @@ const VirtualHuman = () => {
         <Search />
         <Container>
           <VirtualHumanLists>
-            <VirtualHumanList
-              background={'linear-gradient(135deg, #FFF0D2, rgba(255, 240, 210, 0.4), #ffffff)'}
-            >
-              <VirtualHumanItem>
-                <ItemHeader>
-                  <div>목소리</div>
-                  <div>2023.02.24</div>
-                </ItemHeader>
-                <ItemContent>DRX Beryl</ItemContent>
-                <ItemStatus>학습완료</ItemStatus>
-              </VirtualHumanItem>
-            </VirtualHumanList>
-            <VirtualHumanList
-              background={'linear-gradient(135deg, #EBEBEB, rgba(235, 235, 235, 0.4), #ffffff)'}
-            >
-              <VirtualHumanItem>
-                <ItemHeader>
-                  <div>목소리</div>
-                  <div>2023.02.24</div>
-                </ItemHeader>
-                <ItemContent>DRX Beryl</ItemContent>
-                <ItemStatus>학습중</ItemStatus>
-              </VirtualHumanItem>
-            </VirtualHumanList>
-            <VirtualHumanList
-              background={'linear-gradient(135deg, #EBEBEB, rgba(235, 235, 235, 0.4), #ffffff)'}
-            >
-              <VirtualHumanItem>
-                <ItemHeader>
-                  <div>목소리</div>
-                  <div>2023.02.24</div>
-                </ItemHeader>
-                <ItemContent>DRX Beryl</ItemContent>
-                <ItemStatus>학습중</ItemStatus>
-              </VirtualHumanItem>
-            </VirtualHumanList>
-            <VirtualHumanList
-              background={'linear-gradient(135deg, #EBEBEB, rgba(235, 235, 235, 0.4), #ffffff)'}
-            >
-              <VirtualHumanItem>
-                <ItemHeader>
-                  <div>목소리</div>
-                  <div>2023.02.24</div>
-                </ItemHeader>
-                <ItemContent>DRX Beryl</ItemContent>
-                <ItemStatus>학습중</ItemStatus>
-              </VirtualHumanItem>
-            </VirtualHumanList>
-            <VirtualHumanList
-              background={'linear-gradient(135deg, #FFF0D2, rgba(255, 240, 210, 0.4), #ffffff)'}
-            >
-              <VirtualHumanItem>
-                <ItemHeader>
-                  <div>목소리</div>
-                  <div>2023.02.24</div>
-                </ItemHeader>
-                <ItemContent>DRX Beryl</ItemContent>
-                <ItemStatus color={color.WaringRed}>학습실패</ItemStatus>
-              </VirtualHumanItem>
-            </VirtualHumanList>
-            <VirtualHumanList
-              background={'linear-gradient(135deg, #EBEBEB, rgba(235, 235, 235, 0.4), #ffffff)'}
-            >
-              <VirtualHumanItem>
-                <ItemHeader>
-                  <div>목소리</div>
-                  <div>2023.02.24</div>
-                </ItemHeader>
-                <ItemContent>DRX Beryl</ItemContent>
-                <ItemStatus>학습중</ItemStatus>
-              </VirtualHumanItem>
-            </VirtualHumanList>
-            <VirtualHumanList
-              background={'linear-gradient(135deg, #FFF0D2, rgba(255, 240, 210, 0.4), #ffffff)'}
-            >
-              <VirtualHumanItem>
-                <ItemHeader>
-                  <div>목소리</div>
-                  <div>2023.02.24</div>
-                </ItemHeader>
-                <ItemContent>DRX Beryl</ItemContent>
-                <ItemStatus>학습중</ItemStatus>
-              </VirtualHumanItem>
-            </VirtualHumanList>
-            <VirtualHumanList
-              background={'linear-gradient(135deg, #EBEBEB, rgba(235, 235, 235, 0.4), #ffffff)'}
-            >
-              <VirtualHumanItem>
-                <ItemHeader>
-                  <div>목소리</div>
-                  <div>2023.02.24</div>
-                </ItemHeader>
-                <ItemContent>DRX Beryl</ItemContent>
-                <ItemStatus>학습중</ItemStatus>
-              </VirtualHumanItem>
-            </VirtualHumanList>
-            <VirtualHumanList
-              background={'linear-gradient(135deg, #FFF0D2, rgba(255, 240, 210, 0.4), #ffffff)'}
-            >
-              <VirtualHumanItem>
-                <ItemHeader>
-                  <div>목소리</div>
-                  <div>2023.02.24</div>
-                </ItemHeader>
-                <ItemContent>DRX Beryl</ItemContent>
-                <ItemStatus>학습중</ItemStatus>
-              </VirtualHumanItem>
-            </VirtualHumanList>
+            {
+              data && data.length > 0 ?
+                data.map((item: any, index: any) => {
+                  return(
+                    <VirtualHumanList
+                      key={item.uuid}
+                      background={item.type === 'voice' ? 'linear-gradient(135deg, #FFF0D2, rgba(255, 240, 210, 0.4), #ffffff)': 'linear-gradient(135deg, #EBEBEB, rgba(235, 235, 235, 0.4), #ffffff)'}
+                    >
+                      <VirtualHumanItem>
+                        <ItemHeader>
+                          <div>{item.type === 'voice' ? '목소리' : '아바타'}</div>
+                          <div>{item.created_date_at}</div>
+                        </ItemHeader>
+                        <ItemContent>{item.name}</ItemContent>
+                        <ItemStatus
+                          color={getVirtualHumanStatusToKorean('color', item.status)}
+                        >{getVirtualHumanStatusToKorean('string', item.status)}</ItemStatus>
+                      </VirtualHumanItem>
+                    </VirtualHumanList>
+                  )
+                })
+               : <EmptyList></EmptyList>
+            }
           </VirtualHumanLists>
         </Container>
         {
@@ -172,20 +90,19 @@ const Container = styled.div({
   borderTop: `1px solid ${color.ModernGrey}`
 })
 const VirtualHumanLists = styled.ul({
-  position: 'relative',
   width: '100%',
   display: 'flex',
+  position: 'relative',
   flexWrap: 'wrap',
-  justifyContent: 'space-between',
   padding: '20px 8px'
 })
 const VirtualHumanList = styled.li<CSS_TYPE>(
   {
     position: 'relative',
-    width: 'calc((100% / 8) - 12px)',
+    width: 'calc((100% / 8) - 24px)',
     borderRadius: '16px',
     textAlign: 'start',
-    margin: '0 0 20px 0',
+    margin: '0 12px 20px 12px',
     filter: 'drop-shadow(16px 8px 25px rgba(132, 132, 132, 0.2))',
     transition: 'all 0.3s',
     cursor: 'pointer',
@@ -216,18 +133,66 @@ const ItemHeader = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   fontSize: '0.9rem',
-  color: color.DeActiveColor
+  color: color.DeActiveColor,
+
+  '@media screen and (max-width: 1600px)': {
+    fontSize: '0.8rem',
+  },
+
+  '@media screen and (max-width: 1440px)': {
+    fontSize: '0.7rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '0.6rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    fontSize: '0.55rem',
+  }
 })
 const ItemContent = styled.div({
   height: '80%',
-  fontSize: '1.1rem',
+  fontSize: '1rem',
   fontWeight: '600',
-  padding: '10% 0'
+  padding: '10% 0',
+
+  '@media screen and (max-width: 1600px)': {
+    fontSize: '0.9rem',
+  },
+
+  '@media screen and (max-width: 1440px)': {
+    fontSize: '0.8rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '0.7rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    fontSize: '0.6rem',
+  }
 })
 const ItemStatus = styled.div<CSS_TYPE>(
   {
     fontSize: '0.9rem',
-    fontWeight: '500'
+    fontWeight: '500',
+
+    '@media screen and (max-width: 1600px)': {
+      fontSize: '0.8rem',
+    },
+  
+    '@media screen and (max-width: 1440px)': {
+      fontSize: '0.7rem',
+    },
+  
+    '@media screen and (max-width: 1023px)': {
+      fontSize: '0.6rem',
+    },
+  
+    '@media screen and (max-width: 960px)': {
+      fontSize: '0.55rem',
+    }
   },
   props => ({
     color: props.color ? props.color : color.BasicBlue
@@ -240,5 +205,17 @@ const EmptyList = styled.div({
   color: color.DeActiveColor,
   padding: '24px 0'
 })
+
+// export const getServerSideProps: GetServerSideProps = async () => {
+
+//   const queryClient = new QueryClient();
+//   await queryClient.prefetchQuery('[virtualHuman]', getVirtualHumanList)
+
+//   return{
+//     props :{
+
+//     }
+//   }
+// }
 
 export default VirtualHuman;

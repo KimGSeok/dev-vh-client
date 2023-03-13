@@ -249,6 +249,14 @@ export const VerticalBar = styled.div<CSS_TYPE>(
   })
 )
 
+export const LineBreak = styled.div<CSS_TYPE>(
+  {},
+  props => ({
+    width: props.width,
+    height: props.height
+  })
+)
+
 /* Select */
 export const SelectBox = styled.select<CSS_TYPE>(
   {

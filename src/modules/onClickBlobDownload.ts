@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const onClickBlobDownload = async (arrayBuffer: [], fileName: string, extension: string, type: string) =>{
 
   const blob = await new Blob([Uint8Array.from(arrayBuffer)], { type });

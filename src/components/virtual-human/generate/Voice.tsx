@@ -108,7 +108,7 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
     formData.append('virtualHumanId', avatarId);
     formData.append('virtualHumanName', virtualHumanName);
 
-    const url = 'avatar/upload';
+    const url = 'virtual-human/upload';
     const headers ={
         "Contest-Type": "multipart/form-data",
         "uuid": avatarId
@@ -149,7 +149,7 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
 
     const getData = async () => {
 
-      const script = await get('avatar/getScripts', 'no-cache');
+      const script = await get('virtual-human/getScripts', 'no-cache');
       setScriptList(script);
       setMounted(true);
     }

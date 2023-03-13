@@ -122,7 +122,7 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
     formData.append('virtualHumanId', virtualHumanId);
     formData.append('virtualHumanName', virtualHumanName);
 
-    const url = 'avatar/upload';
+    const url = 'virtual-human/upload';
     const headers ={
         "Contest-Type": "multipart/form-data",
         "uuid": virtualHumanId
