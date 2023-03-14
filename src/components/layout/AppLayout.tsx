@@ -1,9 +1,10 @@
 import React, { useEffect, useState, PropsWithChildren } from "react";
 import styled from "@emotion/styled";
-import {  usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { color } from "@styles/styles";
 import SideNavigation from "@components/layout/SideNavigaiton";
 import PageLoading from "@components/loading/PageLoading";
+import MobileScreen from "./MobileScreen";
 
 const AppLayout = ({ children }: PropsWithChildren) => {
 
@@ -20,7 +21,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
 
   return (
     <MainContainer>
-      <LayoutWrapper>
+      <LayoutContainer>
         {
           componentMount ?
             firstPathName === 'project' && secondPathName ?
@@ -34,7 +35,8 @@ const AppLayout = ({ children }: PropsWithChildren) => {
               </>
             : <PageLoading />
         }
-      </LayoutWrapper>
+      </LayoutContainer>
+      <MobileScreen />
     </MainContainer>
   )
 }
@@ -44,10 +46,11 @@ const MainContainer = styled.main({
   height: '100vh',
   position: 'relative'
 })
-const LayoutWrapper = styled.div({
+const LayoutContainer = styled.div({
   padding: '24px',
   display: 'flex',
 })
+
 const Children = styled.div({
   backgroundColor: color.ModernWhite,
   width: '85%',
