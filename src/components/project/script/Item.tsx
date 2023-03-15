@@ -83,7 +83,7 @@ const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScript
       </ImageWrap>
       <Script
         ref={scriptRef}
-        placeholder={'슬라이드 텍스트를 입력해주세요.'}
+        placeholder={'스크립트 텍스트를 입력해주세요.'}
         onInput={(e) => onInputScriptHandler(e)}
         contentEditable={true}
       />
@@ -144,7 +144,26 @@ const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScript
               }}
               alt="remove button"
             />
-          </ImageWrap> : ''
+          </ImageWrap>
+          : 
+            <ImageWrap
+            position={'relative'}
+            height={'100%'}
+            padding={'2px 0'}
+            margin={'0 6px'}
+            cursor={'pointer'}
+          >
+            <ImageElement
+              src="/icons/remove_white.svg"
+              width={28}
+              height={28}
+              style={{
+                width: '100%',
+                height: '100%'
+              }}
+              alt="empty"
+            />
+          </ImageWrap>
       }
     </ItemWrapper> : <></>
   )

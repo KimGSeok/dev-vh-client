@@ -1,3 +1,4 @@
+import {} from 'next-seo';
 import { useState } from "react";
 import Filter from "@components/Filter";
 import PageTitle from "@components/layout/PageTitle";
