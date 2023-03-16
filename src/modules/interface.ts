@@ -1,4 +1,4 @@
-interface Props{
+export interface KeyValueProps {
   [key: string]: string;
 }
 
@@ -41,7 +41,7 @@ export interface ProjectProps {
   uuid: string;
   avatar: AvatarProps;
   voice: VoiceProps;
-  scriptList : Array<object>
+  scriptList: Array<object>
   thumbnail: null | string;
 }
 
@@ -50,7 +50,7 @@ export interface ProjectProps {
  * Date: 2023.03.08
  * Author: Kim Gyeong Seok
  */
-export interface AvatarProps extends Object{
+export interface AvatarProps extends Object {
   name: string;
   model: string;
   imageFileUrl: string;
@@ -61,7 +61,7 @@ export interface AvatarProps extends Object{
  * Date: 2023.03.08
  * Author: Kim Gyeong Seok
  */
-export interface VoiceProps extends Object{
+export interface VoiceProps extends Object {
   name: string;
   model: string;
   imageFileUrl: string;

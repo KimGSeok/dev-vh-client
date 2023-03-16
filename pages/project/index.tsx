@@ -1,4 +1,4 @@
-import {} from 'next-seo';
+import { } from 'next-seo';
 import { useState } from "react";
 import Filter from "@components/Filter";
 import PageTitle from "@components/layout/PageTitle";
@@ -34,7 +34,7 @@ const Project = () => {
       />
       <Filter />
       <Search />
-      <ProjectWrapper>
+      <ProjectContainer>
         <HeaderWrapper>
           <ProjectLists>
             <ProjectList
@@ -63,7 +63,7 @@ const Project = () => {
             </ProjectList>
           </ProjectLists>
         </HeaderWrapper>
-        <ListWrapper>
+        <ListContainer>
           <ProjectLists>
             {
               data && data.length > 0 ?
@@ -73,6 +73,7 @@ const Project = () => {
                       key={index}
                       fontSize={'0.95rem'}
                       cursor={'pointer'}
+                      backgroundColor={color.AliceBlue}
                     >
                       <ListInfo
                         width={'10%'}
@@ -121,8 +122,8 @@ const Project = () => {
                 }) : <EmptyList><PageLoading />프로젝트 목록이 없습니다.</EmptyList>
             }
           </ProjectLists>
-        </ListWrapper>
-      </ProjectWrapper>
+        </ListContainer>
+      </ProjectContainer>
       {
         showModal &&
         <Portal>
@@ -138,13 +139,22 @@ const Project = () => {
   )
 }
 
-const MainComponent = styled.div({})
-const ProjectWrapper = styled.div({
+const MainComponent = styled.div({
+  position: 'relative',
+  height: '100%'
+})
+const ProjectContainer = styled.div({
   margin: '16px 0 0 0',
-  textAlign: 'center'
+  textAlign: 'center',
+  position: 'relative',
+  height: '80%'
 })
 const HeaderWrapper = styled.div({})
-const ListWrapper = styled.div({})
+const ListContainer = styled.div({
+  position: 'relative',
+  height: '90%',
+  overflowY: 'scroll'
+})
 const ProjectLists = styled.ul<CSS_TYPE>(
   {
   }
@@ -153,14 +163,19 @@ const ProjectList = styled.li<CSS_TYPE>(
   {
     display: 'flex',
     alignItems: 'center',
-    padding: '12px 0'
+    padding: '12px 0',
+
   },
   props => ({
     borderTop: props.borderTop,
     borderBottom: props.borderBottom,
     fontSize: props.fontSize,
     color: props.color ? props.color : color.BasicBlack,
-    cursor: props.cursor
+    cursor: props.cursor,
+
+    ":hover": {
+      backgroundColor: props.backgroundColor
+    }
   })
 )
 const ListInfo = styled.div<CSS_TYPE>(
@@ -178,13 +193,13 @@ const EmptyList = styled.div({
   padding: '24px 0'
 })
 
-export const getServerSideProps: GetServerSideProps = async () =>{
+export const getServerSideProps: GetServerSideProps = async () => {
 
   // TODO Server Side에서 Cookie값을 못 읽는 듯
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(['project'], getProjectList);
 
-  return{
+  return {
     props: {
       dehydrateProps: dehydrate(queryClient),
     }

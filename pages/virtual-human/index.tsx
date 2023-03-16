@@ -10,13 +10,18 @@ import Modal from '@components/Modal';
 import ModalContent from '@components/virtual-human/ModalContent';
 import { getVirtualHumanList } from "@hooks/queries/virtual-human";
 import { getVirtualHumanStatusToKorean } from "@modules/virtual-human/virtualHumanStatus";
+import RightSide from "@components/RightSide";
+import { getUserInfo } from "@lib/auth/cookie";
+import MasterAuthRightSideComponent from "@components/virtual-human/MasterAuthRightSideComponent";
 
 const VirtualHuman = () => {
 
   const { data } = useQuery(['virtual-human'], getVirtualHumanList, { staleTime: 10 * 1000 });
 
   // Hooks
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showGenerateModal, setShowGenerateModal] = useState<boolean>(false);
+  const [showPlayMediaModal, setPlayMediaModal] = useState<boolean>(false);
+  const [showMasterAuthSideContainer, setShowMasterAuthSideContainer] = useState<boolean>(false);
   const [virtualHumanType, setVirtualHumanType] = useState<string>('voice');
 
   const virtualHumanChildren =
@@ -24,6 +29,25 @@ const VirtualHuman = () => {
       avatarType={virtualHumanType}
       setAvatarType={setVirtualHumanType}
     />;
+
+  const sideContainerChildren =
+    <MasterAuthRightSideComponent
+      setShowComponent={setShowMasterAuthSideContainer}
+    />;
+
+  const onClickLearningCompleteVhHandler = (status: string) => {
+
+    if (status === 'complete') {
+
+      const userRole = getUserInfo('organization_role');
+
+      if (userRole === 'master') {
+
+        setShowMasterAuthSideContainer(true);
+      }
+
+    }
+  }
 
   return (
     <>
@@ -33,7 +57,7 @@ const VirtualHuman = () => {
           registerBtn={true}
           btn={'생성하기'}
           event={'onClick'}
-          func={() => { setShowModal(true) }}
+          func={() => { setShowGenerateModal(true) }}
         />
         <Filter />
         <Search />
@@ -42,10 +66,12 @@ const VirtualHuman = () => {
             {
               data && data.length > 0 ?
                 data.map((item: any, index: any) => {
-                  return(
+                  return (
                     <VirtualHumanList
                       key={item.uuid}
-                      background={item.type === 'voice' ? 'linear-gradient(135deg, #FFF0D2, rgba(255, 240, 210, 0.4), #ffffff)': 'linear-gradient(135deg, #EBEBEB, rgba(235, 235, 235, 0.4), #ffffff)'}
+                      background={item.type === 'voice' ? 'linear-gradient(135deg, #FFF0D2, rgba(255, 240, 210, 0.4), #ffffff)' : 'linear-gradient(135deg, #EBEBEB, rgba(235, 235, 235, 0.4), #ffffff)'}
+                      cursor={item.status === 'complete' ? 'pointer' : ''}
+                      onClick={() => onClickLearningCompleteVhHandler(item.status)}
                     >
                       <VirtualHumanItem>
                         <ItemHeader>
@@ -60,18 +86,28 @@ const VirtualHuman = () => {
                     </VirtualHumanList>
                   )
                 })
-               : <EmptyList></EmptyList>
+                : <EmptyList></EmptyList>
             }
           </VirtualHumanLists>
         </Container>
         {
-          showModal &&
+          showGenerateModal &&
           <Portal>
             <Modal
               title={'가상인간 생성하기'}
-              modal={showModal}
-              setModal={setShowModal}
+              modal={showGenerateModal}
+              setModal={setShowGenerateModal}
               children={virtualHumanChildren}
+            />
+          </Portal>
+        }
+        {
+          showMasterAuthSideContainer &&
+          <Portal>
+            <RightSide
+              children={sideContainerChildren}
+              showRightSide={showMasterAuthSideContainer}
+              setShowRightSide={setShowMasterAuthSideContainer}
             />
           </Portal>
         }
@@ -80,9 +116,7 @@ const VirtualHuman = () => {
   )
 }
 
-const MainComponent = styled.div({
-
-})
+const MainComponent = styled.div({});
 const Container = styled.div({
   position: 'relative',
   margin: '16px 0 0 0',
@@ -105,7 +139,6 @@ const VirtualHumanList = styled.li<CSS_TYPE>(
     margin: '0 12px 20px 12px',
     filter: 'drop-shadow(16px 8px 25px rgba(132, 132, 132, 0.2))',
     transition: 'all 0.3s',
-    cursor: 'pointer',
 
     ':after': {
       display: 'block',
@@ -118,7 +151,8 @@ const VirtualHumanList = styled.li<CSS_TYPE>(
     }
   },
   props => ({
-    background: props.background
+    background: props.background,
+    cursor: props.cursor
   })
 )
 const VirtualHumanItem = styled.div({
@@ -181,15 +215,15 @@ const ItemStatus = styled.div<CSS_TYPE>(
     '@media screen and (max-width: 1600px)': {
       fontSize: '0.8rem',
     },
-  
+
     '@media screen and (max-width: 1440px)': {
       fontSize: '0.7rem',
     },
-  
+
     '@media screen and (max-width: 1023px)': {
       fontSize: '0.6rem',
     },
-  
+
     '@media screen and (max-width: 960px)': {
       fontSize: '0.55rem',
     }

@@ -2,7 +2,6 @@
 
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, RadiusButton, Warning } from '@styles/styles';
-import { Dispatch, SetStateAction, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface ModalProps {

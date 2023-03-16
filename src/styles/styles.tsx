@@ -201,6 +201,7 @@ export const color = {
   // Similar White
   DarkWhite: '#FAFAFA',
   ModernWhite: '#FEFEFE',
+  LightWhite: '#F9F9F9',
 
   OverallProgressColor: '#F1E3FF',
 
@@ -296,7 +297,7 @@ export const Warning = styled.div<CSS_TYPE>(
 )
 
 /* Animation */
-const fadeUpkeyframes = keyframes`
+const fadeUpKeyframes = keyframes`
   from {
     opacity: 0;
     transform: translateX(-50%) translateY(calc(-50% + 50px));
@@ -310,7 +311,23 @@ const fadeUpkeyframes = keyframes`
 
 export const fadeUp = css`
   animation-duration: 0.65s;
-  animation-name: ${fadeUpkeyframes};
+  animation-name: ${fadeUpKeyframes};
+  animation-timing-function: ease;
+`
+
+const fadeRightKeyframes = keyframes`
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 40vw;
+  }
+`
+
+export const fadeRight = css`
+  animation-duration: 0.65s;
+  animation-name: ${fadeRightKeyframes};
   animation-timing-function: ease;
 `
 

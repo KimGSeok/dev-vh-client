@@ -9,7 +9,7 @@ interface ModalProps {
   setModal: Dispatch<SetStateAction<boolean>>;
 }
 
-const Modal = ({ title, children, modal, setModal }: ModalProps) => {
+const Modal = ({ title, children, setModal }: ModalProps) => {
 
   return (
     <MainComponent>
