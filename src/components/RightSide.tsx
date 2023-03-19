@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { color, fadeRight } from '@styles/styles';
-import { Dispatch, PropsWithChildren, SetStateAction, useRef } from 'react';
+import { color, fadeRight, fadeOutRight } from '@styles/styles';
+import { Dispatch, PropsWithChildren, SetStateAction, useEffect, useRef } from 'react';
 import { onClickOutsideHandler } from '@modules/onClickOutside';
 
 interface RightSideProps {
@@ -17,7 +17,7 @@ const RightSide = ({ children, showRightSide, setShowRightSide }: PropsWithChild
     <Container>
       <RightSideContainer
         ref={containerRef}
-        css={fadeRight}
+        css={showRightSide ? fadeRight : fadeOutRight}
       >
         {children}
       </RightSideContainer>

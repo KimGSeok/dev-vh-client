@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from "react-query";
 import Filter from "@components/Filter";
 import PageTitle from "@components/layout/PageTitle";
 import Search from "@components/Search";
@@ -13,14 +13,17 @@ import { getVirtualHumanStatusToKorean } from "@modules/virtual-human/virtualHum
 import RightSide from "@components/RightSide";
 import { getUserInfo } from "@lib/auth/cookie";
 import MasterAuthRightSideComponent from "@components/virtual-human/MasterAuthRightSideComponent";
+import { KeyValueProps } from "@modules/interface";
+import PageLoading from "@components/loading/PageLoading";
 
 const VirtualHuman = () => {
 
-  const { data } = useQuery(['virtual-human'], getVirtualHumanList, { staleTime: 10 * 1000 });
+  const { isLoading, data } = useQuery(['virtual-human'], getVirtualHumanList, { staleTime: 10 * 1000 });
 
   // Hooks
   const [showGenerateModal, setShowGenerateModal] = useState<boolean>(false);
   const [showPlayMediaModal, setPlayMediaModal] = useState<boolean>(false);
+  const [virtualHumanInfo, setVirtualHumanInfo] = useState<KeyValueProps>({});
   const [showMasterAuthSideContainer, setShowMasterAuthSideContainer] = useState<boolean>(false);
   const [virtualHumanType, setVirtualHumanType] = useState<string>('voice');
 
@@ -32,25 +35,24 @@ const VirtualHuman = () => {
 
   const sideContainerChildren =
     <MasterAuthRightSideComponent
+      virtualHumanInfo={virtualHumanInfo}
       setShowComponent={setShowMasterAuthSideContainer}
     />;
 
-  const onClickLearningCompleteVhHandler = (status: string) => {
+  const onClickLearningCompleteVhHandler = (item: KeyValueProps) => {
 
-    if (status === 'complete') {
+    setVirtualHumanInfo(item)
+    if (item.status === 'complete') {
 
       const userRole = getUserInfo('organization_role');
-
-      if (userRole === 'master') {
-
+      if (userRole === 'master')
         setShowMasterAuthSideContainer(true);
-      }
-
     }
   }
 
   return (
     <>
+      {isLoading && <PageLoading />}
       <MainComponent>
         <PageTitle
           title={'가상인간'}
@@ -71,7 +73,7 @@ const VirtualHuman = () => {
                       key={item.uuid}
                       background={item.type === 'voice' ? 'linear-gradient(135deg, #FFF0D2, rgba(255, 240, 210, 0.4), #ffffff)' : 'linear-gradient(135deg, #EBEBEB, rgba(235, 235, 235, 0.4), #ffffff)'}
                       cursor={item.status === 'complete' ? 'pointer' : ''}
-                      onClick={() => onClickLearningCompleteVhHandler(item.status)}
+                      onClick={() => onClickLearningCompleteVhHandler(item)}
                     >
                       <VirtualHumanItem>
                         <ItemHeader>
@@ -86,7 +88,7 @@ const VirtualHuman = () => {
                     </VirtualHumanList>
                   )
                 })
-                : <EmptyList></EmptyList>
+                : <EmptyList>생성된 가상인간이 없어요.</EmptyList>
             }
           </VirtualHumanLists>
         </Container>
@@ -237,7 +239,7 @@ const EmptyList = styled.div({
   fontSize: '1rem',
   fontWeight: '300',
   color: color.DeActiveColor,
-  padding: '24px 0'
+  margin: '0 auto'
 })
 
 // export const getServerSideProps: GetServerSideProps = async () => {

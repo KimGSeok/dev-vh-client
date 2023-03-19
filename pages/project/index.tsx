@@ -15,7 +15,7 @@ import PageLoading from "@components/loading/PageLoading";
 
 const Project = () => {
 
-  const { data } = useQuery(['project'], getProjectList, { staleTime: 10 * 1000 });
+  const { isLoading, data } = useQuery(['project'], getProjectList, { staleTime: 10 * 1000 });
 
   // Hooks
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -24,118 +24,121 @@ const Project = () => {
   const projectChildren = <ModalContent />;
 
   return (
-    <MainComponent>
-      <PageTitle
-        title={'프로젝트'}
-        registerBtn={true}
-        btn={'생성하기'}
-        event={'onClick'}
-        func={() => { setShowModal(true) }}
-      />
-      <Filter />
-      <Search />
-      <ProjectContainer>
-        <HeaderWrapper>
-          <ProjectLists>
-            <ProjectList
-              fontSize={'1rem'}
-              borderTop={`1px solid ${color.ModernGrey}`}
-              borderBottom={`1px solid ${color.ModernGrey}`}
-            >
-              <ListInfo
-                width={'10%'}
-              >이미지</ListInfo>
-              <ListInfo
-                width={'25%'}
-              >프로젝트명</ListInfo>
-              <ListInfo
-                width={'15%'}
-              >프로젝트 길이</ListInfo>
-              <ListInfo
-                width={'15%'}
-              >생성날짜</ListInfo>
-              <ListInfo
-                width={'15%'}
-              >최근 수정날짜</ListInfo>
-              <ListInfo
-                width={'15%'}
-              >상태</ListInfo>
-            </ProjectList>
-          </ProjectLists>
-        </HeaderWrapper>
-        <ListContainer>
-          <ProjectLists>
-            {
-              data && data.length > 0 ?
-                data.map((item: any, index: any) => {
-                  return (
-                    <ProjectList
-                      key={index}
-                      fontSize={'0.95rem'}
-                      cursor={'pointer'}
-                      backgroundColor={color.AliceBlue}
-                    >
-                      <ListInfo
-                        width={'10%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >이미지
-                      </ListInfo>
-                      <ListInfo
-                        width={'25%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >{item.name}
-                      </ListInfo>
-                      <ListInfo
-                        width={'15%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >이미지
-                      </ListInfo>
-                      <ListInfo
-                        width={'15%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >{item.created_at}
-                      </ListInfo>
-                      <ListInfo
-                        width={'15%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >{item.updated_at}
-                      </ListInfo>
-                      <ListInfo
-                        width={'15%'}
-                        color={''}
-                        fontSize={''}
-                        fontWeight={''}
-                      >상태
-                      </ListInfo>
-                    </ProjectList>
-                  )
-                }) : <EmptyList><PageLoading />프로젝트 목록이 없습니다.</EmptyList>
-            }
-          </ProjectLists>
-        </ListContainer>
-      </ProjectContainer>
-      {
-        showModal &&
-        <Portal>
-          <Modal
-            title={'프로젝트 생성하기'}
-            modal={showModal}
-            setModal={setShowModal}
-            children={projectChildren}
-          />
-        </Portal>
-      }
-    </MainComponent>
+    <>
+      {isLoading && <PageLoading />}
+      <MainComponent>
+        <PageTitle
+          title={'프로젝트'}
+          registerBtn={true}
+          btn={'생성하기'}
+          event={'onClick'}
+          func={() => { setShowModal(true) }}
+        />
+        <Filter />
+        <Search />
+        <ProjectContainer>
+          <HeaderWrapper>
+            <ProjectLists>
+              <ProjectList
+                fontSize={'1rem'}
+                borderTop={`1px solid ${color.ModernGrey}`}
+                borderBottom={`1px solid ${color.ModernGrey}`}
+              >
+                <ListInfo
+                  width={'10%'}
+                >이미지</ListInfo>
+                <ListInfo
+                  width={'25%'}
+                >프로젝트명</ListInfo>
+                <ListInfo
+                  width={'15%'}
+                >프로젝트 길이</ListInfo>
+                <ListInfo
+                  width={'15%'}
+                >생성날짜</ListInfo>
+                <ListInfo
+                  width={'15%'}
+                >최근 수정날짜</ListInfo>
+                <ListInfo
+                  width={'15%'}
+                >상태</ListInfo>
+              </ProjectList>
+            </ProjectLists>
+          </HeaderWrapper>
+          <ListContainer>
+            <ProjectLists>
+              {
+                data && data.length > 0 ?
+                  data.map((item: any, index: any) => {
+                    return (
+                      <ProjectList
+                        key={index}
+                        fontSize={'0.95rem'}
+                        cursor={'pointer'}
+                        backgroundColor={color.AliceBlue}
+                      >
+                        <ListInfo
+                          width={'10%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >이미지
+                        </ListInfo>
+                        <ListInfo
+                          width={'25%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >{item.name}
+                        </ListInfo>
+                        <ListInfo
+                          width={'15%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >이미지
+                        </ListInfo>
+                        <ListInfo
+                          width={'15%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >{item.created_at}
+                        </ListInfo>
+                        <ListInfo
+                          width={'15%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >{item.updated_at}
+                        </ListInfo>
+                        <ListInfo
+                          width={'15%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >상태
+                        </ListInfo>
+                      </ProjectList>
+                    )
+                  }) : <EmptyList>프로젝트 목록이 없어요.</EmptyList>
+              }
+            </ProjectLists>
+          </ListContainer>
+        </ProjectContainer>
+        {
+          showModal &&
+          <Portal>
+            <Modal
+              title={'프로젝트 생성하기'}
+              modal={showModal}
+              setModal={setShowModal}
+              children={projectChildren}
+            />
+          </Portal>
+        }
+      </MainComponent>
+    </>
   )
 }
 
@@ -153,12 +156,14 @@ const HeaderWrapper = styled.div({})
 const ListContainer = styled.div({
   position: 'relative',
   height: '90%',
-  overflowY: 'scroll'
-})
-const ProjectLists = styled.ul<CSS_TYPE>(
-  {
+  overflowY: 'scroll',
+
+  '::-webkit-scrollbar': {
+    scrollBehavior: 'smooth',
+    display: 'none'
   }
-)
+})
+const ProjectLists = styled.ul<CSS_TYPE>({})
 const ProjectList = styled.li<CSS_TYPE>(
   {
     display: 'flex',

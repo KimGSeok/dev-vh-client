@@ -53,8 +53,6 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
       // Parameter
       const blobUrl = mediaBlobUrl;
 
-      console.log(blobUrl);
-
       fetch(blobUrl)
         .then(async (res) => {
 
@@ -117,7 +115,8 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
 
     console.log(response);
 
-    alert('아바타 생성이 요청이 완료되었습니다.');
+    alert('아바타 생성 요청이 완료되었습니다.');
+    router.push('/virtual-human');
 
     // TODO
 

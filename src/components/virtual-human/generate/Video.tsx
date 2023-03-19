@@ -4,12 +4,12 @@ import styled from "@emotion/styled";
 import RecordRTC from 'recordrtc';
 import dynamic from "next/dynamic";
 import { v4 as uuidV4 } from 'uuid';
-// import getBlobDuration from 'get-blob-duration'
 import { CSS_TYPE, color, ImageWrap, ImageElement } from "@styles/styles";
 import { useEffect, useState } from "react";
 import { post } from "@hooks/asyncHooks";
 import RecordButtonContainer from "./RecordButton";
 import { onChangeVideoCssProps } from "@modules/avatar/onChangeVideoCssProps";
+import { useRouter } from "next/navigation";
 const StopWatch = dynamic(() => import('@components/stopWatch'), {
   ssr: false
 });
@@ -17,6 +17,7 @@ const StopWatch = dynamic(() => import('@components/stopWatch'), {
 const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanName: string }) => {
 
   // Hooks
+  const router = useRouter();
   const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete), 녹음실패(fail)
   const [duration, setDuration] = useState<number>(0);
   const [timer, setTimer] = useState('init');
@@ -128,7 +129,11 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
         "uuid": virtualHumanId
       }
     const response = post(url, formData, headers);
+
     console.log(response);
+
+    alert('아바타 생성 요청이 완료되었습니다.');
+    router.push('/virtual-human');
   }
 
   useEffect(() => {
@@ -138,14 +143,14 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
       video.src = URL.createObjectURL(videoMedia.video);
     }
 
-    // if(recordStatus === 'complete' && duration < 180){
-    //   alert('최소 3분이상 녹화되지 않았습니다.\n다시 녹화해주세요.');
-    //   setTimer('init');
-    // }
-    // else if(recordStatus === 'complete' && duration >= 180){
-    //   const video: any = document.getElementById('previewVideo');
-    //   video.src = URL.createObjectURL(videoMedia.video);duration < 180
-    // }
+    if(recordStatus === 'complete' && duration < 180){
+      alert('최소 3분이상 녹화되지 않았습니다.\n다시 녹화해주세요.');
+      setTimer('init');
+    }
+    else if(recordStatus === 'complete' && duration >= 180){
+      const video: any = document.getElementById('previewVideo');
+      video.src = URL.createObjectURL(videoMedia.video);
+    }
   }, [recordStatus])
 
   return (

@@ -245,6 +245,7 @@ export const VerticalBar = styled.div<CSS_TYPE>(
   props => ({
     width: props.width ? props.width : '4px',
     height: props.height ? props.height : '20px',
+    margin: props.margin,
     backgroundColor: props.backgroundColor ? props.backgroundColor : color.BasicBlack,
     borderRadius: props.borderRadius
   })
@@ -317,17 +318,33 @@ export const fadeUp = css`
 
 const fadeRightKeyframes = keyframes`
   from {
-    width: 0;
+    transform: translateX(100%)
   }
 
   to {
-    width: 40vw;
+    transform: translateX(0)
   }
 `
 
 export const fadeRight = css`
   animation-duration: 0.65s;
   animation-name: ${fadeRightKeyframes};
+  animation-timing-function: ease;
+`
+
+const fadeOutRightKeyframes = keyframes`
+  from {
+    transform: translateX(0)
+  }
+
+  to {
+    transform: translateX(100%)
+  }
+`
+
+export const fadeOutRight = css`
+  animation-duration: 0.65s;
+  animation-name: ${fadeOutRightKeyframes};
   animation-timing-function: ease;
 `
 

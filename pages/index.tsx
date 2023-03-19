@@ -3,6 +3,7 @@
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import { CSS_TYPE, color, RadiusButton, ImageElement, shaking, LineBreak } from '@styles/styles';
+import Link from 'next/link';
 
 const Home = () => {
 
@@ -53,7 +54,9 @@ const Home = () => {
                 width={'fit-content'}
                 alignItems={'center'}
               >
-                아바타 생성하기
+                <Link href={'/virtual-human'} passHref>
+                  가상인간 생성하기
+                </Link>
                 <ImageElement
                   src="/icons/arrow/single_arrow_right.svg"
                   width={20}
@@ -89,7 +92,9 @@ const Home = () => {
                 width={'fit-content'}
                 alignItems={'center'}
               >
-                프로젝트 생성하기
+                <Link href={'/project'} passHref>
+                  프로젝트 생성하기
+                </Link>
                 <ImageElement
                   src="/icons/arrow/single_arrow_right.svg"
                   width={20}
