@@ -143,14 +143,14 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
       video.src = URL.createObjectURL(videoMedia.video);
     }
 
-    if(recordStatus === 'complete' && duration < 180){
-      alert('최소 3분이상 녹화되지 않았습니다.\n다시 녹화해주세요.');
-      setTimer('init');
-    }
-    else if(recordStatus === 'complete' && duration >= 180){
-      const video: any = document.getElementById('previewVideo');
-      video.src = URL.createObjectURL(videoMedia.video);
-    }
+    // if(recordStatus === 'complete' && duration < 180){
+    //   alert('최소 3분이상 녹화되지 않았습니다.\n다시 녹화해주세요.');
+    //   setTimer('init');
+    // }
+    // else if(recordStatus === 'complete' && duration >= 180){
+      // const video: any = document.getElementById('previewVideo');
+      // video.src = URL.createObjectURL(videoMedia.video);
+    // }
   }, [recordStatus])
 
   return (
@@ -244,11 +244,13 @@ const Title = styled.div({
   textAlign: 'center'
 })
 const ScriptWrapper = styled.div({
+  width: '70%',
   height: 'calc(35% - 16px)',
   backgroundColor: color.DarkWhite,
   borderRadius: '16px',
   border: `1px solid ${color.ModernGrey}`,
   padding: '16px',
+  margin: '0 auto'
 })
 const Script = styled.div({
   height: '100%',
