@@ -4,12 +4,13 @@ import { Dispatch, SetStateAction } from 'react';
 import { ProjectProps, AvatarProps } from '@modules/interface';
 
 interface AvatarOptionProps {
+  avatarList: object[];
   avatar: AvatarProps;
   project: ProjectProps;
   setProject: Dispatch<SetStateAction<ProjectProps>>;
 }
 
-const AvatarOption = ({ avatar, project, setProject }: AvatarOptionProps) => {
+const AvatarOption = ({ avatarList, avatar, project, setProject }: AvatarOptionProps) => {
 
   const onClickChangeAvatarInfoHandler = (param: AvatarProps) =>{
     
@@ -50,9 +51,7 @@ const AvatarOption = ({ avatar, project, setProject }: AvatarOptionProps) => {
             backgroundRepeat={'no-repeat'}
             backgroundSize={'cover'}
           />
-          <ItemName>
-            Kevin
-          </ItemName>
+          <ItemName>Kevin</ItemName>
         </ItemList>
         <ItemList
           onClick={() =>
@@ -68,10 +67,32 @@ const AvatarOption = ({ avatar, project, setProject }: AvatarOptionProps) => {
             backgroundRepeat={'no-repeat'}
             backgroundSize={'cover'}
           />
-          <ItemName>
-            Beryl
-          </ItemName>
+          <ItemName>Beryl</ItemName>
         </ItemList>
+        {
+          avatarList && avatarList.length > 0 ?
+          avatarList.map((item: any) => {
+            return(
+              <ItemList
+                key={item.uuid}
+                onClick={() =>
+                  onClickChangeAvatarInfoHandler({
+                    name: item.name,
+                    model: item.uuid,
+                    imageFileUrl: item.image_file_url ? item.image_file_url : ''
+                  })}
+              >
+                <ImageWrapper
+                  opacity={avatar.name === item.name ? 1 : 0}
+                  backgroundImage={item.image_file_url ? item.image_file_url : "url('/images/avatar/default_virtual_human.svg')"}
+                  backgroundRepeat={'no-repeat'}
+                  backgroundSize={'cover'}
+                />
+                <ItemName>{item.name}</ItemName>
+              </ItemList>
+            )
+          }) : <></>
+        }
       </ItemLists>
     </OptionWrapper>
   )
@@ -95,7 +116,7 @@ const ItemList = styled.li<CSS_TYPE>(
     width: '30%',
     height: '30%',
     display: 'inline-block',
-    margin: '0 0 12px 0',
+    margin: '0 0 24px 0',
     cursor: 'pointer'
   },
   props => ({})
@@ -103,7 +124,7 @@ const ItemList = styled.li<CSS_TYPE>(
 const ImageWrapper = styled.div<CSS_TYPE>(
   {
     width: '100%',
-    height: '100%',
+    height: '90%',
     position: 'relative',
     display: 'block',
     margin: '0 0 8px 0',
@@ -119,6 +140,7 @@ const ImageWrapper = styled.div<CSS_TYPE>(
 )
 const ItemName = styled.div<CSS_TYPE>(
   {
+    height: '10%',
     textAlign: 'center',
     fontSize: '0.85rem',
     margin: '2px 0'

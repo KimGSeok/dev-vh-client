@@ -15,7 +15,8 @@ interface ProjectAvatarProps {
 const Avatar = ({ project, setProject }: ProjectAvatarProps) => {
 
   // Hooks
-  const [virtualHumanList, setVirtualHumanList] = useState();
+  const [avatarList, setAvatarList] = useState<any>([]);
+  const [voiceList, setVoiceList] = useState<any>([]);
   const [showOption, setShowOption] = useState('avatar'); // 현재 가상인간의 옵션
   const avatar: AvatarProps = project.avatar;
   const voice: VoiceProps = project.voice;
@@ -23,14 +24,25 @@ const Avatar = ({ project, setProject }: ProjectAvatarProps) => {
   useEffect(() => {
     const getAvatarList = async () =>{
 
+      let voiceArr = Array();
+      let avatarArr = Array();
       const userId = getUserInfo('id');
       const response = await get(`virtual-human/${userId}`,'no-cache');
 
-      console.log(response);
+      response.forEach((item: any) => {
+        if(item.type === 'voice')
+          voiceArr.push(item);
+        else
+          avatarArr.push(item);
+      })
+
+      setVoiceList(voiceArr);
+      setAvatarList(avatarArr);
     }
 
     getAvatarList();
   }, [])
+
 
   return (
     <AvatarWrapper>
@@ -121,10 +133,10 @@ const Avatar = ({ project, setProject }: ProjectAvatarProps) => {
           </OptionLists>
           <OptionItemWrapper>
             {/* 아바타 선택 */}
-            {showOption === 'avatar' ? <AvatarOption avatar={avatar} project={project} setProject={setProject} /> : ''}
+            {showOption === 'avatar' ? <AvatarOption avatar={avatar} avatarList={avatarList} project={project} setProject={setProject} /> : ''}
 
             {/* 목소리 선택 */}
-            {showOption === 'voice' ? <VoiceOption voice={voice} project={project} setProject={setProject} /> : ''}
+            {showOption === 'voice' ? <VoiceOption voice={voice} voiceList={voiceList} project={project} setProject={setProject} /> : ''}
           </OptionItemWrapper>
         </OptionWrapper>
       </AvatarDecorateWrapper>

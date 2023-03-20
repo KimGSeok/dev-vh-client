@@ -3,8 +3,9 @@ import styled from '@emotion/styled';
 import { color, ImageElement, RadiusButton, VerticalBar } from '@styles/styles';
 import { useSearchParams } from 'next/navigation';
 import { v4 as uuidV4 } from 'uuid';
-import AvatarWrapper from '@components/project/avatar/Avatar';
-import ScriptWrapper from '@components/project/script/Script';
+import dynamic from "next/dynamic";
+const AvatarWrapper = dynamic(() => import('@components/project/avatar/Avatar'), { ssr: false });
+const ScriptWrapper = dynamic(() => import('@components/project/script/Script'), { ssr: false });
 import { ProjectProps } from '@modules/interface';
 import Link from 'next/link';
 
@@ -37,18 +38,21 @@ const ProjectGenerate = () => {
       thumbnail: null,
     });
 
+  // useEffect(() => {
+  //   console.log(1);
+  //   setPageMount(true);
+  //   console.log(pageMount);
+  //   console.log(nameRef.current);
+  //   return () => setPageMount(false);
+  // }, [])
+
   useEffect(() => {
-    setPageMount(true);
-    return () => setPageMount(false);
+
+    if(nameRef.current)
+      nameRef.current.innerText = name;
   }, [])
 
-  useEffect(() => {
-    if(pageMount)
-      nameRef.current.innerText = name;
-  }, [pageMount])
-
   return (
-    pageMount ?
     <ProjectContainer>
       <HeaderContainer>
         <LeftContainer>
@@ -101,7 +105,7 @@ const ProjectGenerate = () => {
           setIsTransform={setIsTransform}
         />
       </MainComponent>
-    </ProjectContainer> : <></>
+    </ProjectContainer>
   )
 }
 

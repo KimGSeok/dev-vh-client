@@ -4,12 +4,13 @@ import { Dispatch, SetStateAction } from 'react';
 import { ProjectProps, VoiceProps } from '@modules/interface';
 
 interface VoiceOptionProps {
+  voiceList: object[];
   voice: VoiceProps;
   project: ProjectProps;
   setProject: Dispatch<SetStateAction<ProjectProps>>;
 }
 
-const VoiceOption = ({ voice, project, setProject }: VoiceOptionProps) =>{
+const VoiceOption = ({ voiceList, voice, project, setProject }: VoiceOptionProps) =>{
 
   const onClickChangeVoiceInfoHandler = (param: VoiceProps) =>{
     
@@ -68,6 +69,30 @@ const VoiceOption = ({ voice, project, setProject }: VoiceOptionProps) =>{
           />
           <ItemName>Beryl</ItemName>
         </ItemList>
+        {
+          voiceList && voiceList.length > 0 ?
+          voiceList.map((item: any) => {
+            return(
+              <ItemList
+                key={item.uuid}
+                onClick={() =>
+                  onClickChangeVoiceInfoHandler({
+                    name: item.name,
+                    model: item.uuid,
+                    imageFileUrl: item.image_file_url ? item.image_file_url : ''
+                  })}
+              >
+                <ImageWrapper
+                  opacity={voice.name === item.name ? 1 : 0} // TODO avatar.name ==> avatar.id && avatar.uuid
+                  backgroundImage={item.image_file_url ? item.image_file_url : "url('/images/avatar/default_virtual_human.svg')"}
+                  backgroundRepeat={'no-repeat'}
+                  backgroundSize={'cover'}
+                />
+                <ItemName>{item.name}</ItemName>
+              </ItemList>
+            )
+          }) : <></>
+        }
       </ItemLists>
     </OptionWrapper>
   )
@@ -91,7 +116,7 @@ const ItemList = styled.li<CSS_TYPE>(
     width: '30%',
     height: '30%',
     display: 'inline-block',
-    margin: '0 0 12px 0',
+    margin: '0 0 24px 0',
     cursor: 'pointer'
   },
   props => ({})
@@ -99,7 +124,7 @@ const ItemList = styled.li<CSS_TYPE>(
 const ImageWrapper = styled.div<CSS_TYPE>(
   {
     width: '100%',
-    height: '100%',
+    height: '90%',
     position: 'relative',
     display: 'block',
     margin: '0 0 8px 0',
@@ -115,6 +140,7 @@ const ImageWrapper = styled.div<CSS_TYPE>(
 )
 const ItemName = styled.div<CSS_TYPE>(
   {
+    height: '10%',
     textAlign: 'center',
     fontSize: '0.85rem',
     margin: '2px 0'
