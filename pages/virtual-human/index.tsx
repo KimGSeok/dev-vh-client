@@ -188,7 +188,7 @@ const ItemHeader = styled.div({
   }
 })
 const ItemContent = styled.div({
-  height: '80%',
+  minHeight: '75%',
   fontSize: '1rem',
   fontWeight: '600',
   padding: '10% 0',

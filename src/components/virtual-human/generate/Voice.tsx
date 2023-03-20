@@ -111,23 +111,10 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
         "Contest-Type": "multipart/form-data",
         "uuid": avatarId
       }
-    const response = post(url, formData, headers);
-
-    console.log(response);
+    post(url, formData, headers);
 
     alert('아바타 생성 요청이 완료되었습니다.');
     router.push('/virtual-human');
-
-    // TODO
-
-    // if (response.status === 201 && response.statusText === 'Created') {
-      
-      // router.push('/virtual-human');
-    // }
-    // else {
-      // alert('아바타 생성중 에러가 발생하였습니다.\n 관리자에게 문의해주세요.');
-      // router.refresh();
-    // }
   }
 
   const VoiceModalChildren =

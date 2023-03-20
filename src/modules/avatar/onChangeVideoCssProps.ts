@@ -10,14 +10,12 @@ export const onChangeVideoCssProps = (recordStatus: string, props: string) =>{
   if(props === 'image'){
     switch(recordStatus){
       case 'wait' :
-        return "url('/images/avatar/tile_background_no-stroke.svg')" // 
+        return "url('/images/avatar/tile_background_no-stroke.svg')"
       case 'recording':
         return ''
       case 'complete':
-
         break;
       case 'fail':
-
         break;
     }
   }
@@ -28,10 +26,8 @@ export const onChangeVideoCssProps = (recordStatus: string, props: string) =>{
       case 'recording':
         return ''
       case 'complete':
-
         break;
       case 'fail':
-
         break;
     }
   }
@@ -42,10 +38,8 @@ export const onChangeVideoCssProps = (recordStatus: string, props: string) =>{
       case 'recording':
         return ''
       case 'complete':
-
         break;
       case 'fail':
-
         break;
     }
   }

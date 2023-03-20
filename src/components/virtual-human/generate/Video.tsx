@@ -111,8 +111,6 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
     // Parameter
     const virtualHumanId = uuidV4();
     const formData = new FormData();
-    const scriptArr = Array();
-    const blobUrl = videoMedia.videoBlobUrl;
 
     const videoFile = new File([videoMedia.video], `${virtualHumanName}_video.mp4`, {
       type: 'video/mp4'
@@ -128,9 +126,7 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
         "Contest-Type": "multipart/form-data",
         "uuid": virtualHumanId
       }
-    const response = post(url, formData, headers);
-
-    console.log(response);
+    post(url, formData, headers);
 
     alert('아바타 생성 요청이 완료되었습니다.');
     router.push('/virtual-human');
@@ -142,6 +138,8 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
       const video: any = document.getElementById('previewVideo');
       video.src = URL.createObjectURL(videoMedia.video);
     }
+
+    // TODO
 
     // if(recordStatus === 'complete' && duration < 180){
     //   alert('최소 3분이상 녹화되지 않았습니다.\n다시 녹화해주세요.');
@@ -185,16 +183,38 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
             recordStatus === 'fail' && <DeviceNotFoundWrapper><DeviceNotFound>Device not found</DeviceNotFound></DeviceNotFoundWrapper>
           }
           {
-            (recordStatus === 'wait' || recordStatus === 'recording') && <Video
+            (recordStatus === 'wait' || recordStatus === 'recording') &&
+            <Video
               id="video"
               autoPlay
               backgroundImage={onChangeVideoCssProps(recordStatus, 'image')}
               backgroundRepeat={onChangeVideoCssProps(recordStatus, 'repeat')}
               backgroundSize={onChangeVideoCssProps(recordStatus, 'size')}
-            />
+            >
+            </Video>
           }
-
-          {/* <Video display={recordStatus === 'complete' ? 'block' : 'none'} id="previewVideo" controls/> */}
+          {
+            recordStatus === 'recording' &&
+              <PersonFormWrapper>
+                <ImageWrap
+                  position={'absolute'}
+                  width={'50%'}
+                  height={'95%'}
+                  top={'5%'}
+                >
+                  <ImageElement
+                    src="/images/avatar/octicon_person-26.svg"
+                    fill
+                    style={{
+                      inset: 'auto',
+                      objectFit: 'contain',
+                      opacity: '0.4'
+                    }}
+                    alt="human figure"
+                  />
+                </ImageWrap>
+              </PersonFormWrapper>
+          }
           {
             recordStatus === 'complete' && <Video id="previewVideo" controls/> 
           }
@@ -272,6 +292,7 @@ const VideoArea = styled.div({
 const Video = styled.video<CSS_TYPE>(
   {
     position: 'relative',
+    width: '60%',
     height: '100%',
     display: 'block',
     margin: '0 auto',
@@ -283,6 +304,23 @@ const Video = styled.video<CSS_TYPE>(
     display: props.display
   })
 )
+const PersonFormWrapper = styled.div({
+  position: 'relative',
+  width: '60%',
+  height: '100%',
+  margin: '0 auto',
+  top: '-100%'
+})
+const PersonForm = styled.div<CSS_TYPE>({
+  position: 'relative',
+  width: '40%',
+  height: '100%',
+  top: '0',
+  margin: '0 auto',
+  backgroundImage: "url('/images/avatar/octicon_person-26.svg')",
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'contain'
+})
 const DeviceNotFoundWrapper = styled.div({
   width: '50%',
   height: '100%',

@@ -17,7 +17,7 @@ const AvatarOption = ({ avatar, project, setProject }: AvatarOptionProps) => {
     prevState.avatar = param;
     setProject(prevState);
   }
-  
+
   return (
     <OptionWrapper>
       <ItemLists>
@@ -40,7 +40,7 @@ const AvatarOption = ({ avatar, project, setProject }: AvatarOptionProps) => {
           onClick={() =>
             onClickChangeAvatarInfoHandler({
               name: 'Kevin',
-              model: '01831218-c70d-78ee-9cba-03532fabd6f6', // TODO Lipsync 모델
+              model: 'bc7b4f1b-0cc7-40c1-b831-3293c67e14b1',
               imageFileUrl: '/images/avatar/kevin.svg'
             })}
         >

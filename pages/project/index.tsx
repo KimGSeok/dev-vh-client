@@ -96,7 +96,7 @@ const Project = () => {
                           color={''}
                           fontSize={''}
                           fontWeight={''}
-                        >이미지
+                        >-
                         </ListInfo>
                         <ListInfo
                           width={'15%'}
@@ -117,7 +117,7 @@ const Project = () => {
                           color={''}
                           fontSize={''}
                           fontWeight={''}
-                        >상태
+                        >{item.status === 'active' ? '활성화' : '-'}
                         </ListInfo>
                       </ProjectList>
                     )

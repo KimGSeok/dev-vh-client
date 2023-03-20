@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, ImageElement, ImageWrap } from '@styles/styles';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import AvatarOption from './option/Avatar';
 import VoiceOption from './option/Voice';
 import { AvatarProps, ProjectProps, VoiceProps } from '@modules/interface';
+import { getUserInfo } from '@lib/auth/cookie';
+import { get } from '@hooks/asyncHooks';
 
 interface ProjectAvatarProps {
   project: ProjectProps;
@@ -13,9 +15,22 @@ interface ProjectAvatarProps {
 const Avatar = ({ project, setProject }: ProjectAvatarProps) => {
 
   // Hooks
+  const [virtualHumanList, setVirtualHumanList] = useState();
   const [showOption, setShowOption] = useState('avatar'); // 현재 가상인간의 옵션
   const avatar: AvatarProps = project.avatar;
   const voice: VoiceProps = project.voice;
+
+  useEffect(() => {
+    const getAvatarList = async () =>{
+
+      const userId = getUserInfo('id');
+      const response = await get(`virtual-human/${userId}`,'no-cache');
+
+      console.log(response);
+    }
+
+    getAvatarList();
+  }, [])
 
   return (
     <AvatarWrapper>
