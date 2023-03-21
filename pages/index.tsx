@@ -35,15 +35,15 @@ const Home = () => {
             <ServiceContainer>
               <ServiceName>가상 인간&#40;Virtual Human&#41;</ServiceName>
               <ServiceDescription>
-                실제 사람의 얼굴과 음성을 가지고 디지털 버전의 사람을 만드는 것, 그렇게 만들어 진 결과물을 가상 인간&#40;Virtual Human&#41;이라고 합니다.<br/>
-                <LineBreak height={'12px'}/>
+                실제 사람의 얼굴과 음성을 가지고 디지털 버전의 사람을 만드는 것, 그렇게 만들어 진 결과물을 가상 인간&#40;Virtual Human&#41;이라고 합니다.<br />
+                <LineBreak height={'12px'} />
                 이러한 가상 인간은 엔터테인먼트, 교육 및 연구와 같은 다양한 목적으로 사용할 수 있습니다.<br />
-                <LineBreak height={'12px'}/>
+                <LineBreak height={'12px'} />
                 두&#58;분 스튜디오에서는<br />
                 음성 합성기술&#40;TTS, Text-to-Speech&#41;을 이용한 &#34;목소리&#34;<br />
                 얼굴 영상 합성기술&#40;STF, Speech-to-Face&#41;을 이용한 &#34;아바타&#34;<br />
                 를 제작하실 수 있어요.
-                <LineBreak height={'12px'}/>
+                <LineBreak height={'12px'} />
                 우리의 가상 인간&#40;Virtual Human&#41;의 궁극적인 목표는 실제 사람과 디지털 버전의 사람의 외모와 행동 모두에서 구별할 수 없을 정도의
                 사실적인 가상 인간&#40;Virtual Human&#41;를 만드는 것입니다.
               </ServiceDescription>
@@ -74,15 +74,15 @@ const Home = () => {
               <ServiceDescription>
                 녹음한 음성을 이용하여 생성된 &#34;목소리&#34;, 영상 촬영을 통하여 생성된 &#34;아바타&#34;를<br />
                 이용하여 자신만의 Virtual Human Project를 생성할 수 있어요.
-                <LineBreak height={'12px'}/>
+                <LineBreak height={'12px'} />
                 저희 두&#58;분 스튜디오의 프로젝트는<br />
                 1. 입력된 스크립트<br />
                 2. 음성 빠르기&#40;느리게, 보통, 빠르게&#41;<br />
                 3. 음성 대기시간&#40;0.8초, 1초, 1.2초&#41;<br />
                 를 이용하여 &#34;아바타&#34;와 &#34;목소리&#34;를 유동적으로 활용 하실 수 있어요.
-                <LineBreak height={'12px'}/>
+                <LineBreak height={'12px'} />
                 이렇게 생성된 가상인간은 음성 및 영상을 다운받아서 직접 사용하실 수 있어요.
-                <LineBreak height={'12px'}/>
+                <LineBreak height={'12px'} />
                 자신만의 가상인간을 만들어서 다양한 컨텐츠로 활용해보아요.
               </ServiceDescription>
             </ServiceContainer>
@@ -147,16 +147,12 @@ const DashboardSubTitle = styled.div({
   color: color.DeActiveColor,
 
   '@media screen and (max-width: 1440px)': {
+    fontSize: '0.95rem',
+  },
+
+  '@media screen and (max-width: 1280px)': {
     fontSize: '0.9rem',
   },
-
-  '@media screen and (max-width: 1023px)': {
-    fontSize: '0.8rem',
-  },
-
-  '@media screen and (max-width: 960px)': {
-    fontSize: '0.7rem',
-  }
 })
 const ServicePreviewContainer = styled.div({
   position: 'relative',
@@ -165,7 +161,17 @@ const ServicePreviewContainer = styled.div({
   margin: '1% 0 1% 0',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+
+  '@media screen and (max-width: 1440px)': {
+    height: '86%',
+    margin: '3% 0 1% 0',
+  },
+
+  '@media screen and (max-width: 1280px)': {
+    height: '84%',
+    margin: '5% 0 1% 0',
+  },
 })
 const ServicePreview = styled.div<CSS_TYPE>(
   {
@@ -178,7 +184,15 @@ const ServicePreview = styled.div<CSS_TYPE>(
     backgroundSize: 'cover',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+
+    '@media screen and (max-width: 1440px)': {
+      padding: '32px',
+    },
+
+    '@media screen and (max-width: 1280px)': {
+      padding: '28px',
+    },
   },
   props => ({
     backgroundImage: props.backgroundImage,
@@ -195,16 +209,13 @@ const ServiceName = styled.div({
   margin: '0 0 20px 0',
 
   '@media screen and (max-width: 1440px)': {
-    fontSize: '1.8rem',
+    fontSize: '1.75rem',
+    margin: '0 0 12px 0',
   },
 
-  '@media screen and (max-width: 1023px)': {
-    fontSize: '1.65rem',
+  '@media screen and (max-width: 1280px)': {
+    fontSize: '1.4rem',
   },
-
-  '@media screen and (max-width: 960px)': {
-    fontSize: '1.5rem',
-  }
 })
 const ServiceDescription = styled.div({
   fontSize: '1rem',
@@ -216,13 +227,10 @@ const ServiceDescription = styled.div({
     fontSize: '0.9rem',
   },
 
-  '@media screen and (max-width: 1023px)': {
-    fontSize: '0.85rem',
-  },
-
-  '@media screen and (max-width: 960px)': {
+  '@media screen and (max-width: 1280px)': {
     fontSize: '0.8rem',
-  }
+    lineHeight: '22px',
+  },
 })
 const BtnWrapper = styled.div({
   position: 'relative',

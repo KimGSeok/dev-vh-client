@@ -12,25 +12,37 @@ const SideNavigation = () => {
   return (
     <SideNav>
       <GNBLists>
-        <GNBList color={firstPathName === '' ? color.White : ''}>
-          <Link href="/" passHref>Home</Link>
-        </GNBList>
-        <GNBList color={firstPathName === 'project' ? color.White : ''}>
-          <Link href="/project" passHref>Project</Link>
-        </GNBList>
-        <GNBList color={firstPathName === 'virtual-human' ? color.White : ''}>
-          <Link href="/virtual-human" passHref>Virtual Human</Link>
-        </GNBList>
+        <Link href="/" passHref>
+          <GNBList color={firstPathName === '' ? color.White : ''}>
+            Home
+          </GNBList>
+        </Link>
+        <Link href="/project" passHref>
+          <GNBList color={firstPathName === 'project' ? color.White : ''}>
+            Project
+          </GNBList>
+        </Link>
+        <Link href="/virtual-human" passHref>
+          <GNBList color={firstPathName === 'virtual-human' ? color.White : ''}>
+            Virtual Human
+          </GNBList>
+        </Link>
         {/* 마스터 계정 한정 */}
-        <GNBList color={firstPathName === 'Organizations' ? color.White : ''}>
-          <Link href="/" passHref>Organizations</Link>
-        </GNBList>
-        <GNBList color={firstPathName === 'users' ? color.White : ''}>
-          <Link href="/" passHref>Users</Link>
-        </GNBList>
-        <GNBList color={firstPathName === 'mypage' ? color.White : ''}>
-          <Link href="/" passHref>Mypage</Link>
-        </GNBList>
+        <Link href="/" passHref>
+          <GNBList color={firstPathName === 'Organizations' ? color.White : ''}>
+            Organizations
+          </GNBList>
+        </Link>
+        <Link href="/" passHref>
+          <GNBList color={firstPathName === 'users' ? color.White : ''}>
+            Users
+          </GNBList>
+        </Link>
+        <Link href="/" passHref>
+          <GNBList color={firstPathName === 'mypage' ? color.White : ''}>
+            Mypage
+          </GNBList>
+        </Link>
       </GNBLists>
     </SideNav>
   )
