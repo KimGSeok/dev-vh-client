@@ -42,9 +42,19 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
     setRecordStatus('complete');
   };
 
+  const onListenAgainHandler = () =>{ 
+    audio.play()
+    .then(() => {
+      audio.play()
+    })
+    .catch((error: any) => {
+      alert('오디오가 제대로 녹음되지 않았습니다.\n다시 녹음해주세요.');
+      console.error(error);
+    })
+  }
+
   const onReRecordingHandler = () => {
-    startRecording();
-    setRecordStatus('recording');
+    setRecordStatus('wait');
   }
 
   const onNextStepHandler = async () => {
@@ -164,38 +174,7 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
               {recordStatus === 'wait' && '녹음 시작 전'}
               {recordStatus === 'recording' && <><AudioWaveForm />녹음중..</>}
               {
-                recordStatus === 'complete' &&
-                <>
-                  <ImageWrap
-                    position={'relative'}
-                    height={'100%'}
-                    cursor={'pointer'}
-                    onClick={() => {
-                      audio.play()
-                        .then(() => {
-                          audio.play()
-                        })
-                        .catch((error: any) => {
-                          alert('오디오가 제대로 녹음되지 않았습니다.\n다시 녹음해주세요.');
-                          console.error(error);
-                        })
-                    }}
-                  >
-                    <ImageElement
-                      src="/icons/play.svg"
-                      width={24}
-                      height={24}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        position: 'relative',
-                        top: '-1px',
-                        margin: '0 12px 0 0'
-                      }}
-                      alt="play"
-                    />
-                  </ImageWrap>녹음완료
-                </>
+                recordStatus === 'complete' && '녹음완료'
               }
             </RecordStatus>
             {/* TODO 전체 스크립트의 길이 및 현재 스크립트의 인덱스 */}
@@ -211,6 +190,7 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
               setRecordStatus={setRecordStatus}
               setRecordScriptLists={setRecordScriptLists}
               onRecordHandler={onStartRecordingHandler}
+              onListenAgainHandler={onListenAgainHandler}
               onCompleteHandler={onStopRecordingHandler}
               onReRecordHandler={onReRecordingHandler}
               onNextStepHandler={onNextStepHandler}

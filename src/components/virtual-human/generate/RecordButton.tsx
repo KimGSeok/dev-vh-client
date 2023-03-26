@@ -13,6 +13,7 @@ interface RecordProps {
   setRecordStatus?: Dispatch<SetStateAction<string>>;
   setRecordScriptLists?: Dispatch<SetStateAction<object[]>>;
   onRecordHandler?: () => void;
+  onListenAgainHandler?: () => void;
   onCompleteHandler: () => void;
   onReRecordHandler?: () => void;
   onNextStepHandler?: () => void;
@@ -27,6 +28,7 @@ const RecordButtonWrapper = ({
   setRecordStatus,
   setRecordScriptLists,
   onRecordHandler,
+  onListenAgainHandler,
   onCompleteHandler,
   onReRecordHandler,
   onNextStepHandler
@@ -35,7 +37,7 @@ const RecordButtonWrapper = ({
   return (
     <ButtonWrapper>
       {
-        (recordStatus === 'wait' || recordStatus === 'fail') &&
+        (recordStatus === 'wait' || recordStatus === 'ready' || recordStatus === 'fail') &&
         <RecordBtn
           backgroundColor={color.Red}
           border={'0'}
@@ -59,7 +61,7 @@ const RecordButtonWrapper = ({
               }}
               alt="mic"
             />
-          </ImageWrap>{type === 'voice' ? '녹음하기' : '녹화하기'}
+          </ImageWrap>{type === 'voice' ? '녹음시작' : '녹화시작'}
         </RecordBtn>
       }
       {
@@ -117,6 +119,15 @@ const RecordButtonWrapper = ({
               />
             </ImageWrap>{type === 'voice' ? '다시 녹음하기' : '다시 녹화하기'}
           </RecordBtn>
+          {
+            type === 'voice' &&
+            <RecordBtn
+              backgroundColor={color.BasicOrange}
+              borderColor={color.BasicOrange}
+              onClick={onListenAgainHandler}
+            >들어보기
+            </RecordBtn>
+          }
           <RecordBtn
             backgroundColor={color.BasicColor}
             borderColor={color.BasicColor}

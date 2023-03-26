@@ -10,7 +10,7 @@ interface StopWatchProps{
 
 let time = 0;
 
-const StopWatch = ({ timer, setTimer, setDuration }: StopWatchProps) =>{
+const StopWatch = ({ timer, setDuration }: StopWatchProps) =>{
   
   let hour, min, sec;
   const [timerId, setTimerId] = useState<any>();
@@ -47,8 +47,10 @@ const StopWatch = ({ timer, setTimer, setDuration }: StopWatchProps) =>{
       setDuration && setDuration(time);
       clearInterval(timerId);
     }
-    else if(timer === 'reset' || timer === 'init'){
+    else if(timer === 'reset' || timer === 'ready' || timer === 'init'){
       time = 0;
+      setDuration && setDuration(time);
+      clearInterval(timerId);
     }
   }, [timer])
 

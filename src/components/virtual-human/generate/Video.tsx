@@ -2,7 +2,6 @@
 
 import styled from "@emotion/styled";
 import RecordRTC from 'recordrtc';
-import dynamic from "next/dynamic";
 import { v4 as uuidV4 } from 'uuid';
 import { CSS_TYPE, color, ImageWrap, ImageElement } from "@styles/styles";
 import { useEffect, useState } from "react";
@@ -10,25 +9,28 @@ import { post } from "@hooks/asyncHooks";
 import RecordButtonContainer from "./RecordButton";
 import { onChangeVideoCssProps } from "@modules/avatar/onChangeVideoCssProps";
 import { useRouter } from "next/navigation";
-const StopWatch = dynamic(() => import('@components/stopWatch'), {
-  ssr: false
-});
+import StopWatch from "@components/stopWatch";
+
+let startTime: number;
+let endTime: number;
+let elapsedTime: number = 0;
 
 const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanName: string }) => {
 
   // Hooks
   const router = useRouter();
-  const [recordStatus, setRecordStatus] = useState('wait'); // 녹음대기(wait), 녹음중(recording), 녹음종료(complete), 녹음실패(fail)
+  const [recordStatus, setRecordStatus] = useState('wait'); //  녹음대기(wait), 녹음준비(ready), 녹음중(recording), 녹음종료(complete), 녹음실패(fail)
   const [duration, setDuration] = useState<number>(0);
   const [timer, setTimer] = useState('init');
   const [videoMedia, setVideoMedia] = useState<any>({
-    uploading: false,
+    stream: null,
     recorder: null,
+    mediaRecorder: null,
     video: null,
     src: null
   })
 
-  const onClickRecordHandler = async () => {
+  const getUserMedia = async () =>{
     await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: {
@@ -37,8 +39,26 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
       }
     }).then(async (stream) => {
 
-      setRecordStatus('recording');
-      await onStartRecordingHandler(stream);
+      // Parameter
+      const video: any = document.getElementById('video');
+
+      video.muted = false;
+      video.volume = 0;
+      video.srcObject = stream;
+
+      const recorder: any = new RecordRTC(stream, {
+        type: 'video',
+        mimeType: 'video/webm',
+        checkForInactiveTracks: false,
+        disableLogs: true,
+      });
+
+      setRecordStatus('ready');
+      setVideoMedia({
+        recorder: recorder,
+        stream: stream,
+        video: video
+      })
     }).catch((error) => {
       console.error(error);
       setRecordStatus('fail');
@@ -48,66 +68,73 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
     })
   }
 
+  const onClickRecordHandler = async () => {
+
+    setRecordStatus('recording');
+    startTime = Date.now();
+    await onStartRecordingHandler(videoMedia.stream);
+  }
+
   const onStartRecordingHandler = async (stream: MediaStream) => {
 
-    // Parameter
-    const video: any = document.getElementById('video');
-    video.muted = false;
-    video.volume = 0;
-    video.srcObject = stream;
-
-    const recorder: any = new RecordRTC(stream, {
-      type: 'video',
-      mimeType: 'video/webm',
-      // recorderType: RecordRTC.WhammyRecorder
-      checkForInactiveTracks: false,
-      disableLogs: true,
-    });
+    const { recorder }: any = videoMedia;
 
     setTimer('start');
     recorder.startRecording();
     recorder.camera = stream;
-
-    setVideoMedia({
-      recorder: recorder,
-      video: video
-    })
   }
 
   const onStopRecordingHandler = () => {
 
-    const { recorder }: any = videoMedia;
-    if (recorder) {
-      setTimer('stop');
-      recorder.camera.stop();
+    setTimer('stop');
 
-      const stopRecordingHandler = async () => {
-        await recorder.stopRecording(() => {
-          const blob = recorder.getBlob();
+    endTime = Date.now();
+    elapsedTime = Math.floor((endTime - startTime) / 1000);
 
-          setVideoMedia({
-            uploading: true,
-            recorder: null,
-            video: blob,
-            videoBlobUrl: URL.createObjectURL(blob)
-          })
-          recorder.reset();
-          setRecordStatus('complete');
-        });
+    if(elapsedTime >= 60){
+
+      const { recorder }: any = videoMedia;
+      if (recorder) {
+
+        recorder.camera.stop();
+        setRecordStatus('complete');
+
+          recorder.stopRecording(() => {
+            const blob = recorder.getBlob();
+
+            const video: any = document.getElementById('previewVideo');
+            video.src = URL.createObjectURL(blob);
+
+            setVideoMedia({
+              video: blob,
+              videoBlobUrl: URL.createObjectURL(blob)
+            })
+            recorder.reset();
+          });
       }
-      stopRecordingHandler();
+    }
+    else{
+      alert('최소 1분이상 녹화되지 않았습니다.\n다시 녹화해주세요.');
+      setTimer('init');
+      setRecordStatus('ready');
     }
   }
-
-  const onReRecordHandler = () =>{
+  
+  const onReRecordHandler = async () =>{
 
     setTimer('init');
-    setRecordStatus('recording');
-    onClickRecordHandler();
+    setRecordStatus('wait');
+    elapsedTime = 0;
+    getUserMedia();
   }
 
   const onNextStepHandler = () =>{
 
+    if(elapsedTime >= 60){
+      alert('최소 1분이상 녹화되지 않았습니다.\n다시 녹화해주세요.');
+      return false;
+    }
+    
     // Parameter
     const virtualHumanId = uuidV4();
     const formData = new FormData();
@@ -134,47 +161,55 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
 
   useEffect(() => {
 
-    if(recordStatus === 'complete'){
-      const video: any = document.getElementById('previewVideo');
-      video.src = URL.createObjectURL(videoMedia.video);
-    }
-
-    // TODO
-
-    // if(recordStatus === 'complete' && duration < 180){
-    //   alert('최소 3분이상 녹화되지 않았습니다.\n다시 녹화해주세요.');
-    //   setTimer('init');
-    // }
-    // else if(recordStatus === 'complete' && duration >= 180){
-      // const video: any = document.getElementById('previewVideo');
-      // video.src = URL.createObjectURL(videoMedia.video);
-    // }
-  }, [recordStatus])
+    getUserMedia()
+  }, [])
 
   return (
     <VideoGenerateWrapper>
-      <Title>아래 문장을 대화를 하듯 말하며 최소 3분 이상 녹화해주세요.</Title>
+      <Title>아래 문장을 대화를 하듯 말하며 최소 1분 이상 녹화해주세요.</Title>
       <ScriptWrapper>
         <Script>
-          한돈 고급화를 위해선 고품질 돼지고기를 판별할 수 있는 새로운 등급판정 기준이 필요하다는 연구결과가 나와 주목된다.<br />
-
-          대한한돈협회(회장 손세희) 주관으로 2일 서울 서초구 제2축산회관에서 진행된 '한돈 고급화전략 수립을 위한 유통 소비행태 및 소비친화적 품질 등 개선방안 연구 중간보고회'에서 이러한 내용이 제시됐다.
-
-          현재 돼지고기 등급은 도체중과 등지방두께를 중심으로 모두 4개(1+, 1, 2, 등외)등급으로 나뉜다. 가령 가장 높은 등급인 1+를 받으려면 도체중이 83~93㎏, 등지방두께가 17~25㎜ 범위에 들어야 한다. 같은 등급을 받은 돼지고기라고 하더라도 개체에 따라 품질차이가 큰 경우가 많은 것으로 알려졌다. 소비지에선 삼겹살과 목심 부위에 대한 선호도가 큰데, 높은 등급의 돼지고기라도 해당 부위의 품질을 보장하지 않기 때문에 육가공업체는 물론 소비자들도 등급제 효용이 떨어진다는 지적의 목소리가 컸다.<br />
-
-          실제로 2021년 등급별 돼지(거세, 1㎏기준) 전국 평균 경락값을 보면, 1+등급 5115원, 1등급 5065원, 2등급 5114원으로 낮은 등급인 2등급의 평균 경락값이 1등급 가격보다 높게 형성되는 역전현상이 발생하기도 했다.<br />
-
-          이에 육색·마블링·보수력 등 품질평가가 가능한 추가적인 형질의 개발이 필요하다는 게 이번 연구결과의 주된 내용이다. 육색의 경우 적색도가 높을수록 고품질로 판단된다. 미국에서도 적색도를 6가지로 나눠 해당 평가기준을 육질판정에 활용할 예정으로 알려졌다.<br />
-
-          마블링의 경우 풍미·연도·다즙성과 연관이 있는 지표다. 우리나라에서 선호도가 높은 삼겹살의 경우 근육 지방의 적정 비율의 기준을 세우는 것이 필요하다. <br />
-
-          보수력은 육색·연도·다즙성에 영향을 주는 지표다. 보수력이 높을수록 육즙손실이 적고 고기 수율을 증가시키기 때문에 역시 고품질로 인정받을 수 있다. <br />
-
-          다만 현재 등급판정 체계 아래에선 해당 지표들을 당장 적용하기 어렵기 때문에 시중에 보급된 자동등급판정기기를 활용할 수 있는 육색 정도가 품질평가 기준으로 이용할 가능성이 있다는 지적이다. <br />
-
-          서강석 순천대학교 교수는 “해당 요인들을 종합적으로 검토해 추가 연구를 진행해야 하며 육질형질과 밀접히 연관된 이화학적 형질의 유전상관계수를 검토 비교해 앞으로 개량 방향을 설정해야 한다”고 밝혔다.<br />
-
-          한돈협회는 해당 연구를 바탕으로 올해도 추가 연구를 진행해 프리미엄 돼지고기에 대한 기준을 정립하고 제도화도 진행하겠다는 입장이다.
+          이미지 메이킹이란 무엇일까요?<br />
+          타인에게 자신의 이미지를 언제 어디서든지 주어진 상황에 맞게<br />
+          재고 시켜주고 자신의 능력을 최대한 발휘할 수 있도록 해 주면서<br />
+          자신의 잠재력까지도 표출할 수 있도록 만들어 주는 것이<br />
+          바로 이미지 메이킹입니다. 그렇다면 이미지의 어원은 어디서 왔을까요?<br />
+          라틴어 동사 '이미타리', 즉 흉내내다라는 뜻의 명사형 어미 '아고'를 붙인<br />
+          '이마고'에서 왔습니다. 이것은 사전적인 이미지로 형태, 모양, 느낌, 영상, 관념 등을 뜻합니다. <br />
+          <br />
+          (2초간 입을 다문채로 대기해주세요)<br />
+          <br />
+          이미지는 심상을 뜻하는데,<br />
+          사전적인 정의는 어떤 사람이나 사물로부터 받는 느낌이나 인상으로 <br />
+          사물이나 사람에게 받는 인상과 감각에 의하여 얻어졌던 것이<br />
+          마음속에서 재생한 것이라고 할 수 있습니다.<br />
+          자신이 의식적이든 무의식적이든 과거의 경험으로부터 여러 감각에 의하여<br />
+          얻어진 일들과 현상이 마음속에 구체적인 언어로 재생된 것으로<br />
+          일부러 의도하거나 의식하지 않아도 형성됩니다. <br />
+          <br />
+          (2초간 입을 다문채로 대기해주세요)<br />
+          <br />
+          현대사회는 사회적으로 이미지 전쟁이라고 불릴 만큼 좋은 이미지를 추구하며<br />
+          개인만이 아니라 국가나 단체 기업의 총괄적인 이미지와 단독적인 상품들도<br />
+          어떤 이미지로 보여지느냐를 매우 중요하게 여기면서 좋은 이미지를 위해 노력하고 있습니다.<br />
+          <br />
+          (2초간 입을 다문채로 대기해주세요)  <br />
+          <br />
+          그렇다면 스타일의 영역에서 말하는 이미지란 무엇일까요?<br />
+          여러분들, 스타일이라는 말 많이 쓰시죠? "어우 저 사람 참 스타일이 좋아.",<br />
+          혹은 "저 사람은 어떠어떠한 스타일이야." 라는 말을 많이 하시죠?<br />
+          이렇듯 자기 자신의 머릿속에 떠올릴 때 타인과 구별되는 특정적인 시각적인 영상이나 느낌<br />
+          이런 것들을 총체적으로 이미지라 말합니다. 또, 기대하는 역할의 이미지에<br />
+          걸맞은 행위의 결과의 이미지 또한 스타일에서 말하는 이미지입니다.<br />
+          <br />
+          (2초간 입을 다문채로 대기해주세요)  <br />
+          <br />
+          이것들은 인상이나 표정, 체격, 음성, 옷차림, 사고방식 등이 결합된 결과물 입니다.<br />
+          이미지 메이킹의 목적은 보여지는 시각적인 외모와 스타일을 이상적으로 변화하고<br />
+          지속적으로 유지를 하고자 하는 데 있다면 성공적인 이미지 메이킹을 위해서<br />
+          먼저 현재 나의 모습을 명확하게 아는 것이 중요합니다.<br />
+          <br />
+          (2초간 입을 다문채로 대기해주세요)<br />
         </Script>
       </ScriptWrapper>
       <VideoCameraWrapper>
@@ -183,18 +218,22 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
             recordStatus === 'fail' && <DeviceNotFoundWrapper><DeviceNotFound>Device not found</DeviceNotFound></DeviceNotFoundWrapper>
           }
           {
-            (recordStatus === 'wait' || recordStatus === 'recording') &&
+            (recordStatus !== 'complete' && elapsedTime < 60 ) &&
             <Video
               id="video"
               autoPlay
               backgroundImage={onChangeVideoCssProps(recordStatus, 'image')}
               backgroundRepeat={onChangeVideoCssProps(recordStatus, 'repeat')}
               backgroundSize={onChangeVideoCssProps(recordStatus, 'size')}
+              transform={'rotateY(180deg)'}
             >
             </Video>
           }
           {
-            recordStatus === 'recording' &&
+            (recordStatus === 'complete' && elapsedTime >= 60 ) && <Video id="previewVideo" controls />
+          }
+          {
+            (recordStatus === 'ready' || recordStatus === 'recording') &&
               <PersonFormWrapper>
                 <ImageWrap
                   position={'absolute'}
@@ -214,9 +253,6 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
                   />
                 </ImageWrap>
               </PersonFormWrapper>
-          }
-          {
-            recordStatus === 'complete' && <Video id="previewVideo" controls/> 
           }
           {
             recordStatus === 'wait' &&
@@ -264,12 +300,12 @@ const Title = styled.div({
   textAlign: 'center'
 })
 const ScriptWrapper = styled.div({
-  width: '70%',
+  width: '60%',
   height: 'calc(35% - 16px)',
   backgroundColor: color.DarkWhite,
   borderRadius: '16px',
   border: `1px solid ${color.ModernGrey}`,
-  padding: '16px',
+  padding: '20px',
   margin: '0 auto'
 })
 const Script = styled.div({
@@ -301,7 +337,8 @@ const Video = styled.video<CSS_TYPE>(
     backgroundImage: props.backgroundImage,
     backgroundRepeat: props.backgroundRepeat,
     backgroundSize: props.backgroundSize,
-    display: props.display
+    display: props.display,
+    transform: props.transform
   })
 )
 const PersonFormWrapper = styled.div({

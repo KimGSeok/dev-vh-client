@@ -43,23 +43,22 @@ const Avatar = ({ project, setProject }: ProjectAvatarProps) => {
     getAvatarList();
   }, [])
 
-
   return (
     <AvatarWrapper>
       <ImageWrapper>
         <ImageWrap
           position={'absolute'}
-          width={avatar.name === '' ? '100%' : '70%'}
-          height={avatar.name === '' ? '90%' : '100%'}
-          margin={avatar.name === '' ? '0' : '0 15%'}
-          bottom={avatar.name === '' ? '0' : '1px'}
+          width={avatar.name === '' ||  avatar.imageFileUrl === '' ? '100%' : '70%'}
+          height={avatar.name === '' ||  avatar.imageFileUrl === '' ? '90%' : '100%'}
+          margin={avatar.name === '' ||  avatar.imageFileUrl === '' ? '0' : '0 15%'}
+          bottom={avatar.name === '' ||  avatar.imageFileUrl === '' ? '0' : '1px'}
         >
           <ImageElement
-            src={avatar.name === '' ? '/images/avatar/human_figure.svg' : avatar.imageFileUrl}
+            src={avatar.name === '' ||  avatar.imageFileUrl === '' ? '/images/avatar/human_figure.svg' : avatar.imageFileUrl}
             fill
             style={{
               inset: 'auto',
-              objectFit: `${avatar.name === '' ? 'contain' : 'cover'}`, // contain
+              objectFit: `${avatar.name === '' ||  avatar.imageFileUrl === '' ? 'contain' : 'cover'}`, // contain
               borderTopRightRadius: '16px',
               borderTopLeftRadius: '16px',
             }}

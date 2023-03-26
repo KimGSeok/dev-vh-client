@@ -86,6 +86,9 @@ const Script = ({ name, project, setProject, isTransform, setIsTransform }: Slid
     let prevState = { ...project };
     prevState.scriptList = scriptList;
     setProject(prevState);
+    window.setTimeout(function () { 
+      document.getElementById(scriptUUID)?.focus();
+    }, 0); 
   }, [scriptList])
 
   useEffect(() => {
@@ -106,6 +109,7 @@ const Script = ({ name, project, setProject, isTransform, setIsTransform }: Slid
               return (
                 <ScriptItem
                   key={item.uuid}
+                  id={item.uuid}
                   indexKey={index}
                   scriptInfo={item}
                   scriptList={scriptList}

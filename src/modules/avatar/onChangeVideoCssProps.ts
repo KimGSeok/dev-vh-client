@@ -5,12 +5,14 @@
  * Author: Dmon
  */
 export const onChangeVideoCssProps = (recordStatus: string, props: string) =>{
-
+  
   // 녹음대기(wait), 녹음중(recording), 녹음종료(complete), 녹음실패(fail)
   if(props === 'image'){
     switch(recordStatus){
       case 'wait' :
-        return "url('/images/avatar/tile_background_no-stroke.svg')"
+        return "url('/images/avatar/tile_background_no-stroke.svg')";
+      case 'ready':
+        return ''
       case 'recording':
         return ''
       case 'complete':
@@ -22,9 +24,11 @@ export const onChangeVideoCssProps = (recordStatus: string, props: string) =>{
   else if(props === 'repeat'){
     switch(recordStatus){
       case 'wait' :
-        return 'no-repeat'
+        return 'no-repeat';
+      case 'ready' :
+        return '';
       case 'recording':
-        return ''
+        return '';
       case 'complete':
         break;
       case 'fail':
@@ -34,7 +38,9 @@ export const onChangeVideoCssProps = (recordStatus: string, props: string) =>{
   else if(props === 'size'){
     switch(recordStatus){
       case 'wait' :
-        return 'cover'
+        return 'cover';
+      case 'ready':
+        return '';
       case 'recording':
         return ''
       case 'complete':

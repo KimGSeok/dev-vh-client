@@ -1,9 +1,11 @@
-import { Dispatch, ChangeEvent, FormEvent, SetStateAction, useState, useEffect, useRef } from 'react';
+import { Dispatch, ChangeEvent, FormEvent, SetStateAction, useState, useEffect, useRef, KeyboardEvent } from 'react';
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from '@styles/styles';
 import { v4 as uuidV4 } from 'uuid';
 
 interface ScriptProps {
+  id: string;
+  key: string;
   indexKey: number;
   scriptInfo: any;
   scriptList: any;
@@ -14,7 +16,7 @@ interface ScriptProps {
   setBottomSheetType: Dispatch<SetStateAction<string>>;
 }
 
-const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScriptList, setIsShowBottomSheet, setBottomSheetTitle, setBottomSheetType }: ScriptProps) => {
+const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setScriptList, setIsShowBottomSheet, setBottomSheetTitle, setBottomSheetType }: ScriptProps) => {
 
   // Hooks
   const scriptRef = useRef<any>(null);
@@ -31,14 +33,26 @@ const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScript
   const onClickPauseSecondHandler = () => {
 
     // TODO
-    // setIsShowBottomSheet(true);
-    // setBottomSheetTitle('음성 대기시간 선택');
-    // setBottomSheetType('pauseSecond')
-    // setScriptUUID(scriptInfo.uuid);
+    setIsShowBottomSheet(true);
+    setBottomSheetTitle('음성 대기시간 선택');
+    setBottomSheetType('pauseSecond')
+    setScriptUUID(scriptInfo.uuid);
+  }
+
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) =>{
+    if (e.key === 'Enter' && e.shiftKey) {
+      return;
+    } else if(e.key === 'Enter'){
+      onClickAppendScriptHandler()
+      e.preventDefault();
+    }
   }
 
   const onClickAppendScriptHandler = () => {
-    setScriptList((prev: any) => [...prev, { uuid: uuidV4(), text: '', speed: 1.0, pauseSecond: 0.5 }]);
+
+    const uuid = uuidV4();
+    setScriptList((prev: any) => [...prev, { uuid: uuid, text: '', speed: 1.0, pauseSecond: 0.5 }]);
+    setScriptUUID(uuid);
   }
 
   const onClickRemoveScriptHandler = (args: any) => {
@@ -82,9 +96,11 @@ const ScriptItem = ({ indexKey, scriptInfo, scriptList, setScriptUUID, setScript
         />
       </ImageWrap>
       <Script
+        id={id}
         ref={scriptRef}
         placeholder={'스크립트 텍스트를 입력해주세요.'}
         onInput={(e) => onInputScriptHandler(e)}
+        onKeyDown={(e) => onKeyDown(e)}
         contentEditable={true}
       />
       <RadiusBtn
