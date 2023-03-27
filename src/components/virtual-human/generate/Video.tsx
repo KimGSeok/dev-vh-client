@@ -129,8 +129,8 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
   }
 
   const onNextStepHandler = () =>{
-
-    if(elapsedTime >= 60){
+    
+    if(elapsedTime < 60){
       alert('최소 1분이상 녹화되지 않았습니다.\n다시 녹화해주세요.');
       return false;
     }
@@ -306,7 +306,8 @@ const ScriptWrapper = styled.div({
   borderRadius: '16px',
   border: `1px solid ${color.ModernGrey}`,
   padding: '20px',
-  margin: '0 auto'
+  margin: '0 auto',
+  textAlign: 'center'
 })
 const Script = styled.div({
   height: '100%',

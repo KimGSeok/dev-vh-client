@@ -102,6 +102,17 @@ const ModalContent = ({ avatarType, setAvatarType }: ModalProps) => {
               :
               '최소 3분 이상 녹화가 필요합니다.'}
           </DescriptionList>
+          <DescriptionList>
+            녹음 버튼 클릭 후 약간의 여유를 갖고 녹음을 진행해 주세요.<br />
+            ex. 버튼 클릭 1초 후 녹음시작, 다 읽고 1초 뒤 버튼 클릭(종료)
+          </DescriptionList>
+          <DescriptionList>
+            마이크가 가급적 입에 가까이 위치하도록 해주세요.
+          </DescriptionList>
+          <DescriptionList>
+            스크립트 후반부로 갈수록 말을 흐리지 않도록 주의해 주세요.<br />
+            했습니다... (X)   했습니다. (O)      알려왔어... (X)   알려왔어. (O)
+          </DescriptionList>
         </DescriptionLists>
       </ContentWrapper>
       <ButtonWrapper>
