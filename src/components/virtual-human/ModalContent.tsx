@@ -86,33 +86,33 @@ const ModalContent = ({ avatarType, setAvatarType }: ModalProps) => {
         <DescriptionLists>
           <DescriptionList>
             {type === 'voice' ?
-              '주변 소음이 없는 조용한 공간에서 녹음 해주세요.' : '녹화 시작 후, 화면 속 대사를 천천히 읽어주세요.'}
+              '조용한 공간에서 마이크에 가까이 대고 녹음 해주세요.' : '화면의 가이드에 얼굴과 몸을 맞춰주세요.'}
           </DescriptionList>
           <DescriptionList>
             {type === 'voice' ?
-              '첫 번째 문장부터 마지막 문장까지 일관된 목소리와 톤을 유지해주세요.' : '녹화 중 얼굴이 꼭 나와야 하며, 입을 가리지 않게 주의 해주세요.'}
+              '문장 전체를 정확하고 자연스럽게 녹음해주세요' : '녹화 시작 후, 화면 속 대사를 천천히 읽어주세요.'}
           </DescriptionList>
           <DescriptionList>
             {type === 'voice' ?
-              '문장 전체를 정확하고 자연스럽게 녹음해주세요.' : '꼭 대사를 읽을 필요는 없지만 입을 많이 움직일 수록 더 자연스러운 학습이 가능합니다.'}
+              '문장 끝에서 말을 흐리지 않도록 주의해주세요.' : '입을 크게, 많이 움직일수록 더 자연스러운 학습이 가능합니다.'}
           </DescriptionList>
           <DescriptionList>
-            {type === 'voice' ?
-              `쉼표(,) 에서는 잠시 멈추고, 물음표(?), 느낌표(!)는 최대한 느낌을 살려 읽어주세요.`
-              :
-              '최소 3분 이상 녹화가 필요합니다.'}
+            {
+              type === 'voice' ?
+                `쉼표(,) 에서는 잠시 멈추고, 물음표(?), 느낌표(!)는 최대한 느낌을 살려 읽어주세요.`
+                :
+                '최소 1분 이상 녹화가 필요합니다.'
+            }
           </DescriptionList>
-          <DescriptionList>
-            녹음 버튼 클릭 후 약간의 여유를 갖고 녹음을 진행해 주세요.<br />
-            ex. 버튼 클릭 1초 후 녹음시작, 다 읽고 1초 뒤 버튼 클릭(종료)
-          </DescriptionList>
-          <DescriptionList>
-            마이크가 가급적 입에 가까이 위치하도록 해주세요.
-          </DescriptionList>
-          <DescriptionList>
-            스크립트 후반부로 갈수록 말을 흐리지 않도록 주의해 주세요.<br />
-            했습니다... (X)   했습니다. (O)      알려왔어... (X)   알려왔어. (O)
-          </DescriptionList>
+          {
+            type === 'voice' &&
+            <DescriptionList>
+              녹음 버튼 클릭 후 약간의 여유를 갖고 녹음해주세요.
+              <SubDescription>
+                버튼 클릭 1초 후 녹음 시작, 다 읽고 1초 후 녹음 종료
+              </SubDescription>
+            </DescriptionList>
+          }
         </DescriptionLists>
       </ContentWrapper>
       <ButtonWrapper>
@@ -184,6 +184,16 @@ const DescriptionList = styled.li({
   listStyle: 'disc',
   fontSize: '1rem',
   margin: '12px 0 12px 12px',
+})
+const SubDescription = styled.div({
+  margin: '8px 12px',
+
+  '&:before': {
+    content: "'⚬'",
+    position: 'relative',
+    top: '-1px',
+    margin: '0 6px 0 0'
+  }
 })
 const ButtonWrapper = styled.div({
   textAlign: 'right'

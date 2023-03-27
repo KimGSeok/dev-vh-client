@@ -55,16 +55,13 @@ const ModalContent = () => {
           <ContentTitle color={color.Purple}>프로젝트 제작 전 읽어주세요!</ContentTitle>
           <DescriptionLists>
             <DescriptionList>
-              프로젝트에서 목소리&#40;음성 녹음&#41;와 모델 아바타&#40;영상 촬영&#41;를 통해서 아바타를 생성할 수 있어요.
+              보유한 목소리와 아바타를 활용해서 콘텐츠를 생성할 수 있어요.
             </DescriptionList>
             <DescriptionList>
-              음성 및 영상 변환 시 크기에 따라서 소요되는 시간에 차등이 있어요.
+              아바타, 목소리 선택 후, 스크립트를 다 입력하셨다면 '변환하기' 버튼을 통해서 콘텐츠를 생성해주세요.
             </DescriptionList>
             <DescriptionList>
-              모델 아바타 선택과 스크립트를 다 입력하셨다면 변환하기 버튼을 통해서 아바타를 생성해주세요.
-            </DescriptionList>
-            <DescriptionList color={color.Red} fontWeight={'600'}>
-              아바타를 제작하기 전, 프로젝트가 우선 생성이 된 후 진행이 되니 참고해주세요!
+              콘텐츠 길이에 따라 생성에 소요되는 시간이 달라요.
             </DescriptionList>
           </DescriptionLists>
         </ContentWrapper>
