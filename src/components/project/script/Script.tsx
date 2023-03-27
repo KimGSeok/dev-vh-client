@@ -48,7 +48,7 @@ const Script = ({ name, project, setProject, isTransform, setIsTransform }: Slid
         else // Lip-sync
           setAvatarType('video');
 
-        alert('아바타가 생성되었어요.\n아래 활성화된 다운로드 버튼을 통해 확인해보세요!');
+        alert(`${project.avatar.name === '' ? '음성이' : '영상이'} 생성되었어요.\n아래 활성화된 다운로드 버튼을 통해 확인해보세요!`);
         setTransferResult(response.data);
       }
       else{
