@@ -39,10 +39,10 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
     setScriptUUID(scriptInfo.uuid);
   }
 
-  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) =>{
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter' && e.shiftKey) {
       return;
-    } else if(e.key === 'Enter'){
+    } else if (e.key === 'Enter') {
       onClickAppendScriptHandler()
       e.preventDefault();
     }
@@ -161,8 +161,8 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
               alt="remove button"
             />
           </ImageWrap>
-          : 
-            <ImageWrap
+          :
+          <ImageWrap
             position={'relative'}
             height={'100%'}
             padding={'2px 0'}
@@ -188,7 +188,7 @@ const ItemWrapper = styled.div({
   display: 'flex',
   position: 'relative',
   margin: '0 0 8px 0',
-  alignItems: 'start'
+  alignItems: 'center'
 })
 const Script = styled.div(
   {

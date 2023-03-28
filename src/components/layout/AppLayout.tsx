@@ -15,6 +15,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
 
+    document.oncontextmenu = () => { return false; }
     setComponentMount(true);
     return () => setComponentMount(false);
   }, [])

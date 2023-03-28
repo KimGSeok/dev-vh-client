@@ -8,6 +8,8 @@ const AvatarWrapper = dynamic(() => import('@components/project/avatar/Avatar'),
 const ScriptWrapper = dynamic(() => import('@components/project/script/Script'), { ssr: false });
 import { ProjectProps } from '@modules/interface';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import useOnChangeRouterHandler from '@hooks/useOnChangeRouter';
 
 const ProjectGenerate = () => {
 
@@ -15,28 +17,29 @@ const ProjectGenerate = () => {
   const name: string = useSearchParams().get('name')!; // non-null assertion
 
   // Hooks
+  const router = useRouter();
   const nameRef = useRef<any>(null);
   const [isTransform, setIsTransform] = useState<boolean>(false);
   const [pageMount, setPageMount] = useState<boolean>(false);
   const [project, setProject] = useState<ProjectProps>({
-      projectName: name,
-      projectId: useSearchParams().get('projectId')!,
-      uuid: uuidV4(),
-      avatar: {
-        name :'',
-        model: '',
-        imageFileUrl: ''
-      },
-      voice: {
-        name: '',
-        model: '',
-        imageFileUrl: ''
-      },
-      scriptList : [
-        { uuid: uuidV4(), text: '', speed: 1.0, pauseSecond: 0.5 }
-      ],
-      thumbnail: null,
-    });
+    projectName: name,
+    projectId: useSearchParams().get('projectId')!,
+    uuid: uuidV4(),
+    avatar: {
+      name: '',
+      model: '',
+      imageFileUrl: ''
+    },
+    voice: {
+      name: '',
+      model: '',
+      imageFileUrl: ''
+    },
+    scriptList: [
+      { uuid: uuidV4(), text: '', speed: 1.0, pauseSecond: 0.5 }
+    ],
+    thumbnail: null,
+  });
 
   // useEffect(() => {
   //   console.log(1);
@@ -48,9 +51,12 @@ const ProjectGenerate = () => {
 
   useEffect(() => {
 
-    if(nameRef.current)
+    if (nameRef.current)
       nameRef.current.innerText = name;
   }, [])
+
+  // onLeave Page Event
+  useOnChangeRouterHandler();
 
   return (
     <ProjectContainer>
