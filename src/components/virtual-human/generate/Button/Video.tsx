@@ -5,30 +5,17 @@ import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from "@styles/
 import { Dispatch, SetStateAction } from "react";
 
 interface RecordProps {
-  type: string;
   recordStatus: string;
-  scriptList?: object[];
-  scriptSequence?: number;
-  setScriptSequence?: Dispatch<SetStateAction<number>>;
-  setRecordStatus?: Dispatch<SetStateAction<string>>;
-  setRecordScriptLists?: Dispatch<SetStateAction<object[]>>;
-  onRecordHandler?: () => void;
-  onListenAgainHandler?: () => void;
+  setRecordStatus: Dispatch<SetStateAction<string>>;
+  onRecordHandler: () => void;
   onCompleteHandler: () => void;
-  onReRecordHandler?: () => void;
-  onNextStepHandler?: () => void;
+  onReRecordHandler: () => void;
+  onNextStepHandler: () => void;
 }
 
-const RecordButtonWrapper = ({
-  type,
+const VideoButtonContainer = ({
   recordStatus,
-  scriptList,
-  scriptSequence,
-  setScriptSequence,
-  setRecordStatus,
-  setRecordScriptLists,
   onRecordHandler,
-  onListenAgainHandler,
   onCompleteHandler,
   onReRecordHandler,
   onNextStepHandler
@@ -50,18 +37,18 @@ const RecordButtonWrapper = ({
             cursor={'pointer'}
           >
             <ImageElement
-              src={type === 'voice' ? '/icons/mic.svg' : '/icons/videocam.svg'}
+              src={'/icons/videocam.svg'}
               width={28}
               height={28}
               style={{
-                width: type === 'voice' ? '100%' : '85%',
-                height: type === 'voice' ? '100%' : '85%',
+                width: '70%',
+                height: '70%',
                 position: 'relative',
                 top: '3px'
               }}
               alt="mic"
             />
-          </ImageWrap>{type === 'voice' ? '녹음시작' : '녹화시작'}
+          </ImageWrap>녹화시작
         </RecordBtn>
       }
       {
@@ -117,22 +104,13 @@ const RecordButtonWrapper = ({
                 }}
                 alt="mic"
               />
-            </ImageWrap>{type === 'voice' ? '다시 녹음하기' : '다시 녹화하기'}
+            </ImageWrap>다시 녹화하기
           </RecordBtn>
-          {
-            type === 'voice' &&
-            <RecordBtn
-              backgroundColor={color.BasicOrange}
-              borderColor={color.BasicOrange}
-              onClick={onListenAgainHandler}
-            >들어보기
-            </RecordBtn>
-          }
           <RecordBtn
             backgroundColor={color.BasicColor}
             borderColor={color.BasicColor}
             onClick={onNextStepHandler}
-          >{type === 'voice' ? '다음으로' : '아바타 생성하기'}
+          >아바타 생성하기
           </RecordBtn>
         </RecordBtnWrapper>
       }
@@ -163,4 +141,4 @@ const RecordBtnWrapper = styled.div({
   justifyContent: 'center'
 })
 
-export default RecordButtonWrapper;
+export default VideoButtonContainer;

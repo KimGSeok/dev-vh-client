@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useReactMediaRecorder } from "react-media-recorder";
 import { v4 as uuidV4 } from 'uuid';
-import { color, ImageWrap, ImageElement, RadiusButton } from "@styles/styles";
-import RecordButtonWrapper from "./RecordButton";
+import { color, RadiusButton } from "@styles/styles";
 import AudioWaveForm from "@modules/AudioWaveForm";
 import { get, post } from "@hooks/asyncHooks";
 import Portal from '@components/Portal';
 import Modal from '@components/Modal';
 import VoiceModalContent from '@components/virtual-human/generate/VoiceModalContent';
 import { useRouter } from "next/navigation";
+import VoiceButtonContainer from "./Button/Voice";
 
 const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanName: string }) => {
 
@@ -181,14 +181,9 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
             <ScriptPageWrapper>{scriptSequence + 1} / {scriptList && scriptList.length}</ScriptPageWrapper>
             <Desciprtion>다음 문장을 정확하게 읽어주세요.</Desciprtion>
             <Script>{scriptList && scriptList[scriptSequence].script}</Script>
-            <RecordButtonWrapper
-              type={type}
+            <VoiceButtonContainer
               recordStatus={recordStatus}
-              scriptList={scriptList[scriptSequence]}
               scriptSequence={scriptSequence}
-              setScriptSequence={setScriptSequence}
-              setRecordStatus={setRecordStatus}
-              setRecordScriptLists={setRecordScriptLists}
               onRecordHandler={onStartRecordingHandler}
               onListenAgainHandler={onListenAgainHandler}
               onCompleteHandler={onStopRecordingHandler}

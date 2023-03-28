@@ -6,10 +6,10 @@ import { v4 as uuidV4 } from 'uuid';
 import { CSS_TYPE, color, ImageWrap, ImageElement } from "@styles/styles";
 import { useEffect, useState } from "react";
 import { post } from "@hooks/asyncHooks";
-import RecordButtonContainer from "./RecordButton";
 import { onChangeVideoCssProps } from "@modules/avatar/onChangeVideoCssProps";
 import { useRouter } from "next/navigation";
 import StopWatch from "@components/stopWatch";
+import VideoButtonContainer from "./Button/Video";
 
 let startTime: number;
 let endTime: number;
@@ -275,8 +275,7 @@ const VideoGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
           }
         </VideoArea>
         <StopWatch timer={timer} setTimer={setTimer} duration={duration} setDuration={setDuration} />
-        <RecordButtonContainer
-          type={type}
+        <VideoButtonContainer
           recordStatus={recordStatus}
           setRecordStatus={setRecordStatus}
           onRecordHandler={onClickRecordHandler}
