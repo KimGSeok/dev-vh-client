@@ -72,6 +72,7 @@ const Project = () => {
                   data.map((item: any, index: any) => {
                     return (
                       <ProjectList
+                        id={item.uuid}
                         key={index}
                         fontSize={'0.95rem'}
                         cursor={'pointer'}

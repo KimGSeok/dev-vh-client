@@ -29,6 +29,7 @@ export const get = async (url: string, cache: RequestCache) => {
  * Author: Kim Gyeong Seok
  */
 export const post = async (url: string, data: any, headers: object) => {
+  console.log(data);
   headers = {
     ...headers,
     Authorization: `Bearer ${getCookie()}`

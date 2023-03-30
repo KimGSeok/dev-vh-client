@@ -53,6 +53,9 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
     const uuid = uuidV4();
     setScriptList((prev: any) => [...prev, { uuid: uuid, text: '', speed: 1.0, pauseSecond: 0.5 }]);
     setScriptUUID(uuid);
+    window.setTimeout(function () { 
+      document.getElementById(uuid)?.focus();
+    }, 10);
   }
 
   const onClickRemoveScriptHandler = (args: any) => {

@@ -13,6 +13,8 @@ import useOnChangeRouterHandler from '@hooks/useOnChangeRouter';
 
 const ProjectGenerate = () => {
 
+  // 상세정보가 있느냐 없느냐 차이
+
   // Parameter
   const name: string = useSearchParams().get('name')!; // non-null assertion
 
@@ -41,22 +43,14 @@ const ProjectGenerate = () => {
     thumbnail: null,
   });
 
-  // useEffect(() => {
-  //   console.log(1);
-  //   setPageMount(true);
-  //   console.log(pageMount);
-  //   console.log(nameRef.current);
-  //   return () => setPageMount(false);
-  // }, [])
+  // onLeave Page Event
+  useOnChangeRouterHandler();
 
   useEffect(() => {
 
     if (nameRef.current)
       nameRef.current.innerText = name;
   }, [])
-
-  // onLeave Page Event
-  useOnChangeRouterHandler();
 
   return (
     <ProjectContainer>
