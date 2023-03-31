@@ -3,7 +3,7 @@
 import styled from '@emotion/styled';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CSS_TYPE, color, RadiusButton, Warning, ImageElement } from '@styles/styles';
+import { CSS_TYPE, color, RadiusButton, Warning } from '@styles/styles';
 import { post } from 'src/hooks/asyncHooks';
 
 const ModalContent = () => {
@@ -20,7 +20,6 @@ const ModalContent = () => {
 
   const onClickNextStepBtnHandler = async () => {
 
-    // Parameter
     const name: string | null = nameRef.current && nameRef.current.value;
     if (checkNameHandler(name)) {
 

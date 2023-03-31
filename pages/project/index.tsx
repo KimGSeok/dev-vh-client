@@ -12,12 +12,18 @@ import { GetServerSideProps } from "next";
 import { getProjectList } from "@hooks/queries/project";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import PageLoading from "@components/loading/PageLoading";
+import { useRouter } from 'next/navigation';
 
 const Project = () => {
 
+  console.log("랄랄라");
+
   const { isLoading, data } = useQuery(['project'], getProjectList, { staleTime: 10 * 1000 });
 
+  console.log(data);
+
   // Hooks
+  const router = useRouter();
   const [showModal, setShowModal] = useState<boolean>(false);
 
   // Modal에 전달할 Avatar Generate Modal Content
@@ -77,6 +83,7 @@ const Project = () => {
                         fontSize={'0.95rem'}
                         cursor={'pointer'}
                         backgroundColor={color.AliceBlue}
+                        onClick={() => router.push(`/project/generate?projectId=${item.id}`)}
                       >
                         <ListInfo
                           width={'10%'}

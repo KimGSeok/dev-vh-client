@@ -3,16 +3,14 @@ import { QueryClient } from "react-query";
 
 const queryClient = new QueryClient();
 
-export const getProjectList = async () =>{
+export const getProjectList = async () => {
   const response = await get('project', 'no-cache');
+  console.log(response);
   return response;
 }
 
-/**
- * Description: fetch Project List
- * Date: 2023.03.10
- * Author: Kim Gyeong Seok
- */
-export const useProjectList = async () =>{
-
+export const getProjectDetailInfo = async (id: string) => {
+  const response = await get(`project/${id}`, 'no-cache');
+  console.log(response);
+  return response;
 }

@@ -40,11 +40,13 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
   }
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+
     if (e.key === 'Enter' && e.shiftKey) {
-      return;
+      return false;
     } else if (e.key === 'Enter') {
-      onClickAppendScriptHandler()
+
       e.preventDefault();
+      onClickAppendScriptHandler()
     }
   }
 
@@ -53,7 +55,7 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
     const uuid = uuidV4();
     setScriptList((prev: any) => [...prev, { uuid: uuid, text: '', speed: 1.0, pauseSecond: 0.5 }]);
     setScriptUUID(uuid);
-    window.setTimeout(function () { 
+    window.setTimeout(function () {
       document.getElementById(uuid)?.focus();
     }, 10);
   }
@@ -103,7 +105,7 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
         ref={scriptRef}
         placeholder={'스크립트 텍스트를 입력해주세요.'}
         onInput={(e) => onInputScriptHandler(e)}
-        onKeyDown={(e) => onKeyDown(e)}
+        onKeyDownCapture={(e) => onKeyDown(e)}
         contentEditable={true}
       />
       <RadiusBtn
