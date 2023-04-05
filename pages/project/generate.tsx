@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { dehydrate, QueryClient, useQuery } from 'react-query';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import styled from '@emotion/styled';
@@ -12,22 +11,18 @@ const AvatarWrapper = dynamic(() => import('@components/project/avatar/Avatar'),
 const ScriptWrapper = dynamic(() => import('@components/project/script/Script'), { ssr: false });
 import { ProjectProps } from '@modules/interface';
 import useOnChangeRouterHandler from '@hooks/useOnChangeRouter';
-import { getProjectDetailInfo } from '@hooks/queries/project';
+import { getPreFetchProjectDetailInfo } from '@hooks/queries/project';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 
-const ProjectGenerate = () => {
-
-  // Parameter
-  const projectId: string = useSearchParams().get('projectId')!;
-  const { isLoading, data } = useQuery(['project-detail', projectId], () => { return getProjectDetailInfo(projectId) }, { staleTime: 10 * 1000 });
+const ProjectGenerate = ({ projectId, data }: any) => {
 
   // Hooks
-  const router = useRouter();
   const nameRef = useRef<any>(null);
+  const [mount, setMount] = useState<boolean>(false);
   const [isTransform, setIsTransform] = useState<boolean>(false);
-  const [pageMount, setPageMount] = useState<boolean>(false);
   const [project, setProject] = useState<ProjectProps>({
-    projectName: data && data.name,
-    projectId: useSearchParams().get('projectId')!,
+    projectName: data && data.projectDetailInfo[0].name,
+    projectId: projectId,
     uuid: uuidV4(),
     avatar: {
       name: '',
@@ -50,14 +45,51 @@ const ProjectGenerate = () => {
 
   useEffect(() => {
 
-    if (nameRef.current)
-      nameRef.current.innerText = data.name;
+    if (nameRef.current){
+
+      const projectDetailInfo = data.projectDetailInfo[0];
+      const projectScriptInfo = data.projectScriptInfo;
+
+      nameRef.current.innerText = projectDetailInfo.name;
+
+      let prevState = { ...project };
+      prevState.projectName = projectDetailInfo.name;
+      prevState.voice = {
+        name: projectDetailInfo.voice_name ? projectDetailInfo.voice_name : '',
+        model: projectDetailInfo.voice_id ? projectDetailInfo.voice_id : '',
+        imageFileUrl: ''
+      }
+      prevState.avatar = {
+        name: projectDetailInfo.avatar_name ? projectDetailInfo.avatar_name : '',
+        model: projectDetailInfo.avatar_id ? projectDetailInfo.avatar_id : '',
+        imageFileUrl: '',
+      };
+
+      let scriptList: object[] = [];
+
+      projectScriptInfo && projectScriptInfo.length > 0 &&
+      projectScriptInfo.forEach((el: any) => {
+        scriptList.push({
+          uuid: uuidV4(),
+          text: el.script,
+          speed: el.speed,
+          pauseSecond: el.wait_time
+        })
+      });
+
+      if(scriptList.length > 0)
+        prevState.scriptList = scriptList;
+
+      setProject(prevState);
+      setMount(true);
+    }
+
+    return () => setMount(false);
   }, [data])
 
   return (
-    isLoading ?
-      <PageLoading />
-      : <ProjectContainer>
+      // <PageLoading />
+      <ProjectContainer>
         <HeaderContainer>
           <LeftContainer>
             <Link href={'/project'} passHref>
@@ -101,13 +133,16 @@ const ProjectGenerate = () => {
             project={project}
             setProject={setProject}
           />
-          <ScriptWrapper
-            name={data.name}
-            project={project}
-            setProject={setProject}
-            isTransform={isTransform}
-            setIsTransform={setIsTransform}
-          />
+          {
+            mount &&
+            <ScriptWrapper
+              name={data.name}
+              project={project}
+              setProject={setProject}
+              isTransform={isTransform}
+              setIsTransform={setIsTransform}
+            />
+          }
         </MainComponent>
       </ProjectContainer>
   )
@@ -147,5 +182,24 @@ const MainComponent = styled.div({
   height: 'calc(95vh - 48px)',
   position: 'relative'
 })
+
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) =>{
+
+  let cookie: any = context.req.headers.cookie; // Session Cookie
+  const projectId: any = context.query.projectId;
+  cookie = cookie ? cookie.split("=")[1] : '';
+
+  // const queryClient = new QueryClient();
+  // await queryClient.prefetchQuery(['project-detail', projectId], () => getPreFetchProjectDetailInfo(projectId, cookie))
+
+  const result = await getPreFetchProjectDetailInfo(projectId, cookie);
+
+  return {
+    props: {
+      projectId: projectId,
+      data: result
+    }
+  }
+}
 
 export default ProjectGenerate;

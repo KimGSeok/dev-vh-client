@@ -27,7 +27,7 @@ const Avatar = ({ project, setProject }: ProjectAvatarProps) => {
       let voiceArr = Array();
       let avatarArr = Array();
       const userId = getUserInfo('id');
-      const response = await get(`virtual-human/${userId}`,'no-cache');
+      const response = await get(`virtual-human/${userId}`,'no-cache', '');
 
       response.forEach((item: any) => {
         if(item.type === 'voice')

@@ -41,4 +41,3 @@ export const getUserInfo = (key: string) => {
   else
     return userInfo[key];
 }
-

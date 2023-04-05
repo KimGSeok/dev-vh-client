@@ -28,7 +28,7 @@ const SideNavigation = () => {
           </GNBList>
         </Link>
         {/* 마스터 계정 한정 */}
-        <Link href="/" passHref>
+        {/* <Link href="/" passHref>
           <GNBList color={firstPathName === 'Organizations' ? color.White : ''}>
             Organizations
           </GNBList>
@@ -42,7 +42,7 @@ const SideNavigation = () => {
           <GNBList color={firstPathName === 'mypage' ? color.White : ''}>
             Mypage
           </GNBList>
-        </Link>
+        </Link> */}
       </GNBLists>
     </SideNav>
   )

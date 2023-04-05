@@ -145,7 +145,7 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
 
     const getData = async () => {
 
-      const script = await get('virtual-human/getScripts', 'no-cache');
+      const script = await get('virtual-human/getScripts', 'no-cache', '');
       setScriptList(script);
       setMounted(true);
     }

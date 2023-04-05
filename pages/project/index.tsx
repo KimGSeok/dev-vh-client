@@ -16,11 +16,7 @@ import { useRouter } from 'next/navigation';
 
 const Project = () => {
 
-  console.log("랄랄라");
-
   const { isLoading, data } = useQuery(['project'], getProjectList, { staleTime: 10 * 1000 });
-
-  console.log(data);
 
   // Hooks
   const router = useRouter();
@@ -54,10 +50,13 @@ const Project = () => {
                   width={'10%'}
                 >이미지</ListInfo>
                 <ListInfo
-                  width={'25%'}
+                  width={'15%'}
                 >프로젝트명</ListInfo>
                 <ListInfo
-                  width={'15%'}
+                  width={'12%'}
+                >상태</ListInfo>
+                <ListInfo
+                  width={'12%'}
                 >프로젝트 길이</ListInfo>
                 <ListInfo
                   width={'15%'}
@@ -66,8 +65,8 @@ const Project = () => {
                   width={'15%'}
                 >최근 수정날짜</ListInfo>
                 <ListInfo
-                  width={'15%'}
-                >상태</ListInfo>
+                  width={'21%'}
+                ></ListInfo>
               </ProjectList>
             </ProjectLists>
           </HeaderWrapper>
@@ -93,14 +92,20 @@ const Project = () => {
                         >이미지
                         </ListInfo>
                         <ListInfo
-                          width={'25%'}
+                          width={'15%'}
                           color={''}
                           fontSize={''}
                           fontWeight={''}
                         >{item.name}
                         </ListInfo>
                         <ListInfo
-                          width={'15%'}
+                          width={'12%'}
+                          color={''}
+                          fontSize={''}
+                          fontWeight={''}
+                        >-</ListInfo>
+                        <ListInfo
+                          width={'12%'}
                           color={''}
                           fontSize={''}
                           fontWeight={''}
@@ -121,7 +126,7 @@ const Project = () => {
                         >{item.updated_at}
                         </ListInfo>
                         <ListInfo
-                          width={'15%'}
+                          width={'21%'}
                           color={''}
                           fontSize={''}
                           fontWeight={''}
@@ -206,17 +211,17 @@ const EmptyList = styled.div({
   padding: '24px 0'
 })
 
-export const getServerSideProps: GetServerSideProps = async () => {
+// export const getServerSideProps: GetServerSideProps = async () => {
 
-  // TODO Server Side에서 Cookie값을 못 읽는 듯
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(['project'], getProjectList);
+//   // TODO Server Side에서 Cookie값을 못 읽는 듯
+//   const queryClient = new QueryClient();
+//   await queryClient.prefetchQuery(['project'], getProjectList);
 
-  return {
-    props: {
-      dehydrateProps: dehydrate(queryClient),
-    }
-  }
-}
+//   return {
+//     props: {
+//       dehydrateProps: dehydrate(queryClient),
+//     }
+//   }
+// }
 
 export default Project;

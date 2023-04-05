@@ -7,16 +7,15 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
  * Get
  * Author: Kim Gyeong Seok
  */
-export const get = async (url: string, cache: RequestCache) => {
+export const get = async (url: string, cache: RequestCache, cookie: string) => {
   try {
     const response = await fetch(
       `${API_URL}/${url}`,{
         headers: {
-          Authorization: `Bearer ${getCookie()}`
+          Authorization: `Bearer ${cookie !== '' ? cookie : getCookie()}`
         },
         cache: cache
       })
-
     return response.json();
   } catch (error) {
     console.error(error);
@@ -29,7 +28,6 @@ export const get = async (url: string, cache: RequestCache) => {
  * Author: Kim Gyeong Seok
  */
 export const post = async (url: string, data: any, headers: object) => {
-  console.log(data);
   headers = {
     ...headers,
     Authorization: `Bearer ${getCookie()}`

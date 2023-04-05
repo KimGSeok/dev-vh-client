@@ -16,7 +16,7 @@ const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: Ma
   useEffect(() => {
 
     const getVirtualHumanDetailInfo = async () =>{
-      const response = await get(`virtual-human/resource/${virtualHumanInfo.id}&uuid=${virtualHumanInfo.uuid}`, 'no-cache');
+      const response = await get(`virtual-human/resource/${virtualHumanInfo.id}&uuid=${virtualHumanInfo.uuid}`, 'no-cache', '');
       console.log(response);
       setData(response);
     }

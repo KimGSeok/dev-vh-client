@@ -20,7 +20,6 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
 
   // Hooks
   const scriptRef = useRef<any>(null);
-  const [mount, setMount] = useState<boolean>(false);
 
   const onClickScriptSpeedHandler = () => {
 
@@ -77,12 +76,13 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
   }
 
   useEffect(() => {
-    setMount(true);
-    return () => setMount(false);
-  }, [])
+    if(scriptRef.current && scriptInfo.text){
+      scriptRef.current.innerText = scriptInfo.text;
+    }
+  }, [scriptList])
 
   return (
-    mount ? <ItemWrapper>
+    <ItemWrapper>
       <ImageWrap
         position={'relative'}
         height={'100%'}
@@ -125,7 +125,7 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
         margin={'0 12px 0 0'}
         fontSize={'0.85rem'}
         onClick={onClickPauseSecondHandler}
-      >0.5 초</RadiusBtn>
+      >{scriptInfo.pauseSecond} 초</RadiusBtn>
       <ImageWrap
         position={'relative'}
         height={'100%'}
@@ -186,7 +186,7 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
             />
           </ImageWrap>
       }
-    </ItemWrapper> : <></>
+    </ItemWrapper>
   )
 }
 const ItemWrapper = styled.div({

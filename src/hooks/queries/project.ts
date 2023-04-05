@@ -4,13 +4,11 @@ import { QueryClient } from "react-query";
 const queryClient = new QueryClient();
 
 export const getProjectList = async () => {
-  const response = await get('project', 'no-cache');
-  console.log(response);
+  const response = await get('project', 'no-cache', '');
   return response;
 }
 
-export const getProjectDetailInfo = async (id: string) => {
-  const response = await get(`project/${id}`, 'no-cache');
-  console.log(response);
+export const getPreFetchProjectDetailInfo = async (id: string, cookie: string) => {
+  const response = await get(`project/${id}`, 'no-cache', cookie);
   return response;
 }

@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useMutation } from 'react-query';
-import { color, RadiusButton } from '@styles/styles';
+import { color } from '@styles/styles';
 import ScriptItem from './Item';
 import ControlPanel from './ControlPanel';
 import BottomSheet from '@components/BottomSheet';
@@ -83,15 +83,17 @@ const Script = ({ name, project, setProject, isTransform, setIsTransform }: Slid
   }, [scriptUUID])
 
   useEffect(() => {
-    let prevState = { ...project };
-    prevState.scriptList = scriptList;
-    setProject(prevState);
-  }, [scriptList])
-
-  useEffect(() => {
     if(isTransform)
       slideMutation.mutate()
   }, [isTransform])
+
+  useEffect(() => {
+
+    let prevState = { ...project };
+    prevState.scriptList = scriptList;
+    setProject(prevState);
+
+  }, [scriptList])
 
   return (
     <ScriptWrapper>
@@ -102,7 +104,7 @@ const Script = ({ name, project, setProject, isTransform, setIsTransform }: Slid
         </TitleWrapper>
         <ScriptItemWrapper>
           {
-            scriptList && scriptList.map((item: any, index: number) => {
+            (scriptList && scriptList.length > 0)&& scriptList.map((item: any, index: number) => {
               return (
                 <ScriptItem
                   key={item.uuid}
