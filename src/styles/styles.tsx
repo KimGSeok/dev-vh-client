@@ -43,6 +43,7 @@ export type CSS_TYPE = {
   opacity?: string | number;
   hovercolor?: string;
   hoveropacity?: string | number;
+  hoverbackground?: string;
   cursor?: string;
   zIndex?: string | number;
   animation?: string;
@@ -165,6 +166,7 @@ export const ImageElement = styled(Image)<CSS_TYPE>(
     cursor: props.cursor,
 
     ':hover': {
+      backgroundColor: props.hoverbackground,
       color: props.hovercolor,
       opacity: props.hoveropacity
     }
@@ -224,15 +226,18 @@ export const RadiusButton = styled.div<CSS_TYPE>(
     padding: props.padding ? props.padding : '12px 28px',
     display: props.display ? props.display : 'inline-block',
     alignItems: props.alignItems,
+    textAlign: props.textAlign,
     justifyContent: props.justifyContent,
     fontSize: props.fontSize ? props.fontSize : '1rem',
     fontWeight: props.fontWeight ? props.fontWeight : '500',
     margin: props.margin,
+    opacity: props.opacity,
     position: props.position,
     top: props.top,
     bottom: props.bottom,
     left: props.left,
     right: props.right,
+    cursor: props.cursor,
     zIndex: props.zIndex ? props.zIndex : 1
   })
 )

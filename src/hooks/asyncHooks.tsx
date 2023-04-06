@@ -10,12 +10,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const get = async (url: string, cache: RequestCache, cookie: string) => {
   try {
     const response = await fetch(
-      `${API_URL}/${url}`,{
-        headers: {
-          Authorization: `Bearer ${cookie !== '' ? cookie : getCookie()}`
-        },
-        cache: cache
-      })
+      `${API_URL}/${url}`, {
+      headers: {
+        Authorization: `Bearer ${cookie !== '' ? cookie : getCookie()}`
+      },
+      cache: cache
+    })
     return response.json();
   } catch (error) {
     console.error(error);
@@ -37,7 +37,7 @@ export const post = async (url: string, data: any, headers: object) => {
       `${API_URL}/${url}`,
       data,
       {
-        headers: {... headers}
+        headers: { ...headers }
       }
     ).then((response: any) => {
 
@@ -49,6 +49,36 @@ export const post = async (url: string, data: any, headers: object) => {
       console.error(error);
       return error;
     })
+    return result;
+  } catch (error) {
+    return error;
+  }
+}
+
+/**
+ * Delete
+ * Author: Kim Gyeong Seok
+ */
+export const handleDelete = async (url: string, args: string, headers?: object) => {
+  headers = {
+    ...headers,
+    Authorization: `Bearer ${getCookie()}`
+  }
+  try {
+    const result = axios.delete(
+      `${API_URL}/${url}`,
+      {
+        data: {
+          id: args
+        },
+        headers: headers
+      }
+    ).then((response) => {
+      return response;
+    }).catch((error) => {
+      return error;
+    })
+
     return result;
   } catch (error) {
     return error;

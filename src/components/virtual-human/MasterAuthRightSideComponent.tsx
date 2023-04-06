@@ -11,11 +11,12 @@ interface MasterAuthSideComponentProps {
 
 const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: MasterAuthSideComponentProps) => {
 
+  console.log(virtualHumanInfo);
   const [data, setData] = useState<object[]>();
 
   useEffect(() => {
 
-    const getVirtualHumanDetailInfo = async () =>{
+    const getVirtualHumanDetailInfo = async () => {
       const response = await get(`virtual-human/resource/${virtualHumanInfo.id}&uuid=${virtualHumanInfo.uuid}`, 'no-cache', '');
       console.log(response);
       setData(response);
@@ -27,7 +28,7 @@ const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: Ma
   return (
     <Container>
       <HeaderContaier>
-        <Title>DRX Beryl의 촬영 및 녹음 목록</Title>
+        <Title>{virtualHumanInfo.name}의 {virtualHumanInfo.type === 'voice' ? '녹음' : '녹화'}목록</Title>
         <ImageWrap
           position={'relative'}
           cursor={'pointer'}
@@ -82,23 +83,23 @@ const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: Ma
       </SummaryContainer>
       <ContentListContainer>
         <ContentListHeader>
-          <ContentListType>목소리 프로젝트(아바타 프로젝트)</ContentListType>
+          <ContentListType>{virtualHumanInfo.type === 'voice' ? '목소리' : '아바타'} 프로젝트</ContentListType>
           <div>{data ? data.length : 0}개</div>
         </ContentListHeader>
         <ContentLists>
           {
             data && data.length > 0 ?
-            data.map((item: any, index: number) => {
-              return(
-                <ContentList key={item.uuid}>
-                  <div>텍스트 스크립트</div>
-                  <ContentBtnContainer>
-                    <div>재생버튼</div>
-                    <div>다운로드 버튼</div>
-                  </ContentBtnContainer>
-                </ContentList>
-              )
-            }) : <ContentList>스크립트 목록이 없어요.</ContentList>
+              data.map((item: any, index: number) => {
+                return (
+                  <ContentList key={item.uuid}>
+                    <ContentScript>{item.script}</ContentScript>
+                    <ContentBtnContainer>
+                      <div>버튼</div>
+                      <div>버튼</div>
+                    </ContentBtnContainer>
+                  </ContentList>
+                )
+              }) : <ContentList>스크립트 목록이 없어요.</ContentList>
           }
         </ContentLists>
       </ContentListContainer>
@@ -146,7 +147,8 @@ const SummaryBtnContainer = styled.div({
 const ContentListContainer = styled.div({
   position: 'relative',
   height: '84%',
-  padding: '4px 16px 8px 16px'
+  padding: '4px 16px 8px 16px',
+  overflowY: 'scroll'
 })
 const ContentListHeader = styled.div({
   display: 'flex',
@@ -171,7 +173,8 @@ const ContentList = styled.li<CSS_TYPE>(
     borderRadius: '8px',
     padding: '12px 16px',
     fontSize: '1rem',
-    
+    margin: '0 0 12px 0',
+
     ':hover': {
       border: `1px solid #4B73FF`,
       boxShadow: '1px 1px 12px rgba(163, 163, 163, 0.2)'
@@ -181,7 +184,15 @@ const ContentList = styled.li<CSS_TYPE>(
 
   })
 )
+const ContentScript = styled.div({
+  width: '90%',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  padding: '0 12px 0 0'
+})
 const ContentBtnContainer = styled.div({
+  width: '10%',
   display: 'flex',
   alignItems: 'center'
 })

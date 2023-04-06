@@ -22,15 +22,15 @@ const Avatar = ({ project, setProject }: ProjectAvatarProps) => {
   const voice: VoiceProps = project.voice;
 
   useEffect(() => {
-    const getAvatarList = async () =>{
+    const getAvatarList = async () => {
 
       let voiceArr = Array();
       let avatarArr = Array();
       const userId = getUserInfo('id');
-      const response = await get(`virtual-human/${userId}`,'no-cache', '');
+      const response = await get(`virtual-human/${userId}`, 'no-cache', '');
 
       response.forEach((item: any) => {
-        if(item.type === 'voice')
+        if (item.type === 'voice')
           voiceArr.push(item);
         else
           avatarArr.push(item);
@@ -48,17 +48,17 @@ const Avatar = ({ project, setProject }: ProjectAvatarProps) => {
       <ImageWrapper>
         <ImageWrap
           position={'absolute'}
-          width={avatar.name === '' ||  avatar.imageFileUrl === '' ? '100%' : '70%'}
-          height={avatar.name === '' ||  avatar.imageFileUrl === '' ? '90%' : '100%'}
-          margin={avatar.name === '' ||  avatar.imageFileUrl === '' ? '0' : '0 15%'}
-          bottom={avatar.name === '' ||  avatar.imageFileUrl === '' ? '0' : '1px'}
+          width={avatar.name === '' || avatar.imageFileUrl === '' ? '100%' : '70%'}
+          height={avatar.name === '' || avatar.imageFileUrl === '' ? '90%' : '100%'}
+          margin={avatar.name === '' || avatar.imageFileUrl === '' ? '0' : '0 15%'}
+          bottom={avatar.name === '' || avatar.imageFileUrl === '' ? '0' : '1px'}
         >
           <ImageElement
-            src={avatar.name === '' ||  avatar.imageFileUrl === '' ? '/images/avatar/human_figure.svg' : avatar.imageFileUrl}
+            src={avatar.name === '' || avatar.imageFileUrl === '' ? '/images/avatar/human_figure.svg' : avatar.imageFileUrl}
             fill
             style={{
               inset: 'auto',
-              objectFit: `${avatar.name === '' ||  avatar.imageFileUrl === '' ? 'contain' : 'cover'}`, // contain
+              objectFit: `${avatar.name === '' || avatar.imageFileUrl === '' ? 'contain' : 'cover'}`, // contain
               borderTopRightRadius: '16px',
               borderTopLeftRadius: '16px',
             }}
@@ -190,7 +190,7 @@ const OptionWrapper = styled.div({
   height: '100%'
 })
 const OptionLists = styled.ul({
-  width: '12%'
+  width: '13%'
 })
 const OptionList = styled.li<CSS_TYPE>(
   {
@@ -241,7 +241,7 @@ const OptionName = styled.div<CSS_TYPE>(
   })
 )
 const OptionItemWrapper = styled.div({
-  width: '88%',
+  width: '87%',
   height: '100%',
   overflowY: 'scroll',
   backgroundColor: color.AliceBlue,

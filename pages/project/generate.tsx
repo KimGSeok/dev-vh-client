@@ -44,8 +44,8 @@ const ProjectGenerate = ({ projectId, data }: any) => {
   useOnChangeRouterHandler();
 
   useEffect(() => {
-
-    if (nameRef.current){
+    setMount(true);
+    if (nameRef.current) {
 
       const projectDetailInfo = data.projectDetailInfo[0];
       const projectScriptInfo = data.projectScriptInfo;
@@ -68,27 +68,26 @@ const ProjectGenerate = ({ projectId, data }: any) => {
       let scriptList: object[] = [];
 
       projectScriptInfo && projectScriptInfo.length > 0 &&
-      projectScriptInfo.forEach((el: any) => {
-        scriptList.push({
-          uuid: uuidV4(),
-          text: el.script,
-          speed: el.speed,
-          pauseSecond: el.wait_time
-        })
-      });
+        projectScriptInfo.forEach((el: any) => {
+          scriptList.push({
+            uuid: uuidV4(),
+            text: el.script,
+            speed: el.speed,
+            pauseSecond: el.wait_time
+          })
+        });
 
-      if(scriptList.length > 0)
+      if (scriptList.length > 0)
         prevState.scriptList = scriptList;
 
       setProject(prevState);
-      setMount(true);
     }
 
     return () => setMount(false);
   }, [data])
 
   return (
-      // <PageLoading />
+    !mount ? <PageLoading /> :
       <ProjectContainer>
         <HeaderContainer>
           <LeftContainer>
@@ -183,7 +182,7 @@ const MainComponent = styled.div({
   position: 'relative'
 })
 
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) =>{
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
 
   let cookie: any = context.req.headers.cookie; // Session Cookie
   const projectId: any = context.query.projectId;

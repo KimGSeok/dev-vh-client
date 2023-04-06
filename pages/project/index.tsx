@@ -1,29 +1,60 @@
-import { } from 'next-seo';
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 import Filter from "@components/Filter";
 import PageTitle from "@components/layout/PageTitle";
 import Search from "@components/Search";
-import { CSS_TYPE, color } from "@styles/styles";
+import { CSS_TYPE, color, ImageWrap, ImageElement } from "@styles/styles";
 import styled from "@emotion/styled";
 import Portal from '@components/Portal';
 import Modal from '@components/Modal';
 import ModalContent from '@components/project/ModalContent';
-import { GetServerSideProps } from "next";
 import { getProjectList } from "@hooks/queries/project";
-import { dehydrate, QueryClient, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import PageLoading from "@components/loading/PageLoading";
 import { useRouter } from 'next/navigation';
+import DownloadModalContent from "@components/project/DownloadModalContent";
+import { KeyValueProps } from "@modules/interface";
+import { handleDelete } from "@hooks/asyncHooks";
 
 const Project = () => {
 
-  const { isLoading, data } = useQuery(['project'], getProjectList, { staleTime: 10 * 1000 });
+  const { isLoading, data, refetch } = useQuery(['project'], getProjectList, { staleTime: 10 * 1000 });
 
   // Hooks
   const router = useRouter();
+  const [modalCategory, setModalCatergory] = useState<string>('');
+  const [contents, setContents] = useState<KeyValueProps>({});
+  const [contentsType, setContentsType] = useState<string>('');
+  const [modalTitle, setModalTitle] = useState<string>('');
   const [showModal, setShowModal] = useState<boolean>(false);
 
   // Modal에 전달할 Avatar Generate Modal Content
   const projectChildren = <ModalContent />;
+  const contentsChildren = <DownloadModalContent contents={contents} contentsType={contentsType} />;
+
+  const handleClickDeleteProject = async (e: MouseEvent<HTMLImageElement>, item: KeyValueProps) => {
+    e.stopPropagation();
+
+    const result = await handleDelete('project', item.id);
+    if (result.data.affectedRows > 0) {
+      alert('프로젝트가 삭제되었습니다.');
+      refetch();
+    } else {
+      alert('프로젝트에 실패했습니다.\n관리자에게 문의해주세요.');
+    }
+  }
+
+  const handleClickContentsActionHandler = (e: MouseEvent<HTMLImageElement>, isContents: boolean, title: string, type: string, item: KeyValueProps) => {
+
+    if (!isContents)
+      return false;
+
+    e.stopPropagation();
+    setModalTitle(title);
+    setModalCatergory('contents');
+    setShowModal(true);
+    setContents(item);
+    setContentsType(type);
+  }
 
   return (
     <>
@@ -34,7 +65,11 @@ const Project = () => {
           registerBtn={true}
           btn={'생성하기'}
           event={'onClick'}
-          func={() => { setShowModal(true) }}
+          func={() => {
+            setModalTitle('프로젝트 생성하기');
+            setShowModal(true);
+            setModalCatergory('contents');
+          }}
         />
         <Filter />
         <Search />
@@ -48,7 +83,7 @@ const Project = () => {
               >
                 <ListInfo
                   width={'10%'}
-                >이미지</ListInfo>
+                ></ListInfo>
                 <ListInfo
                   width={'15%'}
                 >프로젝트명</ListInfo>
@@ -75,6 +110,10 @@ const Project = () => {
               {
                 data && data.length > 0 ?
                   data.map((item: any, index: any) => {
+
+                    const isAudio = item.audio_download_url ? true : false;
+                    const isVideo = item.video_download_url ? true : false;
+
                     return (
                       <ProjectList
                         id={item.uuid}
@@ -89,7 +128,27 @@ const Project = () => {
                           color={''}
                           fontSize={''}
                           fontWeight={''}
-                        >이미지
+                        >
+                          <ImageWrap
+                            position={'relative'}
+                            width={'35%'}
+                            height={'35%'}
+                            textAlign={'center'}
+                            margin={'0 auto'}
+                            top={'2px'}
+                          >
+                            <ImageElement
+                              src="/images/avatar/default_human.svg"
+                              width={24}
+                              height={24}
+                              style={{
+                                width: '70%',
+                                height: '70%',
+                                margin: '4px auto',
+                              }}
+                              alt="default human"
+                            />
+                          </ImageWrap>
                         </ListInfo>
                         <ListInfo
                           width={'15%'}
@@ -103,14 +162,13 @@ const Project = () => {
                           color={''}
                           fontSize={''}
                           fontWeight={''}
-                        >-</ListInfo>
+                        >{item.status === 'active' ? '활성화' : '-'}</ListInfo>
                         <ListInfo
                           width={'12%'}
                           color={''}
                           fontSize={''}
                           fontWeight={''}
-                        >-
-                        </ListInfo>
+                        >-</ListInfo>
                         <ListInfo
                           width={'15%'}
                           color={''}
@@ -130,7 +188,70 @@ const Project = () => {
                           color={''}
                           fontSize={''}
                           fontWeight={''}
-                        >{item.status === 'active' ? '활성화' : '-'}
+                        >
+                          <ImageElement
+                            src="/icons/copy.svg"
+                            width={28}
+                            height={28}
+                            hoverbackground={color.SkyBlue}
+                            style={{
+                              position: 'relative',
+                              margin: 'auto 4px',
+                              padding: '4px',
+                              borderRadius: '8px',
+                              top: '2px'
+                            }}
+                            alt="copy"
+                          />
+                          <ImageElement
+                            src="/icons/delete.svg"
+                            width={28}
+                            height={28}
+                            hoverbackground={color.SkyBlue}
+                            style={{
+                              position: 'relative',
+                              margin: 'auto 4px',
+                              padding: '4px',
+                              borderRadius: '8px',
+                              top: '2px'
+                            }}
+                            onClick={(e) => handleClickDeleteProject(e, item)}
+                            alt="delete"
+                          />
+                          <ImageElement
+                            src="/icons/download.svg"
+                            width={28}
+                            height={28}
+                            hoverbackground={(isAudio || isVideo) ? color.SkyBlue : ''}
+                            style={{
+                              position: 'relative',
+                              margin: 'auto 4px',
+                              padding: '4px',
+                              borderRadius: '8px',
+                              top: '2px',
+                              opacity: (isAudio || isVideo) ? 1 : 0.3,
+                              cursor: (isAudio || isVideo) ? 'pointer' : 'default'
+                            }}
+                            onClick={(e) => { handleClickContentsActionHandler(e, isAudio || isVideo, '컨텐츠 다운로드하기', 'download', item) }}
+                            alt="download"
+                          />
+                          <ImageElement
+                            src="/icons/play.svg"
+                            width={28}
+                            height={28}
+                            hoverbackground={(isAudio || isVideo) ? color.SkyBlue : ''}
+                            style={{
+                              position: 'relative',
+                              margin: 'auto 4px',
+                              padding: '4px',
+                              borderRadius: '8px',
+                              top: '2px',
+                              opacity: (isAudio || isVideo) ? 1 : 0.3,
+                              cursor: (isAudio || isVideo) ? 'pointer' : 'default'
+                            }}
+                            alt="play"
+                            onClick={(e) => { handleClickContentsActionHandler(e, isAudio || isVideo, '컨텐츠 재생하기', 'play', item) }}
+                          />
                         </ListInfo>
                       </ProjectList>
                     )
@@ -143,10 +264,10 @@ const Project = () => {
           showModal &&
           <Portal>
             <Modal
-              title={'프로젝트 생성하기'}
+              title={modalTitle}
               modal={showModal}
               setModal={setShowModal}
-              children={projectChildren}
+              children={modalCategory === 'contents' ? contentsChildren : projectChildren}
             />
           </Portal>
         }
@@ -181,7 +302,7 @@ const ProjectList = styled.li<CSS_TYPE>(
   {
     display: 'flex',
     alignItems: 'center',
-    padding: '12px 0',
+    padding: '8px 0',
 
   },
   props => ({

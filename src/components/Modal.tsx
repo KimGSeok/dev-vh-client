@@ -49,7 +49,7 @@ const ModalWrapper = styled.div<CSS_TYPE>(
   {
     position: 'absolute',
     minWidth: '640px',
-    minHeight: '280px',
+    minHeight: '220px',
     top: '45%',
     left: '50%',
     transform: 'translate(-50%,-50%)',
