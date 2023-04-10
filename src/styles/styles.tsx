@@ -339,11 +339,11 @@ export const fadeRight = css`
 
 const fadeOutRightKeyframes = keyframes`
   from {
-    transform: translateX(0)
+    transform: translateX(100%)
   }
 
   to {
-    transform: translateX(100%)
+    transform: translateX(200%)
   }
 `
 

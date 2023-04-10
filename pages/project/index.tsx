@@ -68,7 +68,7 @@ const Project = () => {
           func={() => {
             setModalTitle('프로젝트 생성하기');
             setShowModal(true);
-            setModalCatergory('contents');
+            setModalCatergory('generate');
           }}
         />
         <Filter />

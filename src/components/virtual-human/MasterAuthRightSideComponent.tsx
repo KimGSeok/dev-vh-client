@@ -1,8 +1,9 @@
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { get } from '@hooks/asyncHooks';
 import { KeyValueProps } from '@modules/interface';
 import { CSS_TYPE, color, ImageWrap, ImageElement, VerticalBar, RadiusButton } from '@styles/styles';
-import { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface MasterAuthSideComponentProps {
   virtualHumanInfo: KeyValueProps;
@@ -12,6 +13,7 @@ interface MasterAuthSideComponentProps {
 const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: MasterAuthSideComponentProps) => {
 
   console.log(virtualHumanInfo);
+  const router = useRouter();
   const [data, setData] = useState<object[]>();
 
   useEffect(() => {
@@ -58,14 +60,16 @@ const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: Ma
               backgroundColor={color.BasicBlue}
               display={'flex'}
               alignItems={'center'}
-              padding={'8px 20px'}
+              padding={'6px 20px'}
               color={color.White}
+              opacity={'0.5'}
+              cursor={'default'}
             >
               <ImageWrap>
                 <ImageElement
                   src="/icons/cloud_download.svg"
-                  width={28}
-                  height={28}
+                  width={24}
+                  height={24}
                   style={{
                     width: '100%',
                     height: '100%',
@@ -89,13 +93,41 @@ const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: Ma
         <ContentLists>
           {
             data && data.length > 0 ?
-              data.map((item: any, index: number) => {
+              data.map((item: any, ) => {
                 return (
                   <ContentList key={item.uuid}>
-                    <ContentScript>{item.script}</ContentScript>
+                    <ContentScript>{item.record_type === 'video' ? item.file_name : item.script}</ContentScript>
                     <ContentBtnContainer>
-                      <div>버튼</div>
-                      <div>버튼</div>
+                      {/* <ImageElement
+                        src="/icons/play.svg"
+                        width={24}
+                        height={24}
+                        hoverbackground={color.BrightGrey}
+                        style={{
+                          position: 'relative',
+                          margin: 'auto 2px',
+                          padding: '2px',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                        }}
+                        onClick={(e) => {}}
+                        alt="play"
+                      /> */}
+                      <ImageElement
+                        src="/icons/download.svg"
+                        width={24}
+                        height={24}
+                        hoverbackground={color.BrightGrey}
+                        style={{
+                          position: 'relative',
+                          margin: 'auto 2px',
+                          padding: '2px',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                        }}
+                        onClick={(e) => router.push(item.download_url)}
+                        alt="download"
+                      />
                     </ContentBtnContainer>
                   </ContentList>
                 )
@@ -148,7 +180,12 @@ const ContentListContainer = styled.div({
   position: 'relative',
   height: '84%',
   padding: '4px 16px 8px 16px',
-  overflowY: 'scroll'
+  overflowY: 'scroll',
+
+  '::-webkit-scrollbar': {
+    scrollBehavior: 'smooth',
+    display: 'none'
+  }
 })
 const ContentListHeader = styled.div({
   display: 'flex',
@@ -194,7 +231,8 @@ const ContentScript = styled.div({
 const ContentBtnContainer = styled.div({
   width: '10%',
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
+  justifyContent: 'space-around'
 })
 
 export default MasterAuthRightSideComponent;

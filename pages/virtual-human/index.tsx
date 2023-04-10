@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useQuery } from "react-query";
 import Filter from "@components/Filter";
 import PageTitle from "@components/layout/PageTitle";
@@ -10,6 +10,7 @@ import Modal from '@components/Modal';
 import ModalContent from '@components/virtual-human/ModalContent';
 import { getVirtualHumanList } from "@hooks/queries/virtual-human";
 import { getVirtualHumanStatusToKorean } from "@modules/virtual-human/virtualHumanStatus";
+import { handleDelete } from '@hooks/asyncHooks';
 import RightSide from "@components/RightSide";
 import { getUserInfo } from "@lib/auth/cookie";
 import MasterAuthRightSideComponent from "@components/virtual-human/MasterAuthRightSideComponent";
@@ -18,7 +19,7 @@ import PageLoading from "@components/loading/PageLoading";
 
 const VirtualHuman = () => {
 
-  const { isLoading, data } = useQuery(['virtual-human'], getVirtualHumanList, { staleTime: 10 * 1000 });
+  const { isLoading, data, refetch } = useQuery(['virtual-human'], getVirtualHumanList, { staleTime: 10 * 1000 });
 
   // Hooks
   const [showGenerateModal, setShowGenerateModal] = useState<boolean>(false);
@@ -47,6 +48,25 @@ const VirtualHuman = () => {
       const userRole = getUserInfo('organization_role');
       if (userRole === 'master')
         setShowMasterAuthSideContainer(true);
+    }
+  }
+
+  const onClickDeleteVirtualHumanHandler = async (e: MouseEvent, item: any) =>{
+    e.stopPropagation();
+
+    if(item.id){
+      const result = confirm(item.name + '을\n삭제하시겠어요?');
+      if(result){
+        const { data } = await handleDelete('virtual-human',item.id);
+
+        if(data.affectedRows > 0){
+          alert('삭제되었어요.');
+          refetch();
+        }
+        else{
+          alert('삭제중에 에러가 발생했어요.\n관리자에게 문의해주세요.');
+        }
+      }
     }
   }
 
@@ -81,9 +101,15 @@ const VirtualHuman = () => {
                           <div>{item.created_date_at}</div>
                         </ItemHeader>
                         <ItemContent>{item.name}</ItemContent>
-                        <ItemStatus
-                          color={getVirtualHumanStatusToKorean('color', item.status)}
-                        >{getVirtualHumanStatusToKorean('string', item.status)}</ItemStatus>
+                        <StatusContainer>
+                          <ItemStatus
+                            color={getVirtualHumanStatusToKorean('color', item.status)}
+                          >{getVirtualHumanStatusToKorean('string', item.status)}
+                          </ItemStatus>
+                          <DeleteBtn
+                            onClick={(e) => onClickDeleteVirtualHumanHandler(e, item)}
+                          >삭제하기</DeleteBtn>
+                        </StatusContainer>
                       </VirtualHumanItem>
                     </VirtualHumanList>
                   )
@@ -149,7 +175,7 @@ const VirtualHumanList = styled.li<CSS_TYPE>(
     },
 
     ':hover': {
-      transform: 'translate(0, -12px)'
+      transform: 'translate(0, -8px)'
     }
   },
   props => ({
@@ -209,9 +235,59 @@ const ItemContent = styled.div({
     fontSize: '0.6rem',
   }
 })
+const StatusContainer = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+
+  '@media screen and (max-width: 1600px)': {
+    fontSize: '0.8rem',
+  },
+
+  '@media screen and (max-width: 1440px)': {
+    fontSize: '0.7rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '0.6rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    fontSize: '0.55rem',
+  }
+})
+const DeleteBtn = styled.div({
+  color: color.Red,
+  fontSize: '0.85rem',
+  fontWeight: '500',
+  cursor: 'pointer',
+  transition: 'all 0.15s',
+  padding: '0 1px',
+
+  ":hover": {
+    transform: 'scale(1.1)',
+    fontWeight: '800',
+  },
+
+  '@media screen and (max-width: 1600px)': {
+    fontSize: '0.8rem',
+  },
+
+  '@media screen and (max-width: 1440px)': {
+    fontSize: '0.7rem',
+  },
+
+  '@media screen and (max-width: 1023px)': {
+    fontSize: '0.6rem',
+  },
+
+  '@media screen and (max-width: 960px)': {
+    fontSize: '0.55rem',
+  }
+})
 const ItemStatus = styled.div<CSS_TYPE>(
   {
-    fontSize: '0.9rem',
+    fontSize: '0.85rem',
     fontWeight: '500',
 
     '@media screen and (max-width: 1600px)': {
@@ -241,17 +317,5 @@ const EmptyList = styled.div({
   color: color.DeActiveColor,
   margin: '0 auto'
 })
-
-// export const getServerSideProps: GetServerSideProps = async () => {
-
-//   const queryClient = new QueryClient();
-//   await queryClient.prefetchQuery('[virtualHuman]', getVirtualHumanList)
-
-//   return{
-//     props :{
-
-//     }
-//   }
-// }
 
 export default VirtualHuman;
