@@ -107,8 +107,8 @@ const Script = ({ name, project, setProject, isTransform, setIsTransform }: Slid
             (scriptList && scriptList.length > 0)&& scriptList.map((item: any, index: number) => {
               return (
                 <ScriptItem
-                  key={item.uuid}
-                  id={item.uuid}
+                  key={item.id ? item.id : item.uuid}
+                  id={item.id}
                   indexKey={index}
                   scriptInfo={item}
                   scriptList={scriptList}

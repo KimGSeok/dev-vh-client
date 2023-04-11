@@ -68,7 +68,7 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
     let prevList = [...scriptList];
     const script = scriptRef.current.innerText;
 
-    scriptList.forEach((el: any, index: number) => {
+    prevList.forEach((el: any, index: number) => {
       if (el.uuid === scriptInfo.uuid)
         prevList[index].text = script;
     });
@@ -79,7 +79,7 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
     if(scriptRef.current && scriptInfo.text){
       scriptRef.current.innerText = scriptInfo.text;
     }
-  }, [scriptList])
+  }, [])
 
   return (
     <ItemWrapper>

@@ -332,17 +332,4 @@ const EmptyList = styled.div({
   padding: '24px 0'
 })
 
-// export const getServerSideProps: GetServerSideProps = async () => {
-
-//   // TODO Server Side에서 Cookie값을 못 읽는 듯
-//   const queryClient = new QueryClient();
-//   await queryClient.prefetchQuery(['project'], getProjectList);
-
-//   return {
-//     props: {
-//       dehydrateProps: dehydrate(queryClient),
-//     }
-//   }
-// }
-
 export default Project;

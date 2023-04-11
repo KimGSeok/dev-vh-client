@@ -12,7 +12,6 @@ interface MasterAuthSideComponentProps {
 
 const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: MasterAuthSideComponentProps) => {
 
-  console.log(virtualHumanInfo);
   const router = useRouter();
   const [data, setData] = useState<object[]>();
 
@@ -20,7 +19,6 @@ const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: Ma
 
     const getVirtualHumanDetailInfo = async () => {
       const response = await get(`virtual-human/resource/${virtualHumanInfo.id}&uuid=${virtualHumanInfo.uuid}`, 'no-cache', '');
-      console.log(response);
       setData(response);
     }
 

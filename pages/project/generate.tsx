@@ -1,42 +1,36 @@
 import { useState, useEffect, useRef } from 'react';
-import { dehydrate, QueryClient, useQuery } from 'react-query';
-import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { v4 as uuidV4 } from 'uuid';
 import dynamic from "next/dynamic";
 import { color, ImageElement, RadiusButton, VerticalBar } from '@styles/styles';
-import PageLoading from "@components/loading/PageLoading";
-const AvatarWrapper = dynamic(() => import('@components/project/avatar/Avatar'), { ssr: false });
-const ScriptWrapper = dynamic(() => import('@components/project/script/Script'), { ssr: false });
+const AvatarContainer = dynamic(() => import('@components/project/avatar/Avatar'), { ssr: false });
+const ScriptContainer = dynamic(() => import('@components/project/script/Script'), { ssr: false });
 import { ProjectProps } from '@modules/interface';
 import useOnChangeRouterHandler from '@hooks/useOnChangeRouter';
 import { getPreFetchProjectDetailInfo } from '@hooks/queries/project';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 
-const ProjectGenerate = ({ projectId, data }: any) => {
-
+const ProjectGenerate = ({ projectId, projectDetailInfo, projectScriptInfo }: any) => {
+  
   // Hooks
   const nameRef = useRef<any>(null);
-  const [mount, setMount] = useState<boolean>(false);
   const [isTransform, setIsTransform] = useState<boolean>(false);
   const [project, setProject] = useState<ProjectProps>({
-    projectName: data && data.projectDetailInfo[0].name,
+    projectName: projectDetailInfo.name,
     projectId: projectId,
     uuid: uuidV4(),
     avatar: {
-      name: '',
-      model: '',
-      imageFileUrl: ''
+      name: projectDetailInfo.avatar_name ? projectDetailInfo.avatar_name : '',
+      model: projectDetailInfo.avatar_id ? projectDetailInfo.avatar_id : '',
+      imageFileUrl: '',
     },
     voice: {
-      name: '',
-      model: '',
+      name: projectDetailInfo.voice_name ? projectDetailInfo.voice_name : '',
+      model: projectDetailInfo.voice_id ? projectDetailInfo.voice_id : '',
       imageFileUrl: ''
     },
-    scriptList: [
-      { uuid: uuidV4(), text: '', speed: 1.0, pauseSecond: 0.5 }
-    ],
+    scriptList: projectScriptInfo.length > 0 ? projectScriptInfo :[{ uuid: uuidV4(), text: '', speed: 1.0, pauseSecond: 0.5 }],
     thumbnail: null,
   });
 
@@ -44,50 +38,11 @@ const ProjectGenerate = ({ projectId, data }: any) => {
   useOnChangeRouterHandler();
 
   useEffect(() => {
-    setMount(true);
-    if (nameRef.current) {
-
-      const projectDetailInfo = data.projectDetailInfo[0];
-      const projectScriptInfo = data.projectScriptInfo;
-
+    if (nameRef.current)
       nameRef.current.innerText = projectDetailInfo.name;
-
-      let prevState = { ...project };
-      prevState.projectName = projectDetailInfo.name;
-      prevState.voice = {
-        name: projectDetailInfo.voice_name ? projectDetailInfo.voice_name : '',
-        model: projectDetailInfo.voice_id ? projectDetailInfo.voice_id : '',
-        imageFileUrl: ''
-      }
-      prevState.avatar = {
-        name: projectDetailInfo.avatar_name ? projectDetailInfo.avatar_name : '',
-        model: projectDetailInfo.avatar_id ? projectDetailInfo.avatar_id : '',
-        imageFileUrl: '',
-      };
-
-      let scriptList: object[] = [];
-
-      projectScriptInfo && projectScriptInfo.length > 0 &&
-        projectScriptInfo.forEach((el: any) => {
-          scriptList.push({
-            uuid: uuidV4(),
-            text: el.script,
-            speed: el.speed,
-            pauseSecond: el.wait_time
-          })
-        });
-
-      if (scriptList.length > 0)
-        prevState.scriptList = scriptList;
-
-      setProject(prevState);
-    }
-
-    return () => setMount(false);
-  }, [data])
+  }, [])
 
   return (
-    !mount ? <PageLoading /> :
       <ProjectContainer>
         <HeaderContainer>
           <LeftContainer>
@@ -128,20 +83,17 @@ const ProjectGenerate = ({ projectId, data }: any) => {
           >변환하기</RadiusButton>
         </HeaderContainer>
         <MainComponent>
-          <AvatarWrapper
+          <AvatarContainer
             project={project}
             setProject={setProject}
           />
-          {
-            mount &&
-            <ScriptWrapper
-              name={data.name}
-              project={project}
-              setProject={setProject}
-              isTransform={isTransform}
-              setIsTransform={setIsTransform}
-            />
-          }
+          <ScriptContainer
+            name={projectDetailInfo.name}
+            project={project}
+            setProject={setProject}
+            isTransform={isTransform}
+            setIsTransform={setIsTransform}
+          />
         </MainComponent>
       </ProjectContainer>
   )
@@ -188,15 +140,13 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   const projectId: any = context.query.projectId;
   cookie = cookie ? cookie.split("=")[1] : '';
 
-  // const queryClient = new QueryClient();
-  // await queryClient.prefetchQuery(['project-detail', projectId], () => getPreFetchProjectDetailInfo(projectId, cookie))
-
-  const result = await getPreFetchProjectDetailInfo(projectId, cookie);
+  const { projectDetailInfo, projectScriptInfo } = await getPreFetchProjectDetailInfo(projectId, cookie);
 
   return {
     props: {
       projectId: projectId,
-      data: result
+      projectDetailInfo: projectDetailInfo[0],
+      projectScriptInfo: projectScriptInfo
     }
   }
 }

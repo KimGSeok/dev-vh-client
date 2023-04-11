@@ -27,15 +27,15 @@ const SideNavigation = () => {
             Virtual Human
           </GNBList>
         </Link>
+        <Link href="/users" passHref>
+          <GNBList color={firstPathName === 'users' ? color.White : ''}>
+            Users
+          </GNBList>
+        </Link>
         {/* 마스터 계정 한정 */}
         {/* <Link href="/" passHref>
           <GNBList color={firstPathName === 'Organizations' ? color.White : ''}>
             Organizations
-          </GNBList>
-        </Link>
-        <Link href="/" passHref>
-          <GNBList color={firstPathName === 'users' ? color.White : ''}>
-            Users
           </GNBList>
         </Link>
         <Link href="/" passHref>
