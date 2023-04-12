@@ -20,7 +20,7 @@ const MyApp = ({ Component, pageProps }: any) => {
       url: "https://www.studio.cidev.kr",
       title: "",
       site_name: "",
-      images :[
+      images: [
         {
           url: "",
           width: 0,
@@ -34,38 +34,36 @@ const MyApp = ({ Component, pageProps }: any) => {
   const [queryClient] = useState(() => new QueryClient(config))
 
   return (
-    <>
+    <RecoilRoot>
       <DefaultSeo {...DEFAULT_SEO} />
       <QueryClientProvider client={queryClient}>
-        <RecoilRoot>
-          <Hydrate state={pageProps?.dehydrateState}>
-            {globalStyles}
-            <AppLayout>
-              <Component {...pageProps} />
-            </AppLayout>
-            <div id="portal" />
-          </Hydrate>
-        </RecoilRoot>
+        <Hydrate state={pageProps?.dehydrateState}>
+          {globalStyles}
+          <AppLayout>
+            <Component {...pageProps} />
+          </AppLayout>
+          <div id="portal" />
+        </Hydrate>
       </QueryClientProvider>
-    </>
+    </RecoilRoot>
   )
 }
 
-MyApp.getInitialProps = async(appContext: any) =>{
+MyApp.getInitialProps = async (appContext: any) => {
 
   const { ctx } = appContext;
   const firstPathName = ctx.pathname.split('/')[1]; // 1 Depth URL
   const allCookies = cookies(ctx);
 
   // Redirect
-  if(firstPathName !== 'login' && !allCookies["userACT"]){
+  if (firstPathName !== 'login' && !allCookies["userACT"]) {
 
     ctx.res.writeHead(302, {
       Location: '/login',
       'Content-Type': 'text/html; charset=utf-8',
     });
     ctx.res.end();
-  }else if(firstPathName === 'login' && allCookies["userACT"]){
+  } else if (firstPathName === 'login' && allCookies["userACT"]) {
 
     ctx.res.writeHead(302, {
       Location: '/',

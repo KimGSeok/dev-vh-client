@@ -303,7 +303,6 @@ const ProjectList = styled.li<CSS_TYPE>(
     display: 'flex',
     alignItems: 'center',
     padding: '8px 0',
-
   },
   props => ({
     borderTop: props.borderTop,
@@ -318,9 +317,6 @@ const ProjectList = styled.li<CSS_TYPE>(
   })
 )
 const ListInfo = styled.div<CSS_TYPE>(
-  {
-
-  },
   props => ({
     width: props.width
   })

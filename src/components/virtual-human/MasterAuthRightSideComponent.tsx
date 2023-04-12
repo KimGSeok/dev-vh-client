@@ -75,7 +75,7 @@ const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: Ma
                     position: 'relative',
                     top: '1px'
                   }}
-                  alt="play button"
+                  alt="all resource download"
                 />
               </ImageWrap>
               전체 다운로드
@@ -91,7 +91,7 @@ const MasterAuthRightSideComponent = ({ virtualHumanInfo, setShowComponent }: Ma
         <ContentLists>
           {
             data && data.length > 0 ?
-              data.map((item: any, ) => {
+              data.map((item: any,) => {
                 return (
                   <ContentList key={item.uuid}>
                     <ContentScript>{item.record_type === 'video' ? item.file_name : item.script}</ContentScript>
