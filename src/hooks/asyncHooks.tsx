@@ -56,6 +56,34 @@ export const post = async (url: string, data: any, headers: object) => {
 }
 
 /**
+ * Put
+ * Author: Kim Gyeong Seok
+ */
+export const put = async (url: string, data: any, headers: object) => {
+  headers = {
+    ...headers,
+    Authorization: `Bearer ${getCookie()}`
+  }
+  try {
+    const result = axios.put(
+      `${API_URL}/${url}`,
+      data,
+      {
+        headers: { ...headers }
+      }
+    ).then((response) => {
+      return response;
+    }).catch((error) => {
+      return error;
+    })
+
+    return result;
+  } catch (error) {
+    return error;
+  }
+}
+
+/**
  * Delete
  * Author: Kim Gyeong Seok
  */

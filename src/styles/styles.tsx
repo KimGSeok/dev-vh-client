@@ -241,6 +241,35 @@ export const RadiusButton = styled.div<CSS_TYPE>(
     zIndex: props.zIndex ? props.zIndex : 1
   })
 )
+export const RadiusSubmitButton = styled.button<CSS_TYPE>(
+  {
+    borderRadius: '24px',
+    cursor: 'pointer'
+  },
+  props => ({
+    width: props.width,
+    backgroundColor: props.backgroundColor ? props.backgroundColor : color.White,
+    border: props.border ? props.border : `1px solid ${color.ModernGrey}`,
+    borderColor: props.borderColor,
+    color: props.color ? props.color : color.BasicBlack,
+    padding: props.padding ? props.padding : '12px 28px',
+    display: props.display ? props.display : 'inline-block',
+    alignItems: props.alignItems,
+    textAlign: props.textAlign,
+    justifyContent: props.justifyContent,
+    fontSize: props.fontSize ? props.fontSize : '1rem',
+    fontWeight: props.fontWeight ? props.fontWeight : '500',
+    margin: props.margin,
+    opacity: props.opacity,
+    position: props.position,
+    top: props.top,
+    bottom: props.bottom,
+    left: props.left,
+    right: props.right,
+    cursor: props.cursor,
+    zIndex: props.zIndex ? props.zIndex : 1
+  })
+)
 
 /* Shape */
 export const VerticalBar = styled.div<CSS_TYPE>(

@@ -3,6 +3,7 @@
 import styled from '@emotion/styled';
 import { color, RadiusButton } from '@styles/styles';
 import { KeyValueProps } from "@modules/interface";
+import { useEffect, useState } from 'react';
 
 interface contentProps {
   contents: KeyValueProps;
@@ -11,12 +12,18 @@ interface contentProps {
 
 const DownloadModalContent = ({ contents, contentsType }: contentProps) => {
 
-  // TODO
+  console.log(contents);
 
   const handleClickButton = (type: string) => {
-    if (type === 'audio') {
-      if (contentsType === 'download') {
 
+    console.log(contentsType);
+    console.log(type);
+
+    // 다운로드
+    if(contentsType === 'download'){
+
+      // 음성
+      if(type === 'audio'){
         const downloadUrl = contents.audio_download_url;
         const link = document.createElement('a');
 
@@ -35,13 +42,24 @@ const DownloadModalContent = ({ contents, contentsType }: contentProps) => {
         link.parentNode?.removeChild(link);
 
         window.URL.revokeObjectURL(downloadUrl);
-      } else {
+      }
+      // 영상
+      else{
 
       }
-    } else {
-      if (contentsType === 'download') {
+    }
+    // 재생하기
+    else{
+      // 음성
+      if(type === 'audio'){
 
-      } else {
+        // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // const bufferArray = [];
+
+        // const source = audioContext.createBufferSource();
+      }
+      // 영상
+      else{
 
       }
     }

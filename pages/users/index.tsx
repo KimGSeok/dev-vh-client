@@ -1,23 +1,26 @@
+import styled from "@emotion/styled";
+import { CSS_TYPE, color } from "@styles/styles";
 import Filter from "@components/Filter";
 import PageTitle from "@components/layout/PageTitle";
 import Search from "@components/Search";
-import { CSS_TYPE, color } from "@styles/styles";
-import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { dehydrate, QueryClient } from "react-query";
 import { prefetchUsersLists, useUsersLists } from "@hooks/queries/users";
-import PageLoading from "@components/loading/PageLoading";
+import Portal from '@components/Portal';
+import Modal from '@components/Modal';
+import ModalContent from '@components/users/ModalContent';
 import { useState, useEffect } from "react";
 
 const Users = () => {
 
   const router = useRouter();
   const [isTab, setIsTab] = useState<string>('all');
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-  const { isLoading, data, refetch } = useUsersLists(isTab);
+  const { data, refetch } = useUsersLists(isTab);
 
-  console.log(data);
+  const children = <ModalContent/>;
 
   let sequence = data && data.userList.length;
 
@@ -32,7 +35,9 @@ const Users = () => {
         registerBtn={true}
         btn={'추가하기'}
         event={'onClick'}
-        func={() => { }}
+        func={() => {
+          setShowModal(true);
+        }}
       />
       <Filter />
       <Search />
@@ -43,7 +48,7 @@ const Users = () => {
             opacity={isTab === 'all' ? '1' : '0.3'}
             onClick={() => setIsTab('all')}
           >
-            <TabName>전체&#40;{data && data.userList.length}&#41;</TabName>
+            <TabName>전체&#40;{data && data.totalCount}&#41;</TabName>
           </TabList>
           {
             data && data.allOrganizationList.map((item: any) => {
@@ -100,6 +105,7 @@ const Users = () => {
                     key={item.uuid}
                     backgroundColor={color.AliceBlue}
                     cursor={'pointer'}
+                    onClick={() => router.push(`users/${item.id}`)}
                   >
                     <List
                       width={'5%'}
@@ -112,16 +118,16 @@ const Users = () => {
                     >{item.name}</List>
                     <List
                       width={'13%'}
-                    >010-1234-5678</List>
+                    >{item.phone}</List>
                     <List
                       width={'10%'}
                     >{item.organization_name}</List>
                     <List
                       width={'7%'}
-                    >관리자</List>
+                    >{item.role}</List>
                     <List
                       width={'10%'}
-                    ></List>
+                    >정상</List>
                     <List
                       width={'15%'}
                     >{item.created_at}</List>
@@ -135,6 +141,17 @@ const Users = () => {
           </BodyContainer>
         </UsersContainer>
       </ListsContainer>
+      {
+          showModal &&
+          <Portal>
+            <Modal
+              title={'사용자 생성하기'}
+              modal={showModal}
+              setModal={setShowModal}
+              children={children}
+            />
+          </Portal>
+        }
     </Container>
   )
 }

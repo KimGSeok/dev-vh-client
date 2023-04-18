@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { MouseEvent, useState } from 'react';
-import { useQuery } from "react-query";
+import { dehydrate, QueryClient } from "react-query";
 import Filter from "@components/Filter";
 import PageTitle from "@components/layout/PageTitle";
 import Search from "@components/Search";
@@ -8,7 +8,7 @@ import { CSS_TYPE, color } from "@styles/styles";
 import Portal from '@components/Portal';
 import Modal from '@components/Modal';
 import ModalContent from '@components/virtual-human/ModalContent';
-import { getVirtualHumanList } from "@hooks/queries/virtual-human";
+import { prefetchVirtualHumanLists, useVirtualHumanLists } from "@hooks/queries/virtual-human";
 import { getVirtualHumanStatusToKorean } from "@modules/virtual-human/virtualHumanStatus";
 import { handleDelete } from '@hooks/asyncHooks';
 import RightSide from "@components/RightSide";
@@ -16,10 +16,11 @@ import { getUserInfo } from "@lib/auth/cookie";
 import MasterAuthRightSideComponent from "@components/virtual-human/MasterAuthRightSideComponent";
 import { KeyValueProps } from "@modules/interface";
 import PageLoading from "@components/loading/PageLoading";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 const VirtualHuman = () => {
 
-  const { isLoading, data, refetch } = useQuery(['virtual-human'], getVirtualHumanList, { staleTime: 10 * 1000 });
+  const { isLoading, data, refetch } = useVirtualHumanLists();
 
   // Hooks
   const [showGenerateModal, setShowGenerateModal] = useState<boolean>(false);
@@ -317,5 +318,28 @@ const EmptyList = styled.div({
   color: color.DeActiveColor,
   margin: '0 auto'
 })
+
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) =>{
+  let queryClient = new QueryClient();
+
+  try {
+    let cookie: any = context.req.headers.cookie; // Session Cookie
+    cookie = cookie ? cookie.split("=")[1] : '';
+
+    queryClient = await prefetchVirtualHumanLists(cookie);
+
+    return {
+      props: {
+        dehydrateState: dehydrate(queryClient),
+      }
+    }
+  } catch (error) {
+    return {
+      notFound: true,
+    }
+  } finally {
+    queryClient.clear()
+  }
+}
 
 export default VirtualHuman;
