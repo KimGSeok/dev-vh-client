@@ -42,15 +42,15 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
     setRecordStatus('complete');
   };
 
-  const onListenAgainHandler = () =>{ 
+  const onListenAgainHandler = () => {
     audio.play()
-    .then(() => {
-      audio.play()
-    })
-    .catch((error: any) => {
-      alert('오디오가 제대로 녹음되지 않았습니다.\n다시 녹음해주세요.');
-      console.error(error);
-    })
+      .then(() => {
+        audio.play()
+      })
+      .catch((error: any) => {
+        alert('오디오가 제대로 녹음되지 않았습니다.\n다시 녹음해주세요.');
+        console.error(error);
+      })
   }
 
   const onReRecordingHandler = () => {
@@ -117,10 +117,10 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
     formData.append('virtualHumanName', virtualHumanName);
 
     const url = 'virtual-human/upload';
-    const headers ={
-        "Contest-Type": "multipart/form-data",
-        "uuid": avatarId
-      }
+    const headers = {
+      "Contest-Type": "multipart/form-data",
+      "uuid": avatarId
+    }
     post(url, formData, headers);
 
     alert('아바타 생성 요청이 완료되었습니다.');
@@ -213,7 +213,9 @@ const VoiceGenerate = ({ type, virtualHumanName }: { type: string, virtualHumanN
         </RecordScriptWrapper>
         {
           showModal &&
-          <Portal>
+          <Portal
+            id={'#portal'}
+          >
             <Modal
               title={'음성 아바타 생성'}
               modal={showModal}

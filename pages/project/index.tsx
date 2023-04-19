@@ -262,7 +262,9 @@ const Project = () => {
         </ProjectContainer>
         {
           showModal &&
-          <Portal>
+          <Portal
+            id={'#portal'}
+          >
             <Modal
               title={modalTitle}
               modal={showModal}

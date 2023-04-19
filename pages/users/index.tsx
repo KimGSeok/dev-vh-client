@@ -20,7 +20,7 @@ const Users = () => {
 
   const { data, refetch } = useUsersLists(isTab);
 
-  const children = <ModalContent/>;
+  const children = <ModalContent />;
 
   let sequence = data && data.userList.length;
 
@@ -142,16 +142,18 @@ const Users = () => {
         </UsersContainer>
       </ListsContainer>
       {
-          showModal &&
-          <Portal>
-            <Modal
-              title={'사용자 생성하기'}
-              modal={showModal}
-              setModal={setShowModal}
-              children={children}
-            />
-          </Portal>
-        }
+        showModal &&
+        <Portal
+          id={'#portal'}
+        >
+          <Modal
+            title={'사용자 생성하기'}
+            modal={showModal}
+            setModal={setShowModal}
+            children={children}
+          />
+        </Portal>
+      }
     </Container>
   )
 }

@@ -48,6 +48,7 @@ export type CSS_TYPE = {
   zIndex?: string | number;
   animation?: string;
   animationDelay?: string;
+  animationDuration?: string | number;
 
   /* Etc */
   isActive?: boolean;
@@ -342,7 +343,7 @@ const fadeUpKeyframes = keyframes`
     opacity: 1;
     transform: translateX(-50%) translateY(-50%);
   }
-`
+`;
 
 export const fadeUp = css`
   animation-duration: 0.65s;

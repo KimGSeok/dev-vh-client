@@ -52,19 +52,19 @@ const VirtualHuman = () => {
     }
   }
 
-  const onClickDeleteVirtualHumanHandler = async (e: MouseEvent, item: any) =>{
+  const onClickDeleteVirtualHumanHandler = async (e: MouseEvent, item: any) => {
     e.stopPropagation();
 
-    if(item.id){
+    if (item.id) {
       const result = confirm(item.name + '을\n삭제하시겠어요?');
-      if(result){
-        const { data } = await handleDelete('virtual-human',item.id);
+      if (result) {
+        const { data } = await handleDelete('virtual-human', item.id);
 
-        if(data.affectedRows > 0){
+        if (data.affectedRows > 0) {
           alert('삭제되었어요.');
           refetch();
         }
-        else{
+        else {
           alert('삭제중에 에러가 발생했어요.\n관리자에게 문의해주세요.');
         }
       }
@@ -121,7 +121,9 @@ const VirtualHuman = () => {
         </Container>
         {
           showGenerateModal &&
-          <Portal>
+          <Portal
+            id={'#portal'}
+          >
             <Modal
               title={'가상인간 생성하기'}
               modal={showGenerateModal}
@@ -132,7 +134,9 @@ const VirtualHuman = () => {
         }
         {
           showMasterAuthSideContainer &&
-          <Portal>
+          <Portal
+            id={'#portal'}
+          >
             <RightSide
               children={sideContainerChildren}
               showRightSide={showMasterAuthSideContainer}
@@ -319,7 +323,7 @@ const EmptyList = styled.div({
   margin: '0 auto'
 })
 
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) =>{
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   let queryClient = new QueryClient();
 
   try {

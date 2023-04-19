@@ -43,6 +43,7 @@ const MyApp = ({ Component, pageProps }: any) => {
             <Component {...pageProps} />
           </AppLayout>
           <div id="portal" />
+          <div id="subPortal"></div>
         </Hydrate>
       </QueryClientProvider>
     </RecoilRoot>

@@ -1,4 +1,6 @@
-export const onClickBlobDownload = async (arrayBuffer: [], fileName: string, extension: string, type: string) =>{
+export const onClickBlobDownload = async (arrayBuffer: [], fileName: string, extension: string, type: string) => {
+
+  console.log(arrayBuffer);
 
   const blob = await new Blob([Uint8Array.from(arrayBuffer)], { type });
 
