@@ -69,8 +69,12 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
     const script = scriptRef.current.innerText;
 
     prevList.forEach((el: any, index: number) => {
-      if (el.uuid === scriptInfo.uuid)
+      if(el.uuid && el.uuid === scriptInfo.uuid){
         prevList[index].text = script;
+      }
+      else if(el.id && el.id === scriptInfo.id){
+        prevList[index].text = script;
+      }
     });
     setScriptList(prevList);
   }

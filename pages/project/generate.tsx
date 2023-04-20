@@ -12,7 +12,7 @@ import { getPreFetchProjectDetailInfo } from '@hooks/queries/project';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 
 const ProjectGenerate = ({ projectId, projectDetailInfo, projectScriptInfo }: any) => {
-  
+
   // Hooks
   const nameRef = useRef<any>(null);
   const [isTransform, setIsTransform] = useState<boolean>(false);
@@ -93,6 +93,8 @@ const ProjectGenerate = ({ projectId, projectDetailInfo, projectScriptInfo }: an
             setProject={setProject}
             isTransform={isTransform}
             setIsTransform={setIsTransform}
+            audioDownloadUrl={projectDetailInfo.audio_download_url}
+            videoDownloadUrl={projectDetailInfo.video_download_url}
           />
         </MainComponent>
       </ProjectContainer>

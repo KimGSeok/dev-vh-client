@@ -18,10 +18,12 @@ interface SlideProps {
   project: ProjectProps;
   setProject: Dispatch<SetStateAction<ProjectProps>>
   isTransform: boolean;
-  setIsTransform: Dispatch<SetStateAction<boolean>>
+  setIsTransform: Dispatch<SetStateAction<boolean>>;
+  audioDownloadUrl: string;
+  videoDownloadUrl: string;
 }
 
-const Script = ({ name, project, setProject, isTransform, setIsTransform }: SlideProps) => {
+const Script = ({ name, project, setProject, isTransform, setIsTransform, audioDownloadUrl, videoDownloadUrl }: SlideProps) => {
 
   // Hooks
   const [bottomSheetTitle, setBottomSheetTitle] = useState<string>('');
@@ -126,6 +128,8 @@ const Script = ({ name, project, setProject, isTransform, setIsTransform }: Slid
           name={name}
           avatarType={avatarType}
           transferResult={transferResult}
+          audioDownloadUrl={audioDownloadUrl}
+          videoDownloadUrl={videoDownloadUrl}
         />
       </ScriptArea>
 
