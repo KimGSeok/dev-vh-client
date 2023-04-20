@@ -9,7 +9,7 @@ const SideNavigation = () => {
   // Hooks
   const pathName = usePathname();
   const firstPathName = pathName?.split('/')[1];
-  const role = getUserInfo('role'); // Master, Admin
+  const role = firstPathName === 'login' ? 'none' : getUserInfo('role'); // Master, Admin
 
   return (
     <SideNav>
