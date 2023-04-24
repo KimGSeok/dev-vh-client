@@ -1,13 +1,15 @@
 import { CSS_TYPE, color } from '@styles/styles';
 import styled from '@emotion/styled';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { getUserInfo } from '@lib/auth/cookie';
 
 const SideNavigation = () => {
 
   // Hooks
   const pathName = usePathname();
   const firstPathName = pathName?.split('/')[1];
+  const role = firstPathName === 'login' ? 'none' : getUserInfo('role'); // Master, Admin
 
   return (
     <SideNav>
@@ -27,11 +29,14 @@ const SideNavigation = () => {
             Virtual Human
           </GNBList>
         </Link>
-        <Link href="/users" passHref>
-          <GNBList color={firstPathName === 'users' ? color.White : ''}>
-            Users
-          </GNBList>
-        </Link>
+        {
+          role === 'master' && 
+          <Link href="/users" passHref>
+            <GNBList color={firstPathName === 'users' ? color.White : ''}>
+              Users
+            </GNBList>
+          </Link>
+        }
         {/* 마스터 계정 한정 */}
         {/* <Link href="/" passHref>
           <GNBList color={firstPathName === 'Organizations' ? color.White : ''}>

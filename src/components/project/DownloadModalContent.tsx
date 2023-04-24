@@ -3,9 +3,12 @@
 import styled from '@emotion/styled';
 import { color, RadiusButton } from '@styles/styles';
 import { KeyValueProps } from "@modules/interface";
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { MouseEvent, useRef, useState } from 'react';
 import PositionModal from '@components/PositionModal';
 import Portal from '@components/Portal';
+import { onClickBlobDownload } from '@modules/onClickBlobDownload';
+import { getToday, getTodayTime } from '@modules/date';
+import { get } from '@hooks/asyncHooks';
 
 interface contentProps {
   contents: KeyValueProps;
@@ -15,7 +18,8 @@ interface contentProps {
 const DownloadModalContent = ({ contents, contentsType }: contentProps) => {
 
   const audioRef = useRef<any>(null);
-  const videoRef = useRef<any>(null);
+  const audioDownloadUrl = contents.audio_download_url;
+  const videoDownloadUrl = contents.video_download_url;
   const [audio, setAudio] = useState<number>(0);
   const [modalPosition, setModalPosition] = useState({
     active: false,
@@ -23,85 +27,116 @@ const DownloadModalContent = ({ contents, contentsType }: contentProps) => {
     yPosition: 0,
   });
 
-  const handleClickButton = (e: MouseEvent<HTMLDivElement>, type: string) => {
+  const getDownload = async(url: string, extension: string) =>{
+    const response = await get(`file/buffer?url=${url}`, 'no-cache', '');
 
-    console.log(contents);
+    // Parameter
+    const fileName = `${getToday()} ${getTodayTime()} ${contents.name}`;
+    onClickBlobDownload(response.arrayBuffer, fileName, extension, response.type);
+  }
 
-    const downloadUrl = contents.audio_download_url;
+  const handleClickDownload = (e: MouseEvent<HTMLDivElement>, type: string) =>{
+    e.stopPropagation();
 
-    // 다운로드
-    if (contentsType === 'download') {
-
-      // 음성
-      if (type === 'audio') {
-
-
-      }
-      // 영상
-      else {
-
-      }
+    if (type === 'audio' && audioDownloadUrl !== '') {
+      getDownload(audioDownloadUrl, 'wav');
     }
-    // 재생하기
-    else {
-      // 음성
-      if (type === 'audio') {
-        audioRef.current && audioRef.current.play();
-
-        const duration = parseFloat(audioRef.current.duration);
-
-        setAudio(duration);
-
-        setTimeout(() => {
-          setAudio(0);
-        }, duration * 990)
-      }
-      // 영상
-      else {
-        setModalPosition({
-          active: true,
-          xPosition: e.clientX,
-          yPosition: e.clientY,
-        })
-
-        const video: any = document.getElementById('video');
-        video.src = contents.video_download_url;
-      }
+    else if(type === 'video' && videoDownloadUrl !== ''){
+      getDownload(videoDownloadUrl, 'mp4');
     }
   }
 
-  useEffect(() => {
-    console.log(audio);
-  }, [audio])
+  const handleClickPlay = (e: MouseEvent<HTMLDivElement>, type: string) =>{
+
+    e.stopPropagation();
+
+    if (type === 'audio' && audioDownloadUrl !== '') {
+      audioRef.current && audioRef.current.play();
+
+      const duration = parseFloat(audioRef.current.duration);
+
+      setAudio(duration);
+
+      setTimeout(() => {
+        setAudio(0);
+      }, duration * 990)
+    }
+    else if(type === 'video' && videoDownloadUrl !== ''){
+      setModalPosition({
+        active: true,
+        xPosition: e.clientX,
+        yPosition: e.clientY,
+      })
+
+      const video: any = document.getElementById('video');
+      video.src = contents.video_download_url;
+    }
+  }
 
   return (
     <MainContainer>
       <ButtonContainer>
-        <audio ref={audioRef}><source src={contents.audio_download_url} type={'audio/wav'} /></audio>
-        <Button
-          // css={resizeWidth(audio)}
-          width={'100%'}
-          textAlign={'center'}
-          border={'0'}
-          margin={'12px 0 16px 0'}
-          backgroundColor={color.BasicBlue}
-          opacity={contents.audio_download_url ? 1 : 0.2}
-          color={color.White}
-          animationDuration={audio}
-          onClick={(e) => handleClickButton(e, 'audio')}
-        ><div>{contentsType === 'download' ? '음성 컨텐츠 다운로드' : '음성 컨텐츠 재생하기'}</div></Button>
-        <Button
-          width={'100%'}
-          textAlign={'center'}
-          border={'0'}
-          backgroundColor={color.BasicColor}
-          opacity={contents.video_download_url ? 1 : 0.2}
-          color={color.White}
-          animationDuration={0}
-          cursor={contents.video_download_url ? 'pointer' : 'default'}
-          onClick={(e) => handleClickButton(e, 'video')}
-        ><div>{contentsType === 'download' ? '영상 컨텐츠 다운로드' : '영상 컨텐츠 재생하기'}</div>
-        </Button>
+        <audio ref={audioRef}><source src={audioDownloadUrl} type={'audio/wav'} /></audio>
+        {/* 다운로드 */
+          contentsType === 'download' &&
+          <>
+            <Button
+              width={'100%'}
+              textAlign={'center'}
+              border={'0'}
+              margin={'12px 0 16px 0'}
+              backgroundColor={color.BasicBlue}
+              opacity={audioDownloadUrl ? 1 : 0.2}
+              color={color.White}
+              animationDuration={0}
+              cursor={audioDownloadUrl ? 'pointer' : 'default'}
+              onClick={(e) => handleClickDownload(e, 'audio')}
+            ><div>음성 컨텐츠 다운로드</div>
+            </Button>
+            <Button
+              width={'100%'}
+              textAlign={'center'}
+              border={'0'}
+              backgroundColor={color.BasicColor}
+              opacity={videoDownloadUrl ? 1 : 0.2}
+              color={color.White}
+              animationDuration={0}
+              cursor={videoDownloadUrl ? 'pointer' : 'default'}
+              onClick={(e) => handleClickDownload(e, 'video')}
+            ><div>영상 컨텐츠 다운로드</div>
+            </Button>
+          </>
+        }
+        {/* 재생하기 */
+          contentsType === 'play' &&
+          <>
+            <Button
+              width={'100%'}
+              textAlign={'center'}
+              border={'0'}
+              margin={'12px 0 16px 0'}
+              backgroundColor={color.BasicBlue}
+              opacity={audioDownloadUrl ? 1 : 0.2}
+              color={color.White}
+              animationDuration={audio}
+              cursor={audioDownloadUrl ? 'pointer' : 'default'}
+              onClick={(e) => handleClickPlay(e, 'audio')}
+            ><div>음성 컨텐츠 재생하기</div>
+            </Button>
+            <Button
+              width={'100%'}
+              textAlign={'center'}
+              border={'0'}
+              backgroundColor={color.BasicColor}
+              opacity={videoDownloadUrl ? 1 : 0.2}
+              color={color.White}
+              animationDuration={0}
+              cursor={videoDownloadUrl ? 'pointer' : 'default'}
+              onClick={(e) => handleClickPlay(e, 'video')}
+            ><div>영상 컨텐츠 재생하기</div>
+            </Button>
+          </>
+        }
       </ButtonContainer>
       <Portal
         id={'#subPortal'}

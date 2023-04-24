@@ -18,5 +18,5 @@ export const getTodayTime = () =>{
   const hours = ('0' + today.getHours()).slice(-2); 
   const minutes = ('0' + today.getMinutes()).slice(-2);
   const seconds = ('0' + today.getSeconds()).slice(-2); 
-  return hours + ':' + minutes  + ':' + seconds;
+  return hours + ":" + minutes  + ":" + seconds;
 }

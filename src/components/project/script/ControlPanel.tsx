@@ -3,25 +3,60 @@ import { CSS_TYPE, color, ImageElement, ImageWrap, RadiusButton } from '@styles/
 import { onClickBlobDownload } from '@modules/onClickBlobDownload';
 import { getToday, getTodayTime } from '@modules/date';
 import { useState, useEffect } from 'react';
+import { checkEmptyObject } from '@modules/validation';
+import { get } from '@hooks/asyncHooks';
 
 interface ControlProps {
   name: string;
   avatarType: string;
   transferResult: any;
+  audioDownloadUrl: string;
+  videoDownloadUrl: string;
 }
 
-const ControlPanel = ({ name, avatarType, transferResult }: ControlProps) => {
+const ControlPanel = ({ name, avatarType, transferResult, audioDownloadUrl, videoDownloadUrl }: ControlProps) => {
 
   // Hooks
   const [type, setType] = useState(avatarType);
+  const [audioURL, ] = useState<string>(audioDownloadUrl);
+  const [videoURL, ] = useState<string>(videoDownloadUrl);
 
-  const onClickDownloadFile = () => {
+  const getDownload = async(url: string, extension: string) =>{
+    const response = await get(`file/buffer?url=${url}`, 'no-cache', '');
 
     // Parameter
-    const fileName = `${getToday()}_${getTodayTime()}_${name}`;
-    const extension = avatarType === 'audio' ? 'wav' : 'mp4';
-    onClickBlobDownload(transferResult.arrayBuffer, fileName, extension, transferResult.type);
+    const fileName = `${getToday()} ${getTodayTime()} ${name}`;
+    onClickBlobDownload(response.arrayBuffer, fileName, extension, response.type);
   }
+
+  const onClickDownloadFile = (type: string) => {
+    if(checkEmptyObject(transferResult)){
+
+      if(audioURL !== '' && type === 'audio'){
+        getDownload(audioDownloadUrl, 'wav');
+      }
+      else if(videoURL !== '' && type === 'video'){
+        getDownload(videoDownloadUrl, 'mp4');
+      }
+      else
+        return false;
+    }else{
+
+      // Parameter
+      const fileName = `${getToday()} ${getTodayTime()} ${name}`;
+      const extension = avatarType === 'audio' ? 'wav' : 'mp4';
+      onClickBlobDownload(transferResult.arrayBuffer, fileName, extension, transferResult.type);
+    }
+  }
+
+  useEffect(() => {
+    if(audioDownloadUrl !== ''){
+      setType('audio');
+    }
+    else if(videoDownloadUrl !== ''){
+      setType('video');
+    }
+  }, [])
 
   useEffect(() => {
     setType(avatarType);
@@ -63,9 +98,9 @@ const ControlPanel = ({ name, avatarType, transferResult }: ControlProps) => {
         borderColor={color.Purple}
         padding={'4px 20px'}
         margin={'0 16px 0 0'}
-        opacity={type === 'audio' ? 1 : 0.4}
-        cursor={type === 'audio' ? 'pointer' : 'auto'}
-        onClick={onClickDownloadFile}
+        opacity={audioURL === undefined || audioURL === '' ? 0.4 : 1}
+        cursor={audioURL === undefined || audioURL === '' ? 'auto' : 'pointer'}
+        onClick={() => onClickDownloadFile('audio')}
       >
         <ImageWrap
           position={'relative'}
@@ -94,9 +129,9 @@ const ControlPanel = ({ name, avatarType, transferResult }: ControlProps) => {
         backgroundColor={color.BasicOrange}
         borderColor={color.BasicOrange}
         padding={'4px 20px'}
-        opacity={type === 'video' ? 1 : 0.4}
-        cursor={type === 'video' ? 'pointer' : 'auto'}
-        onClick={onClickDownloadFile}
+        opacity={videoURL === undefined || videoURL === '' ? 0.4 : 1}
+        cursor={videoURL === undefined || videoURL === '' ? 'auto' : 'pointer'}
+        onClick={() => onClickDownloadFile('video')}
       >
         <ImageWrap
           position={'relative'}
