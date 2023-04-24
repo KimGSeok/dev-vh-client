@@ -1,4 +1,4 @@
-import { Dispatch, ChangeEvent, FormEvent, SetStateAction, useState, useEffect, useRef, KeyboardEvent } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useEffect, useRef, KeyboardEvent } from 'react';
 import styled from '@emotion/styled';
 import { CSS_TYPE, color, RadiusButton, ImageWrap, ImageElement } from '@styles/styles';
 import { v4 as uuidV4 } from 'uuid';
@@ -76,7 +76,7 @@ const ScriptItem = ({ id, indexKey, scriptInfo, scriptList, setScriptUUID, setSc
   }
 
   useEffect(() => {
-    if(scriptRef.current && scriptInfo.text){
+    if (scriptRef.current && scriptInfo.text) {
       scriptRef.current.innerText = scriptInfo.text;
     }
   }, [])

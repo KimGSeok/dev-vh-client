@@ -31,7 +31,7 @@ const MyApp = ({ Component, pageProps }: any) => {
     },
   }
 
-  const [queryClient] = useState(() => new QueryClient(config))
+  const [queryClient] = useState(() => new QueryClient(config));
 
   return (
     <RecoilRoot>
@@ -42,8 +42,9 @@ const MyApp = ({ Component, pageProps }: any) => {
           <AppLayout>
             <Component {...pageProps} />
           </AppLayout>
-          <div id="portal" />
-          <div id="subPortal"></div>
+          <div id={"portal"} />
+          <div id={"subPortal"} />
+          <div id={"dialog"} />
         </Hydrate>
       </QueryClientProvider>
     </RecoilRoot>

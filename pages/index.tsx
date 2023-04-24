@@ -4,10 +4,17 @@ import styled from '@emotion/styled';
 import Head from 'next/head';
 import { CSS_TYPE, color, RadiusButton, ImageElement, shaking, LineBreak } from '@styles/styles';
 import Link from 'next/link';
+import customWindow from '@modules/customWindow';
 
 const Home = () => {
 
   // TODO 조직 혹은 사용자명 추출하여 표출
+
+  const testHandler = () => {
+    console.log("커스텀 확인버튼 클릭");
+    const test = customWindow.confirm('안녕하십니까?');
+    console.log(test);
+  }
 
   return (
     <PageContainer>
@@ -28,6 +35,7 @@ const Home = () => {
           </DashboardTitle>
           <DashboardSubTitle>음성 녹음과 영상 촬영을 통해서 나만의 가상인간을 만들어 볼 수 있어요.</DashboardSubTitle>
         </TitleWraaper>
+        <div onClick={() => testHandler()}>안녕</div>
         <ServicePreviewContainer>
           <ServicePreview
             backgroundImage={"url('/images/main_virtualhuman.svg')"}

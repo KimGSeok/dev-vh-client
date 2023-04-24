@@ -1,7 +1,21 @@
+import { KeyboardEvent } from 'react';
 import styled from '@emotion/styled';
-import { CSS_TYPE, color, SelectBox } from '@styles/styles';
+import { color, SelectBox } from '@styles/styles';
 
 const Search = () => {
+
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+
+    console.log(e);
+
+    if (e.key === 'Enter' && e.shiftKey) {
+      return false;
+    } else if (e.key === 'Enter') {
+
+      e.preventDefault();
+    }
+  }
+
   return (
     <SearchWrap>
       <SelectBox
@@ -13,7 +27,7 @@ const Search = () => {
         <option>아바타명</option>
       </SelectBox>
       <div>
-        <Keyword type='text' placeholder='검색어를 입력해주세요.' />
+        <Keyword type='text' placeholder='검색어를 입력해주세요.' onKeyDown={(e) => onKeyDown(e)} />
       </div>
     </SearchWrap>
   )
